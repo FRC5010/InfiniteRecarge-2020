@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -37,8 +38,9 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final DriveTrainMain driveTrain = new DriveTrainMain();
+  private static DriveTrainMain driveTrain;
 
+  public static Joystick driver;
   public static CANSparkMax lDrive1;
   public static CANSparkMax lDrive2;
 
@@ -66,6 +68,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    driver = new Joystick(0);
+
   }
   public static void init(){
     //Neos HAVE to be in brushless
@@ -77,7 +81,7 @@ public class RobotContainer {
     lDrive1.setInverted(false);
     lDrive2.follow(lDrive1, false);
 
-    rDrive1.setInverted(false);
+    rDrive1.setInverted(true);
     rDrive2.follow(rDrive1, false);
 
     lEncoder = lDrive1.getEncoder();
@@ -90,6 +94,8 @@ public class RobotContainer {
     rEncoder.setVelocityConversionFactor(Constants.distancePerPulse);
 
     robotPose = Robot.pose;
+
+    driveTrain= new DriveTrainMain();
 
   }
 

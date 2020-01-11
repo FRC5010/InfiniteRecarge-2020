@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Add your docs here.
@@ -26,7 +27,7 @@ public class Pose {
    
 
     public double getEncoderDistance(CANEncoder encoder){
-           return encoder.getPosition()*Constants.distancePerPulse;
+           return encoder.getPosition()/12;
     }
 
     private static CANSparkMax leftMaster1 = RobotContainer.lDrive1;
@@ -34,7 +35,7 @@ public class Pose {
 
 
 // The robot's drive
-private final DifferentialDrive m_drive = new DifferentialDrive(leftMaster1, rightMaster1);
+//private final DifferentialDrive m_drive = new DifferentialDrive(leftMaster1, rightMaster1);
 
 // The left-side drive encoder
 public final CANEncoder leftEncoder = RobotContainer.lEncoder;
@@ -83,6 +84,9 @@ public void posePeriodic(){
     odometry.update(Rotation2d.fromDegrees(getHeading()), getEncoderDistance(leftEncoder),
              getEncoderDistance(rightEncoder));
 
+             SmartDashboard.putNumber("left encoder distance", getEncoderDistance(leftEncoder));
+             SmartDashboard.putNumber("right encoder distance", rightEncoder.getPosition());
+
 }
 /**
 * Resets the odometry to the specified pose.
@@ -100,9 +104,10 @@ odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
 * @param fwd the commanded forward movement
 * @param rot the commanded rotation
 */
-public void arcadeDrive(double fwd, double rot) {
-m_drive.arcadeDrive(fwd, rot);
-}
+// public void arcadeDrive(double fwd, double rot) {
+// m_drive.arcadeDrive(fwd, rot);
+// }
+
 
 /**
 * Controls the left and right sides of the drive directly with voltages.
@@ -151,10 +156,10 @@ return rightEncoder;
 * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
 *
 * @param maxOutput the maximum output to which the drive will be constrained
-*/
-public void setMaxOutput(double maxOutput) {
-m_drive.setMaxOutput(maxOutput);
-}
+// */
+// public void setMaxOutput(double maxOutput) {
+// RobotContainer.driveTrain.setMaxOutput(maxOutput);
+// }
 
 /**
 * Zeroes the heading of the robot.

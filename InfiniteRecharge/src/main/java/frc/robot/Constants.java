@@ -34,7 +34,7 @@ public final class Constants {
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
 
-    public static final double distancePerPulse = (.155*Math.PI) / (42*6);
+    public static final double distancePerPulse = 1/12;
     public static final boolean gyroReversed = false;
 }
 
