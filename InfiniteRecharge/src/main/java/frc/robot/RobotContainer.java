@@ -72,6 +72,7 @@ public class RobotContainer {
 
   }
   public static void init(){
+    
     //Neos HAVE to be in brushless
     lDrive1 = new CANSparkMax(1, MotorType.kBrushless);
     lDrive2 = new CANSparkMax(2, MotorType.kBrushless);
@@ -92,8 +93,8 @@ public class RobotContainer {
 
     lEncoder.setVelocityConversionFactor(Constants.distancePerPulse);
     rEncoder.setVelocityConversionFactor(Constants.distancePerPulse);
-
-    robotPose = Robot.pose;
+    robotPose = new Pose();
+    
 
     driveTrain= new DriveTrainMain();
 
