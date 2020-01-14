@@ -27,15 +27,13 @@ public final class Constants {
 
     public static final double wheelDiamter = .157;
     public static final double kTrackwidthMeters = 0.616;
-    public static final DifferentialDriveKinematics kDriveKinematics =
-        new DifferentialDriveKinematics(kTrackwidthMeters);
+    public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
 
     public static final double kMaxSpeedMetersPerSecond = 1.5;
     public static final double kMaxAccelerationMetersPerSecondSquared = 1;
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
 
-    public static final double distancePerPulse = 1/12;
+    public static final double distancePerPulse = 1 / 12;
     public static final boolean gyroReversed = false;
 }
-

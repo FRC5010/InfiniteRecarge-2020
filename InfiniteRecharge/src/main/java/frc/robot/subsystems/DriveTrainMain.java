@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
@@ -21,6 +20,7 @@ public class DriveTrainMain extends SubsystemBase {
   private static CANSparkMax leftMaster;
   private static CANSparkMax rightMaster;
   private static Joystick driver;
+
   public DriveTrainMain() {
     leftMaster = RobotContainer.lDrive1;
     rightMaster = RobotContainer.rDrive1;
@@ -31,34 +31,34 @@ public class DriveTrainMain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    arcadeDrive(scaleInputs(-driver.getRawAxis(1
-    )),scaleInputs(driver.getRawAxis(4)));
+    arcadeDrive(scaleInputs(-driver.getRawAxis(1)), scaleInputs(driver.getRawAxis(4)));
   }
+
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftMaster.setVoltage(leftVolts);
     rightMaster.setVoltage(-rightVolts);
-    }
+  }
 
-  public void arcadeDrive(double fPow, double tPow){
-    leftMaster.set(fPow+tPow);
-    rightMaster.set(fPow-tPow);
+  public void arcadeDrive(double fPow, double tPow) {
+    leftMaster.set(fPow + tPow);
+    rightMaster.set(fPow - tPow);
   }
 
   public double scaleInputs(double input) {
-    if(input>-.1&&input<.1){
+    if (input > -.1 && input < .1) {
       return 0.0;
     }
-    if(input>1){
+    if (input > 1) {
       return 1;
     }
-    if(input<-1){
+    if (input < -1) {
       return -1;
     }
     return input;
   }
 
-public static void setMaxOutput(double maxOutput){
-  leftMaster.set(maxOutput);
-  rightMaster.set(maxOutput);
-}
+  public static void setMaxOutput(double maxOutput) {
+    leftMaster.set(maxOutput);
+    rightMaster.set(maxOutput);
+  }
 }
