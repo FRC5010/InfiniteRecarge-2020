@@ -148,7 +148,7 @@ public class RobotContainer {
     );
     // Run path following command, then stop at the end.
     return ramseteCommand
-      .alongWith(new ExampleCommand(exampleTrajectory, m_exampleSubsystem))
+      .raceWith(new ExampleCommand(exampleTrajectory, m_exampleSubsystem))
       .andThen(() -> driveTrain.tankDriveVolts(0, 0));
   }
 }
