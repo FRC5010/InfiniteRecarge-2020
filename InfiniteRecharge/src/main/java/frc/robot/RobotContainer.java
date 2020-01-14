@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -57,8 +58,10 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
+   
     configureButtonBindings();
     init();
+
   }
 
   /**
@@ -72,7 +75,7 @@ public class RobotContainer {
 
   }
   public static void init(){
-    
+  if(RobotBase.isReal()){
     //Neos HAVE to be in brushless
     lDrive1 = new CANSparkMax(1, MotorType.kBrushless);
     lDrive2 = new CANSparkMax(2, MotorType.kBrushless);
@@ -88,12 +91,17 @@ public class RobotContainer {
     lEncoder = lDrive1.getEncoder();
     rEncoder = rDrive1.getEncoder();
 
-    lEncoder.setPositionConversionFactor(Constants.distancePerPulse);
-    rEncoder.setPositionConversionFactor(Constants.distancePerPulse);
+    // lEncoder.setPositionConversionFactor(Constants.distancePerPulse);
+    // rEncoder.setPositionConversionFactor(-Constants.distancePerPulse);
 
-    lEncoder.setVelocityConversionFactor(Constants.distancePerPulse);
-    rEncoder.setVelocityConversionFactor(Constants.distancePerPulse);
+    // lEncoder.setVelocityConversionFactor(Constants.distancePerPulse);
+    // rEncoder.setVelocityConversionFactor(-Constants.distancePerPulse);
+
+    
+  }
+    
     robotPose = new Pose();
+    
     
 
     driveTrain= new DriveTrainMain();
@@ -131,8 +139,8 @@ Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
     new Pose2d(0, 0, new Rotation2d(0)),
     // Pass through these two interior waypoints, making an 's' curve path
     List.of(
-        new Translation2d(1, 1),
-        new Translation2d(2, -1)
+        new Translation2d(1.5,1.5 )
+        
     ),
     // End 3 meters straight ahead of where we started, facing forward
     new Pose2d(3, 0, new Rotation2d(0)),

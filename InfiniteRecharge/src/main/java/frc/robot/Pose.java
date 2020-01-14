@@ -26,8 +26,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Pose {
    
 
-    public double getEncoderDistance(CANEncoder encoder){
-           return encoder.getPosition()/12;
+    public double getEncoderDistance(CANEncoder encoder, double conversion){
+           return encoder.getPosition()*conversion;
+    }
+
+    public double getEncoderVel(CANEncoder encoder, double conversion){
+         return encoder.getVelocity()* conversion;
     }
 
     private static CANSparkMax leftMaster1 = RobotContainer.lDrive1;
@@ -77,16 +81,20 @@ return odometry.getPoseMeters();
 * @return The current wheel speeds.
 */
 public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-return new DifferentialDriveWheelSpeeds(leftEncoder.getVelocity(), rightEncoder.getVelocity());
+return new DifferentialDriveWheelSpeeds(getEncoderVel(leftEncoder,.00137), getEncoderVel(rightEncoder,-.00137));
 }
 
 public void posePeriodic(){
-    odometry.update(Rotation2d.fromDegrees(getHeading()), getEncoderDistance(leftEncoder),
-             getEncoderDistance(rightEncoder));
+    odometry.update(Rotation2d.fromDegrees(getHeading()), getEncoderDistance(leftEncoder, .088),
+             getEncoderDistance(rightEncoder,-.087));
 
-             SmartDashboard.putNumber("left encoder distance", getEncoderDistance(leftEncoder));
-             SmartDashboard.putNumber("right encoder distance", rightEncoder.getPosition());
-
+             SmartDashboard.putNumber("left encoder distance", getEncoderDistance(leftEncoder,.088));
+             SmartDashboard.putNumber("right encoder distance", getEncoderDistance(rightEncoder,-.087));
+             SmartDashboard.putNumber("left velocity", getEncoderVel(leftEncoder,.00137));
+             SmartDashboard.putNumber("right velocity", getEncoderVel(rightEncoder,-.00137));
+             SmartDashboard.putNumber("left raw velocity", leftEncoder.getVelocity());
+             SmartDashboard.putNumber("right raw velocity", rightEncoder.getVelocity());
+             SmartDashboard.putNumber("gyro heading", getHeading());
 }
 /**
 * Resets the odometry to the specified pose.
@@ -94,8 +102,8 @@ public void posePeriodic(){
 * @param pose The pose to which to set the odometry.
 */
 public void resetOdometry(Pose2d pose) {
-resetEncoders();
-odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+    resetEncoders();
+    odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
 }
 
 /**
@@ -131,7 +139,7 @@ rightEncoder.setPosition(0);
 * @return the average of the two encoder readings
 */
 public double getAverageEncoderDistance() {
-return (leftEncoder.getPosition() + rightEncoder.getPosition()) / 2.0;
+return (getEncoderDistance(leftEncoder,.088) + getEncoderDistance(rightEncoder,.087)) / 2.0;
 }
 
 /**

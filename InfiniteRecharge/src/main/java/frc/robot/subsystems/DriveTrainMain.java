@@ -31,7 +31,7 @@ public class DriveTrainMain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    arcadeDrive(scaleInputs(driver.getRawAxis(1
+    arcadeDrive(scaleInputs(-driver.getRawAxis(1
     )),scaleInputs(driver.getRawAxis(4)));
   }
   public void tankDriveVolts(double leftVolts, double rightVolts) {
