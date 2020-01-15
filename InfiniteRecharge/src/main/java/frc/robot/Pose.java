@@ -83,15 +83,20 @@ public class Pose {
 
     public void posePeriodic() {
         odometry.update(Rotation2d.fromDegrees(getHeading()), getEncoderDistance(leftEncoder, .088),
-                getEncoderDistance(rightEncoder, -.087));
+                getEncoderDistance(rightEncoder, .087));
 
         SmartDashboard.putNumber("left encoder distance", getEncoderDistance(leftEncoder, .088));
-        SmartDashboard.putNumber("right encoder distance", getEncoderDistance(rightEncoder, -.087));
+        SmartDashboard.putNumber("right encoder distance", getEncoderDistance(rightEncoder, .087));
         SmartDashboard.putNumber("left velocity", getEncoderVel(leftEncoder, .00137));
-        SmartDashboard.putNumber("right velocity", getEncoderVel(rightEncoder, -.00137));
+        SmartDashboard.putNumber("right velocity", getEncoderVel(rightEncoder, .00137));
         SmartDashboard.putNumber("left raw velocity", leftEncoder.getVelocity());
         SmartDashboard.putNumber("right raw velocity", rightEncoder.getVelocity());
         SmartDashboard.putNumber("gyro heading", getHeading());
+
+
+        SmartDashboard.putNumber("Robot X pos", odometry.getPoseMeters().getTranslation().getX());
+    SmartDashboard.putNumber("Robot Y pos", odometry.getPoseMeters().getTranslation().getY());
+    SmartDashboard.putNumber("Robot Rotation ", odometry.getPoseMeters().getRotation().getDegrees());
     }
 
     /**
@@ -135,7 +140,7 @@ public class Pose {
      * @return the average of the two encoder readings
      */
     public double getAverageEncoderDistance() {
-        return (getEncoderDistance(leftEncoder, .088) + getEncoderDistance(rightEncoder, .087)) / 2.0;
+        return (getEncoderDistance(leftEncoder, .088) + getEncoderDistance(rightEncoder, -.087)) / 2.0;
     }
 
     /**

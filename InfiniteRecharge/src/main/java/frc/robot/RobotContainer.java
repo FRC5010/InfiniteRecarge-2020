@@ -93,7 +93,7 @@ public class RobotContainer {
 
       // lEncoder.setPositionConversionFactor(Constants.distancePerPulse);
       // rEncoder.setPositionConversionFactor(-Constants.distancePerPulse);
-
+      
       // lEncoder.setVelocityConversionFactor(Constants.distancePerPulse);
       // rEncoder.setVelocityConversionFactor(-Constants.distancePerPulse);
 
@@ -128,7 +128,7 @@ public class RobotContainer {
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1.5, 1.5)
+        List.of(new Translation2d(1.5, 1)
 
         ),
         // End 3 meters straight ahead of where we started, facing forward

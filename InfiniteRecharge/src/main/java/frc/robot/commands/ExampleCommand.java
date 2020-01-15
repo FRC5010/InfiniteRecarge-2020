@@ -31,6 +31,7 @@ public class ExampleCommand extends CommandBase {
    * @param subsystem The subsystem used by this command.
    */
   public ExampleCommand(Trajectory trajectory, ExampleSubsystem subsystem) {
+    timer = new Timer();
     m_subsystem = subsystem;
     this.trajectory = trajectory;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -50,10 +51,17 @@ public class ExampleCommand extends CommandBase {
     State expState = trajectory.sample(timer.get());
     Pose2d expectedPose = expState.poseMeters;
     Pose2d actualPose = RobotContainer.robotPose.getPose();
+
+    
     DifferentialDriveOdometry odometry = RobotContainer.robotPose.getOdometry();
-    SmartDashboard.putNumber("Robot X pos", odometry.getPoseMeters().getTranslation().getX());
-    SmartDashboard.putNumber("Robot Y pos", 0);
-    SmartDashboard.putNumber("Robot Rotation ", 0);
+    
+
+    SmartDashboard.putNumber("Expected xpos", expectedPose.getTranslation().getX());
+    SmartDashboard.putNumber("expected Y pos", expectedPose.getTranslation().getY());
+    SmartDashboard.putNumber("Expected degree", expectedPose.getRotation().getDegrees());
+    SmartDashboard.putNumber("expected vel m/s", 0.0);
+
+    
   }
 
   // Called once the command ends or is interrupted.
