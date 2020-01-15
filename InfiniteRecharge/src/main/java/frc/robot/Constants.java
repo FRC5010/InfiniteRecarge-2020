@@ -43,7 +43,7 @@ public final class Constants {
 
     public static final boolean gyroReversed = true;
     public static final boolean leftReversed = false;
-    public static final boolean rightReversed = true;
+    public static final boolean rightReversed = false;
     public static final double leftFudgeFactor = 1.023;
     public static final double rightFudgeFactor = 1.023;
 
