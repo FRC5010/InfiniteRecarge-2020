@@ -77,18 +77,18 @@ public class Pose {
      * @return The current wheel speeds.
      */
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(getEncoderVel(leftEncoder, .00137),
-                getEncoderVel(rightEncoder, -.00137));
+        return new DifferentialDriveWheelSpeeds(getEncoderVel(leftEncoder, Constants.leftVelocityConv),
+                getEncoderVel(rightEncoder, Constants.rightVelocityConv));
     }
 
     public void posePeriodic() {
-        odometry.update(Rotation2d.fromDegrees(getHeading()), getEncoderDistance(leftEncoder, .088),
-                getEncoderDistance(rightEncoder, .087));
+        odometry.update(Rotation2d.fromDegrees(getHeading()), getEncoderDistance(leftEncoder, Constants.leftDistanceConv),
+                getEncoderDistance(rightEncoder, Constants.rightDistanceConv));
 
-        SmartDashboard.putNumber("left encoder distance", getEncoderDistance(leftEncoder, .088));
-        SmartDashboard.putNumber("right encoder distance", getEncoderDistance(rightEncoder, .087));
-        SmartDashboard.putNumber("left velocity", getEncoderVel(leftEncoder, .00137));
-        SmartDashboard.putNumber("right velocity", getEncoderVel(rightEncoder, .00137));
+        SmartDashboard.putNumber("left encoder distance", getEncoderDistance(leftEncoder, Constants.leftDistanceConv));
+        SmartDashboard.putNumber("right encoder distance", getEncoderDistance(rightEncoder, Constants.rightDistanceConv));
+        SmartDashboard.putNumber("left velocity", getEncoderVel(leftEncoder, Constants.leftVelocityConv));
+        SmartDashboard.putNumber("right velocity", getEncoderVel(rightEncoder, Constants.rightVelocityConv));
         SmartDashboard.putNumber("left raw velocity", leftEncoder.getVelocity());
         SmartDashboard.putNumber("right raw velocity", rightEncoder.getVelocity());
         SmartDashboard.putNumber("gyro heading", getHeading());
@@ -140,7 +140,7 @@ public class Pose {
      * @return the average of the two encoder readings
      */
     public double getAverageEncoderDistance() {
-        return (getEncoderDistance(leftEncoder, .088) + getEncoderDistance(rightEncoder, -.087)) / 2.0;
+        return (getEncoderDistance(leftEncoder, Constants.leftDistanceConv) + getEncoderDistance(rightEncoder, Constants.rightDistanceConv)) / 2.0;
     }
 
     /**
