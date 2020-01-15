@@ -39,7 +39,7 @@ public final class Constants {
 
     public static final double wheelCircumference = wheelDiameter * Math.PI;
     public static final double distancePerPulse = wheelCircumference / pulsesPerWheelRotation;
-    public static final double rpmToMetersPerSec = wheelCircumference / 60; // diameter divided by secs-per-minute
+    public static final double rpmToMetersPerSec = distancePerPulse / 60; // diameter divided by secs-per-minute
 
     public static final boolean gyroReversed = true;
     public static final boolean leftReversed = false;
