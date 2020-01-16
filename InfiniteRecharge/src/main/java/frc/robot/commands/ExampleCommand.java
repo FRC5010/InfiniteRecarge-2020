@@ -7,40 +7,50 @@
 
 package frc.robot.commands;
 
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.ExampleSubsystem;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.Trajectory.State;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class ExampleCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ExampleSubsystem m_subsystem;
+public class ExampleCommand extends RamseteCommand {
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final Trajectory trajectory;
   private Timer timer;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExampleCommand(Trajectory trajectory, ExampleSubsystem subsystem) {
+  public ExampleCommand(Trajectory trajectory, Supplier<Pose2d> pose, RamseteController controller,
+      SimpleMotorFeedforward feedforward, DifferentialDriveKinematics kinematics,
+      Supplier<DifferentialDriveWheelSpeeds> wheelSpeeds, PIDController leftController, PIDController rightController,
+      BiConsumer<Double, Double> outputVolts, Subsystem... requirements) {
+    super(trajectory, pose, controller, feedforward, kinematics, wheelSpeeds, leftController, rightController,
+        outputVolts, requirements);
     timer = new Timer();
-    m_subsystem = subsystem;
     this.trajectory = trajectory;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    super.initialize();
     timer.reset();
     timer.start();
   }
@@ -50,29 +60,25 @@ public class ExampleCommand extends CommandBase {
   public void execute() {
     State expState = trajectory.sample(timer.get());
     Pose2d expectedPose = expState.poseMeters;
-    Pose2d actualPose = RobotContainer.robotPose.getPose();
-
-    
-    DifferentialDriveOdometry odometry = RobotContainer.robotPose.getOdometry();
-    
 
     SmartDashboard.putNumber("Expected xpos", expectedPose.getTranslation().getX());
-    SmartDashboard.putNumber("expected Y pos", expectedPose.getTranslation().getY());
-    SmartDashboard.putNumber("Expected degree", expectedPose.getRotation().getDegrees());
-    SmartDashboard.putNumber("expected vel m/s", 0.0);
+    SmartDashboard.putNumber("Expected Y pos", expectedPose.getTranslation().getY());
+    SmartDashboard.putNumber("Expected heading", expectedPose.getRotation().getDegrees());
+    SmartDashboard.putNumber("Expected vel m/s", expState.velocityMetersPerSecond);
 
-    
+    super.execute();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    super.end(interrupted);
     timer.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return super.isFinished();
   }
 }

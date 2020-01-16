@@ -71,6 +71,7 @@ public class Pose {
     public DifferentialDriveOdometry getOdometry() {
         return odometry;
     }
+
     /**
      * Returns the current wheel speeds of the robot.
      *
@@ -82,21 +83,24 @@ public class Pose {
     }
 
     public void posePeriodic() {
-        odometry.update(Rotation2d.fromDegrees(getHeading()), getEncoderDistance(leftEncoder, Constants.leftDistanceConv),
+        odometry.update(Rotation2d.fromDegrees(getHeading()),
+                getEncoderDistance(leftEncoder, Constants.leftDistanceConv),
                 getEncoderDistance(rightEncoder, Constants.rightDistanceConv));
+        SmartDashboard.putNumber("left encoder position", leftEncoder.getPosition());
+        SmartDashboard.putNumber("right encoder position", rightEncoder.getPosition());
 
         SmartDashboard.putNumber("left encoder distance", getEncoderDistance(leftEncoder, Constants.leftDistanceConv));
-        SmartDashboard.putNumber("right encoder distance", getEncoderDistance(rightEncoder, Constants.rightDistanceConv));
+        SmartDashboard.putNumber("right encoder distance",
+                getEncoderDistance(rightEncoder, Constants.rightDistanceConv));
         SmartDashboard.putNumber("left velocity", getEncoderVel(leftEncoder, Constants.leftVelocityConv));
         SmartDashboard.putNumber("right velocity", getEncoderVel(rightEncoder, Constants.rightVelocityConv));
         SmartDashboard.putNumber("left raw velocity", leftEncoder.getVelocity());
         SmartDashboard.putNumber("right raw velocity", rightEncoder.getVelocity());
         SmartDashboard.putNumber("gyro heading", getHeading());
 
-
         SmartDashboard.putNumber("Robot X pos", odometry.getPoseMeters().getTranslation().getX());
-    SmartDashboard.putNumber("Robot Y pos", odometry.getPoseMeters().getTranslation().getY());
-    SmartDashboard.putNumber("Robot Rotation ", odometry.getPoseMeters().getRotation().getDegrees());
+        SmartDashboard.putNumber("Robot Y pos", odometry.getPoseMeters().getTranslation().getY());
+        SmartDashboard.putNumber("Robot Heading ", odometry.getPoseMeters().getRotation().getDegrees());
     }
 
     /**
@@ -140,7 +144,8 @@ public class Pose {
      * @return the average of the two encoder readings
      */
     public double getAverageEncoderDistance() {
-        return (getEncoderDistance(leftEncoder, Constants.leftDistanceConv) + getEncoderDistance(rightEncoder, Constants.rightDistanceConv)) / 2.0;
+        return (getEncoderDistance(leftEncoder, Constants.leftDistanceConv)
+                + getEncoderDistance(rightEncoder, Constants.rightDistanceConv)) / 2.0;
     }
 
     /**
