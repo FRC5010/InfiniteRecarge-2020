@@ -25,9 +25,6 @@ public class DriveTrainMain extends SubsystemBase {
     leftMaster = RobotContainer.lDrive1;
     rightMaster = RobotContainer.rDrive1;
     driver = RobotContainer.driver;
-
-  
-
   }
 
   @Override
@@ -63,9 +60,4 @@ public class DriveTrainMain extends SubsystemBase {
     leftMaster.set(maxOutput);
     rightMaster.set(maxOutput);
   }
-
- 
-
 }
-
-

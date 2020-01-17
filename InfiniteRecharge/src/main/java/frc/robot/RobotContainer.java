@@ -85,7 +85,7 @@ public class RobotContainer {
       lDrive1.setInverted(Constants.leftReversed);
       lDrive2.follow(lDrive1, false);
 
-      rDrive1.setInverted(Constants.rightReversed);
+      rDrive1.setInverted(true);
       rDrive2.follow(rDrive1, false);
       rDrive2.setInverted(false);
 
@@ -143,7 +143,8 @@ public class RobotContainer {
         new Pose2d(0, 0, new Rotation2d(0)),
         new Pose2d(1, 1, new Rotation2d(0)),
         new Pose2d(2, -1, new Rotation2d(0)),
-        new Pose2d(3, 0, new Rotation2d(0))
+        new Pose2d(3, 0, new Rotation2d(0)),
+        new Pose2d(3.5, 0, new Rotation2d(0))
         ), config);
 
     RamseteCommand ramseteCommand = new ExampleCommand(anotherExample, robotPose::getPose,
