@@ -82,10 +82,10 @@ public class RobotContainer {
 
       rDrive1 = new CANSparkMax(3, MotorType.kBrushless);
       rDrive2 = new CANSparkMax(4, MotorType.kBrushless);
-      lDrive1.setInverted(false);
+      lDrive1.setInverted(Constants.leftReversed);
       lDrive2.follow(lDrive1, false);
 
-      rDrive1.setInverted(true);
+      rDrive1.setInverted(Constants.rightReversed);
       rDrive2.follow(rDrive1, false);
       rDrive2.setInverted(false);
 

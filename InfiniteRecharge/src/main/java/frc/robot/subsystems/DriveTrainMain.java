@@ -38,7 +38,7 @@ public class DriveTrainMain extends SubsystemBase {
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftMaster.setVoltage(leftVolts);
-    rightMaster.setVoltage(-rightVolts);
+    rightMaster.setVoltage(rightVolts);
   }
 
   public void arcadeDrive(double fPow, double tPow) {

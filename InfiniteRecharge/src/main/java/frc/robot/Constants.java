@@ -33,7 +33,7 @@ public final class Constants {
     public static final double kRamseteZeta = 0.7;
 
     public static final double wheelDiameter = 0.5 * 0.3048; // 12 * 0.0254 - feet to meters
-    public static final double motorRotationsPerWheelRotation = 6.0; // i.e. gear ratio
+    public static final double motorRotationsPerWheelRotation = 16.37; // i.e. gear ratio
     public static final double pulsesPerMotorRotation = 1.0; // Encoder PPR
     public static final double pulsesPerWheelRotation = pulsesPerMotorRotation * motorRotationsPerWheelRotation;
 
@@ -43,7 +43,7 @@ public final class Constants {
 
     public static final boolean gyroReversed = true;
     public static final boolean leftReversed = false;
-    public static final boolean rightReversed = false;
+    public static final boolean rightReversed = true;
     public static final double leftFudgeFactor = 1.023;
     public static final double rightFudgeFactor = 1.023;
 
