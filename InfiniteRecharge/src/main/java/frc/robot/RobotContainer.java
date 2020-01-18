@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -123,7 +124,9 @@ public class RobotContainer {
             .setKinematics(Constants.kDriveKinematics)
             // Apply the voltage constraint
             .addConstraint(autoVoltageConstraint);
-
+    TrajectoryConfig backwardsConfig = new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond, Constants.kMaxAccelerationMetersPerSecondSquared)
+    //set reversed allows robot to go backwards
+    .setReversed(true);
     // An example trajectory to follow. All units in meters.
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
@@ -147,7 +150,26 @@ public class RobotContainer {
         new Pose2d(3.5, 0, new Rotation2d(0))
         ), config);
 
-    RamseteCommand ramseteCommand = new ExampleCommand(anotherExample, robotPose::getPose,
+        Trajectory driveStraight = TrajectoryGenerator.generateTrajectory(
+          List.of(
+          new Pose2d(0,0,new Rotation2d(0)), 
+          new Pose2d(2.5,.5,new Rotation2d(0)), 
+          new Pose2d(5,0,new Rotation2d(0))
+         
+          ),  config);
+          Pose2d endPoint = new Pose2d(9, 0, new Rotation2d(0));
+          Trajectory comeBack = TrajectoryGenerator.generateTrajectory(
+            // Start at the origin facing the +X direction
+           List.of(
+             new Pose2d(5,0,new Rotation2d(0)), 
+           new Pose2d(2.5,-.5,new Rotation2d(0)), 
+            new Pose2d(0,0,new Rotation2d(0))
+           )
+           ,
+            // Pass config
+            backwardsConfig);
+            Trajectory revTrajectory = comeBack;
+    RamseteCommand ramseteCommand = new ExampleCommand(driveStraight, robotPose::getPose,
         new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
         new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,
             Constants.kaVoltSecondsSquaredPerMeter),
@@ -157,8 +179,19 @@ public class RobotContainer {
         driveTrain::tankDriveVolts, driveTrain
 
     );
+
+    RamseteCommand backCommand = new ExampleCommand(revTrajectory, robotPose::getPose,
+        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
+        new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,
+            Constants.kaVoltSecondsSquaredPerMeter),
+        Constants.kDriveKinematics, robotPose::getWheelSpeeds, new PIDController(Constants.kPDriveVel, 0, 0),
+        new PIDController(Constants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        driveTrain::tankDriveVolts, driveTrain
+
+    );
+    Command result = ramseteCommand.andThen(()->backCommand.schedule());
     // Run path following command, then stop at the end.
-    return ramseteCommand
-      .andThen(() -> driveTrain.tankDriveVolts(0, 0));
+    return result;
   }
 }
