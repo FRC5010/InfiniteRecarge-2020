@@ -5,10 +5,9 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
-import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -17,11 +16,13 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 /**
  * Add your docs here.
  */
-public class Pose {
+public class Pose extends SubsystemBase {
 
     public double getEncoderDistance(CANEncoder encoder, double conversion) {
         return encoder.getPosition() * conversion;
@@ -31,18 +32,15 @@ public class Pose {
         return encoder.getVelocity() * conversion;
     }
 
-    private static CANSparkMax leftMaster1 = RobotContainer.lDrive1;
-    private static CANSparkMax rightMaster1 = RobotContainer.rDrive1;
-
     // The robot's drive
     // private final DifferentialDrive m_drive = new DifferentialDrive(leftMaster1,
     // rightMaster1);
 
     // The left-side drive encoder
-    public final CANEncoder leftEncoder = RobotContainer.lEncoder;
+    public final CANEncoder leftEncoder;
 
     // The right-side drive encoder
-    public final CANEncoder rightEncoder = RobotContainer.rEncoder;
+    public final CANEncoder rightEncoder;
 
     // The gyro sensor
     private final Gyro gyro = new ADXRS450_Gyro();
@@ -54,7 +52,9 @@ public class Pose {
     // Sets the distance per pulse for the encoders
     // m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
     // m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-    public Pose() {
+    public Pose(CANEncoder leftEncoder, CANEncoder rightEncoder) {
+        this.leftEncoder = leftEncoder;
+        this.rightEncoder = rightEncoder;
         resetEncoders();
         odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     }
@@ -80,6 +80,11 @@ public class Pose {
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
         return new DifferentialDriveWheelSpeeds(getEncoderVel(leftEncoder, Constants.leftVelocityConv),
                 getEncoderVel(rightEncoder, Constants.rightVelocityConv));
+    }
+
+    @Override
+    public void periodic() {
+        posePeriodic();
     }
 
     public void posePeriodic() {

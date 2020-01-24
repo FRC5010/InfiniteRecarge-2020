@@ -7,24 +7,22 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 
 public class DriveTrainMain extends SubsystemBase {
   /**
    * Creates a new DriveTrainMain.
    */
-  private static CANSparkMax leftMaster;
-  private static CANSparkMax rightMaster;
-  private static Joystick driver;
+  private SpeedController leftMaster;
+  private SpeedController rightMaster;
+  private Joystick driver;
 
-  public DriveTrainMain() {
-    leftMaster = RobotContainer.lDrive1;
-    rightMaster = RobotContainer.rDrive1;
-    driver = RobotContainer.driver;
+  public DriveTrainMain(SpeedController left, SpeedController right, Joystick driver) {
+    leftMaster = left;
+    rightMaster = right;
+    this.driver = driver;
   }
 
   @Override
@@ -53,10 +51,10 @@ public class DriveTrainMain extends SubsystemBase {
     if (input < -1) {
       return -1;
     }
-    return input;
+    return Math.pow(input, 3);
   }
 
-  public static void setMaxOutput(double maxOutput) {
+  public void setMaxOutput(double maxOutput) {
     leftMaster.set(maxOutput);
     rightMaster.set(maxOutput);
   }

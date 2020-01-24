@@ -23,12 +23,12 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.RobotContainer;
+import frc.robot.mechanisms.Drive;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class ExampleCommand extends RamseteCommand {
+public class RamseteFollower extends RamseteCommand {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final Trajectory trajectory;
   private Timer timer;
@@ -40,7 +40,7 @@ public class ExampleCommand extends RamseteCommand {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExampleCommand(Trajectory trajectory, Supplier<Pose2d> pose, RamseteController controller,
+  public RamseteFollower(Trajectory trajectory, Supplier<Pose2d> pose, RamseteController controller,
       SimpleMotorFeedforward feedforward, DifferentialDriveKinematics kinematics,
       Supplier<DifferentialDriveWheelSpeeds> wheelSpeeds, PIDController leftController, PIDController rightController,
       BiConsumer<Double, Double> outputVolts, Subsystem... requirements) {
@@ -66,7 +66,7 @@ public class ExampleCommand extends RamseteCommand {
   public void execute() {
     State expState = trajectory.sample(timer.get());
     Pose2d expectedPose = expState.poseMeters;
-    DifferentialDriveOdometry odometer = RobotContainer.robotPose.getOdometry();
+    DifferentialDriveOdometry odometer = Drive.robotPose.getOdometry();
     Pose2d actualPose = odometer.getPoseMeters();
     double actualX = actualPose.getTranslation().getX();
     double actualY = actualPose.getTranslation().getY();
