@@ -20,7 +20,7 @@ public class Spinner extends SubsystemBase {
    */
   public Spinner(SpeedController spinner, int fwdChannel, int revChannel) {
     this.spinner = spinner;
-    spinDeployment = new DoubleSolenoid(fwdChannel, revChannel);
+   // spinDeployment = new DoubleSolenoid(fwdChannel, revChannel);
   }
 
   @Override

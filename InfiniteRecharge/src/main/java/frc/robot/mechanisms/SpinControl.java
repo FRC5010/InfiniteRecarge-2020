@@ -7,8 +7,11 @@
 
 package frc.robot.mechanisms;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.SpinForNDetections;
 import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.WheelColor;
 
@@ -16,11 +19,15 @@ import frc.robot.subsystems.WheelColor;
  * Add your docs here.
  */
 public class SpinControl {
-    Spinner spinner;
-    WheelColor wheelColor;
-    SpeedController spinnerMotor = new WPI_VictorSPX(SpinConstants.spinnerMotorChannel);
+    private Spinner spinner;
+    private WheelColor wheelColor;
+    private Joystick driver;
+    private JoystickButton rotationButton;
+    private JoystickButton positionButton;
+    private SpeedController spinnerMotor = new Spark(SpinConstants.spinnerMotorChannel);
 
-    public SpinControl() {
+    public SpinControl(Joystick driver) {
+        this.driver = driver;
         init();
         configureButtonBindings();
     }
@@ -31,6 +38,9 @@ public class SpinControl {
     }
 
     public void configureButtonBindings() {
-
+        rotationButton = new JoystickButton(driver, 1);
+        positionButton = new JoystickButton(driver, 2);
+        rotationButton.whenPressed(new SpinForNDetections(spinner, wheelColor, 2));
+        positionButton.whenPressed(new SpinForNDetections(spinner, wheelColor));
     }
 }

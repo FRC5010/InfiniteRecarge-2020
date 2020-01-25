@@ -1,6 +1,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.SpinControl;
@@ -16,13 +17,14 @@ public class RobotContainer {
   // The robot's Mechanisms are defined here...
   private Drive driveMechanism;
   private SpinControl spinControl;
-  
+  private Joystick driver;
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    driveMechanism = new Drive();
-    spinControl = new SpinControl();
+    driver = new Joystick(0);
+    driveMechanism = new Drive(driver);
+    spinControl = new SpinControl(driver);
   }
 
   /**

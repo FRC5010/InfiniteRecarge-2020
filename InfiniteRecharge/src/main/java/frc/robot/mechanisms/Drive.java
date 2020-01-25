@@ -40,7 +40,7 @@ import frc.robot.subsystems.Pose;
 public class Drive {
     private static DriveTrainMain driveTrain;
   
-    public static Joystick driver;
+    public Joystick driver;
     public static CANSparkMax lDrive1;
     public static CANSparkMax lDrive2;
   
@@ -52,8 +52,8 @@ public class Drive {
   
     public static Pose robotPose;
   
-    public Drive() {
-        init(); 
+    public Drive(Joystick driver) {
+        init(driver); 
         configureButtonBindings();
     }
 
@@ -66,9 +66,9 @@ public class Drive {
   private void configureButtonBindings() {
   }
 
-  public void init() {
+  public void init(Joystick driver) {
     if (RobotBase.isReal()) {
-      driver = new Joystick(0);
+      this.driver = driver;
         // Neos HAVE to be in brushless
       lDrive1 = new CANSparkMax(1, MotorType.kBrushless);
       lDrive2 = new CANSparkMax(2, MotorType.kBrushless);
