@@ -51,7 +51,8 @@ public class DriveTrainMain extends SubsystemBase {
     if (input < -1) {
       return -1;
     }
-    return Math.pow(input, 3);
+    boolean speedControl = driver.getRawButton(6);
+    return Math.pow(input, 3) * (speedControl ? 1.0 : 0.3);
   }
 
   public void setMaxOutput(double maxOutput) {

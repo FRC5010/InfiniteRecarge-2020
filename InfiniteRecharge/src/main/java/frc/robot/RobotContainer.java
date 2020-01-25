@@ -3,6 +3,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.mechanisms.Drive;
+import frc.robot.mechanisms.SpinControl;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -14,12 +15,14 @@ import frc.robot.mechanisms.Drive;
 public class RobotContainer {
   // The robot's Mechanisms are defined here...
   private Drive driveMechanism;
+  private SpinControl spinControl;
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     driveMechanism = new Drive();
+    spinControl = new SpinControl();
   }
 
   /**

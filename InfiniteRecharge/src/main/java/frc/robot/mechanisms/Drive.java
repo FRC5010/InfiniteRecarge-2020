@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.subsystems.DriveTrainMain;
@@ -76,7 +75,7 @@ public class Drive {
 
       rDrive1 = new CANSparkMax(3, MotorType.kBrushless);
       rDrive2 = new CANSparkMax(4, MotorType.kBrushless);
-      lDrive1.setInverted(Constants.leftReversed);
+      lDrive1.setInverted(DriveConstants.leftReversed);
       lDrive2.follow(lDrive1, false);
 
       rDrive1.setInverted(true);
@@ -106,17 +105,17 @@ public class Drive {
    */
   public Command getAutonomousCommand() {
     // Create a voltage constraint to ensure we don't accelerate too fast
-    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(Constants.ksVolts,
-        Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter), Constants.kDriveKinematics, 10);
+    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(DriveConstants.ksVolts,
+        DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter), DriveConstants.kDriveKinematics, 10);
 
     // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond,
-        Constants.kMaxAccelerationMetersPerSecondSquared)
+    TrajectoryConfig config = new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
+        DriveConstants.kMaxAccelerationMetersPerSecondSquared)
             // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(Constants.kDriveKinematics)
+            .setKinematics(DriveConstants.kDriveKinematics)
             // Apply the voltage constraint
             .addConstraint(autoVoltageConstraint);
-    TrajectoryConfig backwardsConfig = new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond, Constants.kMaxAccelerationMetersPerSecondSquared)
+    TrajectoryConfig backwardsConfig = new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared)
     //set reversed allows robot to go backwards
     .setReversed(true);
     // An example trajectory to follow. All units in meters.
@@ -162,22 +161,22 @@ public class Drive {
             backwardsConfig);
             Trajectory revTrajectory = comeBack;
     RamseteCommand ramseteCommand = new RamseteFollower(driveStraight, robotPose::getPose,
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-        new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,
-            Constants.kaVoltSecondsSquaredPerMeter),
-        Constants.kDriveKinematics, robotPose::getWheelSpeeds, new PIDController(Constants.kPDriveVel, 0, 0),
-        new PIDController(Constants.kPDriveVel, 0, 0),
+        new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
+            DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics, robotPose::getWheelSpeeds, new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
         // RamseteCommand passes volts to the callback
         driveTrain::tankDriveVolts, driveTrain
 
     );
 
     RamseteCommand backCommand = new RamseteFollower(revTrajectory, robotPose::getPose,
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-        new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,
-            Constants.kaVoltSecondsSquaredPerMeter),
-        Constants.kDriveKinematics, robotPose::getWheelSpeeds, new PIDController(Constants.kPDriveVel, 0, 0),
-        new PIDController(Constants.kPDriveVel, 0, 0),
+        new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
+            DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics, robotPose::getWheelSpeeds, new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
         // RamseteCommand passes volts to the callback
         driveTrain::tankDriveVolts, driveTrain
 

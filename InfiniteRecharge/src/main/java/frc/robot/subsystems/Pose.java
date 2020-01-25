@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.mechanisms.DriveConstants;
 
 /**
  * Add your docs here.
@@ -78,8 +78,8 @@ public class Pose extends SubsystemBase {
      * @return The current wheel speeds.
      */
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(getEncoderVel(leftEncoder, Constants.leftVelocityConv),
-                getEncoderVel(rightEncoder, Constants.rightVelocityConv));
+        return new DifferentialDriveWheelSpeeds(getEncoderVel(leftEncoder, DriveConstants.leftVelocityConv),
+                getEncoderVel(rightEncoder, DriveConstants.rightVelocityConv));
     }
 
     @Override
@@ -89,16 +89,16 @@ public class Pose extends SubsystemBase {
 
     public void posePeriodic() {
         odometry.update(Rotation2d.fromDegrees(getHeading()),
-                getEncoderDistance(leftEncoder, Constants.leftDistanceConv),
-                getEncoderDistance(rightEncoder, Constants.rightDistanceConv));
+                getEncoderDistance(leftEncoder, DriveConstants.leftDistanceConv),
+                getEncoderDistance(rightEncoder, DriveConstants.rightDistanceConv));
         SmartDashboard.putNumber("left encoder position", leftEncoder.getPosition());
         SmartDashboard.putNumber("right encoder position", rightEncoder.getPosition());
 
-        SmartDashboard.putNumber("left encoder distance", getEncoderDistance(leftEncoder, Constants.leftDistanceConv));
+        SmartDashboard.putNumber("left encoder distance", getEncoderDistance(leftEncoder, DriveConstants.leftDistanceConv));
         SmartDashboard.putNumber("right encoder distance",
-                getEncoderDistance(rightEncoder, Constants.rightDistanceConv));
-        SmartDashboard.putNumber("left velocity", getEncoderVel(leftEncoder, Constants.leftVelocityConv));
-        SmartDashboard.putNumber("right velocity", getEncoderVel(rightEncoder, Constants.rightVelocityConv));
+                getEncoderDistance(rightEncoder, DriveConstants.rightDistanceConv));
+        SmartDashboard.putNumber("left velocity", getEncoderVel(leftEncoder, DriveConstants.leftVelocityConv));
+        SmartDashboard.putNumber("right velocity", getEncoderVel(rightEncoder, DriveConstants.rightVelocityConv));
         SmartDashboard.putNumber("left raw velocity", leftEncoder.getVelocity());
         SmartDashboard.putNumber("right raw velocity", rightEncoder.getVelocity());
         SmartDashboard.putNumber("gyro heading", getHeading());
@@ -149,8 +149,8 @@ public class Pose extends SubsystemBase {
      * @return the average of the two encoder readings
      */
     public double getAverageEncoderDistance() {
-        return (getEncoderDistance(leftEncoder, Constants.leftDistanceConv)
-                + getEncoderDistance(rightEncoder, Constants.rightDistanceConv)) / 2.0;
+        return (getEncoderDistance(leftEncoder, DriveConstants.leftDistanceConv)
+                + getEncoderDistance(rightEncoder, DriveConstants.rightDistanceConv)) / 2.0;
     }
 
     /**
@@ -194,7 +194,7 @@ public class Pose extends SubsystemBase {
      * @return the robot's heading in degrees, from 180 to 180
      */
     public double getHeading() {
-        return Math.IEEEremainder(gyro.getAngle(), 360) * (Constants.gyroReversed ? -1.0 : 1.0);
+        return Math.IEEEremainder(gyro.getAngle(), 360) * (DriveConstants.gyroReversed ? -1.0 : 1.0);
     }
 
     /**
@@ -203,6 +203,6 @@ public class Pose extends SubsystemBase {
      * @return The turn rate of the robot, in degrees per second
      */
     public double getTurnRate() {
-        return gyro.getRate() * (Constants.gyroReversed ? -1.0 : 1.0);
+        return gyro.getRate() * (DriveConstants.gyroReversed ? -1.0 : 1.0);
     }
 }
