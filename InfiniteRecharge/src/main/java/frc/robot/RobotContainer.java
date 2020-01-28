@@ -4,6 +4,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.mechanisms.Drive;
+import frc.robot.mechanisms.Shoot;
 import frc.robot.mechanisms.SpinControl;
 
 /**
@@ -18,6 +19,8 @@ public class RobotContainer {
   private Drive driveMechanism;
   private SpinControl spinControl;
   private Joystick driver;
+  private Shoot shooter;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -25,6 +28,7 @@ public class RobotContainer {
     driver = new Joystick(0);
     driveMechanism = new Drive(driver);
     spinControl = new SpinControl(driver);
+    shooter = new Shoot(driver);
   }
 
   /**
