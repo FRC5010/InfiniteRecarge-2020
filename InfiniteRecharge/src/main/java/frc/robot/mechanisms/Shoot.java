@@ -25,7 +25,7 @@ import frc.robot.subsystems.ShooterMain;
 
 public class Shoot {
     public Joystick diver;
-    public Button button;
+    public Button buttonA;
     public ShooterMain shooterMain;
     public CANSparkMax shootMotor; 
     public CANPIDController m_pidController;
@@ -33,7 +33,7 @@ public class Shoot {
     public Shoot(Joystick driver){
         this.diver = driver;
         this.shootMotor = new CANSparkMax(4, MotorType.kBrushless);
-        this.button = new JoystickButton(driver, 1);
+        this.buttonA = new JoystickButton(driver, 1);
         m_pidController = shootMotor.getPIDController();
         m_pidController.setP(ShooterConstants.kP);
         m_pidController.setI(ShooterConstants.kI);
@@ -53,9 +53,10 @@ public class Shoot {
         
         
         
-        shooterMain = new ShooterMain(shootMotor,m_pidController ,button);
+        shooterMain = new ShooterMain(shootMotor,m_pidController);
           
-        command = new SpinShooter(shooterMain);
+        
+        buttonA.whenPressed(new SpinShooter(shooterMain));
     
     
     

@@ -22,14 +22,14 @@ public class ShooterMain extends SubsystemBase {
    * Creates a new Shooter.
    */
 
-   private Button button;
+  
 
    //Change to speed controller later
    private CANSparkMax controller;
    private CANPIDController m_pidController;
    
-  public ShooterMain(CANSparkMax controller,CANPIDController pidControl , Button button) {
-    this.button =  button;
+  public ShooterMain(CANSparkMax controller,CANPIDController pidControl ) {
+  
     this.controller = controller; 
     this.m_pidController = pidControl;
 
