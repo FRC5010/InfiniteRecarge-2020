@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.SpinShooter;
 import frc.robot.subsystems.ShooterMain;
 
 /**
@@ -28,12 +29,12 @@ public class Shoot {
     public ShooterMain shooterMain;
     public CANSparkMax shootMotor; 
     public CANPIDController m_pidController;
-
+    private SpinShooter command;
     public Shoot(Joystick driver){
         this.diver = driver;
         this.shootMotor = new CANSparkMax(4, MotorType.kBrushless);
         this.button = new JoystickButton(driver, 1);
-
+        m_pidController = shootMotor.getPIDController();
         m_pidController.setP(ShooterConstants.kP);
         m_pidController.setI(ShooterConstants.kI);
         m_pidController.setD(ShooterConstants.kD);
@@ -50,9 +51,11 @@ public class Shoot {
         SmartDashboard.putNumber("Max Output", ShooterConstants.kMaxOutput);
         SmartDashboard.putNumber("Min Output", ShooterConstants.kMinOutput);
         
+        
+        
         shooterMain = new ShooterMain(shootMotor,m_pidController ,button);
           
-    
+        command = new SpinShooter(shooterMain);
     
     
     

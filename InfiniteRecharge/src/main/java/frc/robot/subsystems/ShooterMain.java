@@ -11,9 +11,11 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.SpinShooter;
+import frc.robot.mechanisms.ShooterConstants;
 
 public class ShooterMain extends SubsystemBase {
   /**
@@ -24,23 +26,25 @@ public class ShooterMain extends SubsystemBase {
 
    //Change to speed controller later
    private CANSparkMax controller;
-   private CANPIDController pidControl;
+   private CANPIDController m_pidController;
    
   public ShooterMain(CANSparkMax controller,CANPIDController pidControl , Button button) {
     this.button =  button;
     this.controller = controller; 
-    this.pidControl = pidControl;
+    this.m_pidController = pidControl;
+
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    button.whenPressed(new SpinShooter(this));
+   
   }
 
 
   public void spinUpWheel(double setPoint){
-    pidControl.setReference(setPoint, ControlType.kVelocity);
+    m_pidController.setReference(setPoint, ControlType.kVelocity);
 
   }
 

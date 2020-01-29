@@ -7,9 +7,9 @@
 
 package frc.robot.commands;
 
-import java.lang.module.ModuleDescriptor.Requires;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
+import frc.robot.mechanisms.Shoot;
 import frc.robot.subsystems.ShooterMain;
 
 public class SpinShooter extends CommandBase {

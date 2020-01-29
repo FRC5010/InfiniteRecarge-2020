@@ -19,7 +19,7 @@ public class RobotContainer {
   private Drive driveMechanism;
   private SpinControl spinControl;
   private Joystick driver;
-  private Shoot shooter;
+  public Shoot shooter;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.

@@ -1,8 +1,14 @@
+package frc.robot.subsystems;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
-   * Creates a new Climber.
-   */
+public class Climber extends SubsystemBase{
+  
   private DoubleSolenoid topSolenoid;
   private DoubleSolenoid bottomSolenoid;
   //Will be changed to correct speed controller later.
