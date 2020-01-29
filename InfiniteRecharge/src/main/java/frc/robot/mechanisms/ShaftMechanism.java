@@ -24,14 +24,14 @@ import frc.robot.subsystems.ShaftClimberSubsystem;
 
 
 public class ShaftMechanism {
-    public Joystick diver;
+    public Joystick driver;
     public Button buttonB;
     public ShaftClimberSubsystem shaftClimber;
     public CANSparkMax shaftMotor; 
     public CANPIDController m_pidController;
     private ClimbShaftCommand command;
     public ShaftMechanism(Joystick driver){
-        this.diver = driver;
+        this.driver = driver;
         this.shaftMotor = new CANSparkMax(8, MotorType.kBrushless);
         this.buttonB = new JoystickButton(driver, 2);
         m_pidController = shaftMotor.getPIDController();

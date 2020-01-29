@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANPIDController;
+import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,11 +16,13 @@ public class Climber extends SubsystemBase{
   private DoubleSolenoid bottomSolenoid;
   //Will be changed to correct speed controller later.
   private SpeedController winch;
+  private CANPIDController m_pidcontroller;
 
-  public Climber(DoubleSolenoid topSolenoid, DoubleSolenoid bottomSolenoid, SpeedController winch) {
+  public Climber(DoubleSolenoid topSolenoid, DoubleSolenoid bottomSolenoid, SpeedController winch, CANPIDController pidControl) {
       this.topSolenoid = topSolenoid;
       this.bottomSolenoid = bottomSolenoid;
       this.winch = winch;
+      this.m_pidcontroller = pidControl;
   }
 
   @Override
@@ -41,11 +46,7 @@ public class Climber extends SubsystemBase{
     bottomSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
-  public void spinWinch(){
-    
-  }
-
-  public void stopWinch(){
-
+  public void spinUpWinch(double setpoint){
+    m_pidcontroller.setReference(setpoint, ControlType.kPosition);
   }
 }

@@ -12,10 +12,15 @@ package frc.robot.mechanisms;
  * Add your docs here.
  */
 public class ClimberConstants {
-
+    public static double kP,kI,kD, kMaxOutput, kMinOutput;
 
     public ClimberConstants(){
-
+        kP =.1;
+        kI= 0;
+        kD = 0;
+        
+        kMaxOutput=40;
+        kMinOutput=1;
     }
     
 }
