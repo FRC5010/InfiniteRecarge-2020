@@ -33,7 +33,7 @@ public class Shoot {
         this.diver = driver;
         this.shootMotor = new CANSparkMax(4, MotorType.kBrushless);
         this.button = new JoystickButton(driver, 1);
-
+        m_pidController = shootMotor.getPIDController();
         m_pidController.setP(ShooterConstants.kP);
         m_pidController.setI(ShooterConstants.kI);
         m_pidController.setD(ShooterConstants.kD);

@@ -26,8 +26,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     driver = new Joystick(0);
-    driveMechanism = new Drive(driver);
-    spinControl = new SpinControl(driver);
+    //driveMechanism = new Drive(driver);
+    //spinControl = new SpinControl(driver);
     shooter = new Shoot(driver);
   }
 

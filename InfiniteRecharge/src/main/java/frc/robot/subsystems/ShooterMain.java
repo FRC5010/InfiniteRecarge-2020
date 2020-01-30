@@ -9,11 +9,10 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.commands.SpinShooter;
+import frc.robot.mechanisms.ShooterConstants;
 
 public class ShooterMain extends SubsystemBase {
   /**
@@ -35,12 +34,17 @@ public class ShooterMain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    button.whenPressed(new SpinShooter(this));
+    if(button.get()){
+      System.out.println("game");
+      spinUpWheel(100);
+    }
   }
 
 
   public void spinUpWheel(double setPoint){
-    pidControl.setReference(setPoint, ControlType.kVelocity);
+   double err = controller.getEncoder().getVelocity()-setPoint; 
+    controller.set(-.75);
+    
 
   }
 

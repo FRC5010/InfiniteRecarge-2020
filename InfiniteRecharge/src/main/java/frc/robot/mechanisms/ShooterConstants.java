@@ -14,6 +14,6 @@ public class ShooterConstants {
  public static double kP,kI,kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
  public ShooterConstants(){
-  
+     kP = .1;  
  }
 }
