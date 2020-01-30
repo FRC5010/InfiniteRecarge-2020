@@ -20,15 +20,13 @@ public class ShooterMain extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
-
   
 
    //Change to speed controller later
    private CANSparkMax controller;
    private CANPIDController m_pidController;
    
-  public ShooterMain(CANSparkMax controller,CANPIDController pidControl ) {
-  
+  public ShooterMain(CANSparkMax controller,CANPIDController pidControl ) {  
     this.controller = controller; 
     this.m_pidController = pidControl;
 
@@ -38,10 +36,7 @@ public class ShooterMain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if(button.get()){
-      System.out.println("game");
-      spinUpWheel(100);
-    }
+
   }
 
 

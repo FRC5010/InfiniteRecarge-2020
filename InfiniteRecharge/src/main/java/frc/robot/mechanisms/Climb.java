@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import frc.robot.mechanisms.ClimberConstants;
 import frc.robot.subsystems.Climber;
 
 /**

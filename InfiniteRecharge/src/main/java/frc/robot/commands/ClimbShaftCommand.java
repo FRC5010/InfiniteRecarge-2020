@@ -32,7 +32,8 @@ public class ClimbShaftCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shaftClimber.spinUpClimber(1250);
+    shaftClimber.spinUpShaftClimber(100);
+    System.out.println("Running Shaft Climb");
   
   }
 
