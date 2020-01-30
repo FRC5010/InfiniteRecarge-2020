@@ -10,17 +10,17 @@ package frc.robot.mechanisms;
 /**
  * Add your docs here.
  */
-public class ShooterConstants {
+public class ShaftConstants {
  public static double kP,kI,kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
- public ShooterConstants(){
-    kP =.1;
+ public ShaftConstants(){
+    kP =.01;
     kI= 0;
     kD = 0;
     kIz = 0;
     kFF= .1;
     kMaxOutput=40;
     kMinOutput=1;
-    maxRPM=5800;
+    maxRPM=2900;
  }
 }

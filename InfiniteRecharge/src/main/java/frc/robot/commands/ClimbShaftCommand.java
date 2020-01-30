@@ -9,18 +9,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.mechanisms.Shoot;
-import frc.robot.subsystems.ShooterMain;
+import frc.robot.mechanisms.ShaftMechanism;
+import frc.robot.subsystems.ShaftClimberSubsystem;
 
-public class SpinShooter extends CommandBase {
+public class ClimbShaftCommand extends CommandBase {
   /**
-   * Creates a new SpinShoot.
+   * Creates a new ShaftClimberSubsystem.
    */
-  ShooterMain shooter;
-  public SpinShooter(ShooterMain shooter) {
+  ShaftClimberSubsystem shaftClimber;
+
+  public ClimbShaftCommand(ShaftClimberSubsystem shaftClimber) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooter = shooter;
-    addRequirements(shooter);
+    this.shaftClimber = shaftClimber;
+    addRequirements(shaftClimber);
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +32,7 @@ public class SpinShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.spinUpWheel(1250);
+    shaftClimber.spinUpClimber(1250);
   
   }
 

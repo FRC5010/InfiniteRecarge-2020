@@ -9,14 +9,15 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.commands.SpinShooter;
-import frc.robot.mechanisms.ShooterConstants;
+import frc.robot.commands.ClimbShaftCommand;
+import frc.robot.mechanisms.ShaftConstants;
 
-public class ShooterMain extends SubsystemBase {
+public class ShaftClimberSubsystem extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
@@ -27,7 +28,7 @@ public class ShooterMain extends SubsystemBase {
    private CANSparkMax controller;
    private CANPIDController m_pidController;
    
-  public ShooterMain(CANSparkMax controller,CANPIDController pidControl ) {
+  public ShaftClimberSubsystem(CANSparkMax controller,CANPIDController pidControl ) {
   
     this.controller = controller; 
     this.m_pidController = pidControl;
@@ -38,17 +39,12 @@ public class ShooterMain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if(button.get()){
-      System.out.println("game");
-      spinUpWheel(100);
-    }
+   
   }
 
 
-  public void spinUpWheel(double setPoint){
-   double err = controller.getEncoder().getVelocity()-setPoint; 
-    controller.set(-.75);
-    
+  public void spinUpClimber(double setPoint){
+    m_pidController.setReference(setPoint, ControlType.kVelocity);
 
   }
 

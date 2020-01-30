@@ -7,20 +7,20 @@
 
 package frc.robot.mechanisms;
 
+
 /**
  * Add your docs here.
  */
-public class ShooterConstants {
- public static double kP,kI,kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+public class ClimberConstants {
+    public static double kP,kI,kD, kMaxOutput, kMinOutput;
 
- public ShooterConstants(){
-    kP =.1;
-    kI= 0;
-    kD = 0;
-    kIz = 0;
-    kFF= .1;
-    kMaxOutput=40;
-    kMinOutput=1;
-    maxRPM=5800;
- }
+    public ClimberConstants(){
+        kP =.1;
+        kI= 0;
+        kD = 0;
+        
+        kMaxOutput=40;
+        kMinOutput=1;
+    }
+    
 }
