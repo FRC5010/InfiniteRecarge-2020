@@ -29,6 +29,7 @@ public class DriveTrainMain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     arcadeDrive(scaleInputs(-driver.getRawAxis(1)), scaleInputs(driver.getRawAxis(4)));
+    System.out.println("Trying to drive from susbsystem");
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {

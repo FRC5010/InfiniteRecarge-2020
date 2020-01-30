@@ -32,7 +32,7 @@ public class Shoot {
     private SpinShooter command;
     public Shoot(Joystick driver){
         this.diver = driver;
-        this.shootMotor = new CANSparkMax(4, MotorType.kBrushless); //This needs to be changed to 5
+        this.shootMotor = new CANSparkMax(5, MotorType.kBrushless); //This needs to be changed to 5
         this.buttonA = new JoystickButton(driver, 1);
         m_pidController = shootMotor.getPIDController();
         m_pidController.setP(ShooterConstants.kP);

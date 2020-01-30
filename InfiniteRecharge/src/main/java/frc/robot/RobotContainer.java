@@ -30,7 +30,7 @@ public class RobotContainer {
   public RobotContainer() {
     //motors 1-4 are drivetrain, motor 5 is the shooter, motor 6 and 7 are the climb, motor 8 is the shaft, motor 9 is the intake
     driver = new Joystick(0);
-    //driveMechanism = new Drive(driver);
+    driveMechanism = new Drive(driver);
     //spinControl = new SpinControl(driver);
     shooter = new Shoot(driver);
     shaftMechanism = new ShaftMechanism(driver);
