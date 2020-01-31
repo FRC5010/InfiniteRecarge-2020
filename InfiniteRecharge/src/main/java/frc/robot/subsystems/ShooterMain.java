@@ -41,7 +41,7 @@ public class ShooterMain extends SubsystemBase {
 
 
   public void spinUpWheel(double setPoint){
-   double err = controller.getEncoder().getVelocity()-setPoint; 
+    double err = controller.getEncoder().getVelocity()-setPoint; 
     controller.set(-.75);
     
 

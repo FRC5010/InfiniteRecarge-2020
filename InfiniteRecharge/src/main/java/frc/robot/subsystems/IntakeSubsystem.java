@@ -34,6 +34,10 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.set(IntakeConstants.maxOutput);
   }
 
+  public void spinOut(){
+    intakeMotor.set(-0.5);
+  }
+
   public void stop(){
     intakeMotor.set(0);
   }
