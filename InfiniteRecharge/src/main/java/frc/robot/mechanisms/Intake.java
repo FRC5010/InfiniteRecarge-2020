@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.IntakeBalls;
+import frc.robot.commands.OuttakeBalls;
 import frc.robot.subsystems.IntakeSubsystem;
 
 /**
@@ -32,5 +34,8 @@ public class Intake {
         this.leftBumper = new JoystickButton(driver, 5);
         intakeMotor = new CANSparkMax(9, MotorType.kBrushless);
         intakeMain = new IntakeSubsystem(intakeMotor);
+
+        rightBumper.whenPressed(new IntakeBalls(intakeMain));
+        leftBumper.whenPressed(new OuttakeBalls(intakeMain));
     }
 }

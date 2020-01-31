@@ -24,8 +24,12 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
-  public void spin(){
+  public void spinIn(){
     intakeMotor.set(0.5);
+  }
+
+  public void spinOut(){
+    intakeMotor.set(-0.5);
   }
 
   public void stop(){
