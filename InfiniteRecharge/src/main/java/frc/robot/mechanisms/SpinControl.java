@@ -7,8 +7,10 @@
 
 package frc.robot.mechanisms;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.SpinForNDetections;
@@ -24,7 +26,7 @@ public class SpinControl {
     private Joystick driver;
     private JoystickButton rotationButton;
     private JoystickButton positionButton;
-    private SpeedController spinnerMotor = new Spark(SpinConstants.spinnerMotorChannel);
+    private SpeedController spinnerMotor = new CANSparkMax(SpinConstants.spinnerMotorChannel, MotorType.kBrushless);
 
     public SpinControl(Joystick driver) {
         this.driver = driver;

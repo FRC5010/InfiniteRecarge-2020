@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.util.Color;
  * Add your docs here.
  */
 public class SpinConstants {
-    public static final int spinnerMotorChannel = 0;
+    public static final int spinnerMotorChannel = 10;
 
     public static final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
     public static final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);

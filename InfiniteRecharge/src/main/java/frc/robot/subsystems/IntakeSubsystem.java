@@ -7,25 +7,31 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.mechanisms.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /**
    * Creates a new IntakeSubsystem.
    */
   SpeedController intakeMotor;
-  public IntakeSubsystem(SpeedController intakeMotor) {
+  Joystick joystick;
+  public IntakeSubsystem(SpeedController intakeMotor, Joystick joystick) {
     this.intakeMotor = intakeMotor;
+    this.joystick = joystick;
 
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    intakeMotor.set(joystick.getRawAxis(IntakeConstants.intakeAxis) * IntakeConstants.maxOutput);
+    
   }
   public void spin(){
-    intakeMotor.set(0.5);
+    intakeMotor.set(IntakeConstants.maxOutput);
   }
 
   public void stop(){
