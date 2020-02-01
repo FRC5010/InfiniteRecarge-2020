@@ -7,34 +7,35 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
-import frc.robot.mechanisms.ShaftMechanism;
-import frc.robot.subsystems.ShaftClimberSubsystem;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.ShooterMain;
 
-public class ClimbShaftCommand extends CommandBase {
+public class ChangeSpeed extends CommandBase {
   /**
-   * Creates a new ShaftClimberSubsystem.
+   * Creates a new IncreaseSpeed.
    */
-  ShaftClimberSubsystem shaftClimber;
-
-  public ClimbShaftCommand(ShaftClimberSubsystem shaftClimber) {
+  private ShooterMain subsystem;
+  public double setPoint;
+  public boolean up;
+  public ChangeSpeed(ShooterMain subsystem,boolean up) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shaftClimber = shaftClimber;
-    addRequirements(shaftClimber);
+    this.subsystem = subsystem;
+    this.setPoint = subsystem.setPoint;
+    this.up = up;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    setPoint = (up)?subsystem.setPoint++:subsystem.setPoint--;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shaftClimber.spinUpShaftClimber(100);
-    System.out.println("Running Shaft Climb");
-  
+    SmartDashboard.putNumber("shooter setpoint", setPoint);
   }
 
   // Called once the command ends or is interrupted.

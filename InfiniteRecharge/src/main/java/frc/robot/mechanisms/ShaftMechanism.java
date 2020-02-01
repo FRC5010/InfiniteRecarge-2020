@@ -11,12 +11,14 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ClimbShaftCommand;
-import frc.robot.subsystems.ShaftClimberSubsystem;
+import frc.robot.commands.LoadShaftCommand;
+import frc.robot.commands.ToggleShaftHeight;
+import frc.robot.subsystems.ShaftSubsystem;
 
 /**
  * Add your docs here.
@@ -25,40 +27,42 @@ import frc.robot.subsystems.ShaftClimberSubsystem;
 
 public class ShaftMechanism {
     public Joystick driver;
-    public Button buttonB;
-    public ShaftClimberSubsystem shaftClimber;
+    
+    public ShaftSubsystem shaftClimber;
     public CANSparkMax shaftMotor; 
-    public CANPIDController m_pidController;
-    private ClimbShaftCommand command;
-    public ShaftMechanism(Joystick driver){
+   
+    public DoubleSolenoid shaftLifter;
+    
+
+    //buttons
+    public Button buttonB;
+    public Button driverLB;
+
+    
+    public ShaftMechanism(Joystick driver,Joystick operator){
         this.driver = driver;
+
         this.shaftMotor = new CANSparkMax(8, MotorType.kBrushless);
-        this.buttonB = new JoystickButton(driver, 2);
-        m_pidController = shaftMotor.getPIDController();
-        m_pidController.setP(ShaftConstants.kP);
-        m_pidController.setI(ShaftConstants.kI);
-        m_pidController.setD(ShaftConstants.kD);
-        m_pidController.setIZone(ShaftConstants.kIz);
-        m_pidController.setFF(ShaftConstants.kFF);
-        m_pidController.setOutputRange(ShaftConstants.kMinOutput, ShaftConstants.kMaxOutput);
+
+
+        this.buttonB = new JoystickButton(operator, 2);
+        this.driverLB = new JoystickButton(driver, 5);
     
-        // display PID coefficients on SmartDashboard
-        SmartDashboard.putNumber("P Gain", ShaftConstants.kP);
-        SmartDashboard.putNumber("I Gain", ShaftConstants.kI);
-        SmartDashboard.putNumber("D Gain", ShaftConstants.kD);
-        SmartDashboard.putNumber("I Zone", ShaftConstants.kIz);
-        SmartDashboard.putNumber("Feed Forward",ShaftConstants.kFF);
-        SmartDashboard.putNumber("Max Output", ShaftConstants.kMaxOutput);
-        SmartDashboard.putNumber("Min Output", ShaftConstants.kMinOutput);
-        
-        
-        
-        shaftClimber = new ShaftClimberSubsystem(shaftMotor,m_pidController);
+        shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
+      
+        shaftClimber = new ShaftSubsystem(shaftMotor, shaftLifter);
           
-        
-        buttonB.whenPressed(new ClimbShaftCommand(shaftClimber));
+        driverLB.whenPressed(new ToggleShaftHeight(shaftClimber));
+        buttonB.whenPressed(new LoadShaftCommand(shaftClimber));
     
     
     
+
     }
+
+    public ShaftSubsystem getSubsystem(){
+            return shaftClimber;
+    }
+  
 }
+

@@ -9,39 +9,38 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShaftSubsystem;
 
-public class IntakeBalls extends CommandBase {
+public class ToggleShaftHeight extends CommandBase {
   /**
-   * Creates a new IntakeBalls.
+   * Creates a new ToggleIntake.
    */
-  IntakeSubsystem intakeSubsystem;
-  public IntakeBalls(IntakeSubsystem intakeSubsystem) {
-    this.intakeSubsystem = intakeSubsystem;
-    addRequirements(intakeSubsystem);
+  ShaftSubsystem shaftSubsystem;
+  public ToggleShaftHeight(ShaftSubsystem shaftSubsystem) {
+    this.shaftSubsystem = shaftSubsystem;
+    addRequirements(shaftSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    shaftSubsystem.toggleShaftHeight();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.spinIn();
-    //System.out.println("In");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

@@ -7,61 +7,56 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.mechanisms.IntakeConstants;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class ShaftSubsystem extends SubsystemBase {
   /**
-   * Creates a new IntakeSubsystem.
+   * Creates a new Shooter.
    */
-  SpeedController intakeMotor;
-  Joystick joystick;
-  DoubleSolenoid solenoid;
-  private boolean isExtended = false;
 
-  public IntakeSubsystem(SpeedController intakeMotor, Joystick joystick, DoubleSolenoid solenoid) {
-    this.intakeMotor = intakeMotor;
-    this.joystick = joystick;
+  // Change to speed controller later
+  private CANSparkMax controller;
+  private CANPIDController m_pidController;
+  private DoubleSolenoid solenoid;
+  private boolean isExtended;
+
+  public ShaftSubsystem(CANSparkMax controller, DoubleSolenoid solenoid) {
+    this.controller = controller;
+    
     this.solenoid = solenoid;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    intakeMotor.set(joystick.getRawAxis(IntakeConstants.intakeAxis) * IntakeConstants.maxOutput);
 
   }
 
-  public void toggleIntake() {
+  public void spinUpShaft(double speed) {
+    
+    controller.set(speed);
+  }
+
+  public void toggleShaftHeight() {
     if (isExtended) {
-      retractIntake();
+      lowerShaft();
     } else {
-      extendIntake();
+      raiseShaft();
     }
   }
 
-  public void extendIntake() {
+  public void raiseShaft() {
     isExtended = true;
     solenoid.set(DoubleSolenoid.Value.kForward);
   }
 
-  public void retractIntake() {
+  public void lowerShaft() {
     isExtended = false;
     solenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
-  public void spinIn() {
-    intakeMotor.set(IntakeConstants.maxOutput);
-  }
-
-  public void spinOut() {
-    intakeMotor.set(-0.5);
-  }
-
-  public void stop() {
-    intakeMotor.set(0);
-  }
 }

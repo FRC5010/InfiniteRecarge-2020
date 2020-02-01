@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.commands.ChangeSpeed;
 import frc.robot.commands.SpinShooter;
 import frc.robot.subsystems.ShooterMain;
 
@@ -30,10 +32,16 @@ public class Shoot {
     public CANSparkMax shootMotor; 
     public CANPIDController m_pidController;
     private SpinShooter command;
-    public Shoot(Joystick driver){
-        this.diver = driver;
+    public POVButton spinUp;
+    public POVButton spinDown;
+    public Shoot(Joystick operator){
+        this.diver = operator;
         this.shootMotor = new CANSparkMax(5, MotorType.kBrushless); //This needs to be changed to 5
-        this.buttonA = new JoystickButton(driver, 1);
+        this.buttonA = new JoystickButton(operator, 1);
+
+        spinUp = new  POVButton(operator, 0);
+
+        spinDown = new POVButton(operator, 90);
         m_pidController = shootMotor.getPIDController();
         m_pidController.setP(ShooterConstants.kP);
         m_pidController.setI(ShooterConstants.kI);
@@ -55,8 +63,10 @@ public class Shoot {
         
         shooterMain = new ShooterMain(shootMotor,m_pidController);
           
+        spinUp.whenPressed(new ChangeSpeed(shooterMain, true));
+        spinDown.whenPressed(new ChangeSpeed(shooterMain, false));
         
-        buttonA.whenPressed(new SpinShooter(shooterMain, 100));
+        buttonA.whenPressed(new SpinShooter(shooterMain));
     
     
     

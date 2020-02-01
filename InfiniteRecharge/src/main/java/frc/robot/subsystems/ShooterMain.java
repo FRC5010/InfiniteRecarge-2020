@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,7 +21,7 @@ public class ShooterMain extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
-  
+  public double setPoint = 100;
 
    //Change to speed controller later
    private CANSparkMax controller;
@@ -40,9 +41,9 @@ public class ShooterMain extends SubsystemBase {
   }
 
 
-  public void spinUpWheel(double setPoint){
-    double err = controller.getEncoder().getVelocity()-setPoint; 
-    controller.set(-.75);
+  public void spinUpWheel(){
+    
+    m_pidController.setReference(setPoint,ControlType.kVelocity);
     
 
   }
