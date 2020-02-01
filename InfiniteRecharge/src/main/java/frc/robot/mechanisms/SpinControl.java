@@ -28,6 +28,7 @@ public class SpinControl {
     private JoystickButton positionButton;
     private SpeedController spinnerMotor = new CANSparkMax(SpinConstants.spinnerMotorChannel, MotorType.kBrushless);
 
+
     public SpinControl(Joystick driver) {
         this.driver = driver;
         init();
@@ -42,7 +43,7 @@ public class SpinControl {
     public void configureButtonBindings() {
         rotationButton = new JoystickButton(driver, 1);
         positionButton = new JoystickButton(driver, 2);
-        rotationButton.whenPressed(new SpinForNDetections(spinner, wheelColor, 2));
+        rotationButton.whenPressed(new SpinForNDetections(spinner, wheelColor, 4));
         positionButton.whenPressed(new SpinForNDetections(spinner, wheelColor));
     }
 }

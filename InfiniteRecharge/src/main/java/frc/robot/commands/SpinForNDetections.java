@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Spinner;
@@ -16,9 +17,20 @@ public class SpinForNDetections extends CommandBase {
   private Spinner spinner;
   private WheelColor wheel;
   private int detections;
+  //Used if the position control constructor is called for.
+  private boolean needGameData;
+
+  //This is for position control, game requires the color to be moved to the game sensor, which is two positions away from our sensor.
+  private final int colorOffset = 2;
   /**
    * Creates a new SpinForNDetections.
    */
+
+   /** 
+    * Two different constructors for two different uses, check comments of each.
+   */
+
+  //Used for rotation control.
   public SpinForNDetections(Spinner spinner, WheelColor wheel, int detections) {
     this.spinner = spinner;
     this.wheel = wheel;
@@ -26,21 +38,38 @@ public class SpinForNDetections extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(spinner);
     addRequirements(wheel);
+    needGameData = false;
   }
 
+  //Used for position control.
   public SpinForNDetections(Spinner spinner, WheelColor wheel) {
+    //When testing, put the colors in the game order since colormap relies on order of the colors.
+    //The direction it's spinning is clockwise.  Spinner must spin wheel clockwise in order to work correctly.
     this.spinner = spinner;
     this.wheel = wheel;
+    //Basic initialization (add colorOffset to this value below in init()).
     this.detections = wheel.determineGameData();
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(spinner);
     addRequirements(wheel);
+    needGameData = true;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     spinner.spin();
+    //Resent the color counter to count the total colors upon initialization of this command.
+    wheel.setColorCount(0);
+    
+    //Called again to initialize if the position control constructor is passed.
+    //Color offset added to spin to the correct color for the game sensor.
+    if(needGameData){
+      this.detections = wheel.determineGameData() + colorOffset;
+    }
+
+    SmartDashboard.putNumber("Distance to Objective", detections);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -57,6 +86,7 @@ public class SpinForNDetections extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    SmartDashboard.putNumber("Current Count", wheel.getTotalCount());
     return wheel.getTotalCount() >= detections;
   }
 }

@@ -48,6 +48,9 @@ public class WheelColor extends SubsystemBase {
    * Creates a new WheelColor.
    */
   public WheelColor() {
+    //Sets it to empty so it can be initialized (gets angry if not set upon initialization).
+    targetColorMap = new ColorMap("");
+
     m_colorMatcher.addColorMatch(SpinConstants.kBlueTarget);
     m_colorMatcher.addColorMatch(SpinConstants.kGreenTarget);
     m_colorMatcher.addColorMatch(SpinConstants.kRedTarget);
@@ -179,24 +182,31 @@ public class WheelColor extends SubsystemBase {
     }
   }
 
-  public boolean adjustToTargetColor() {
-    if (clrCounter <= 2) { // colorMapping.get("B").getPos(colorString)){
-      // System.out.println("gaming");
-      clrCounter++;
-      return false;
+  //Redundant for now, can be set within the SpinForNDetections command.
+  // public boolean adjustToTargetColor() {
+  //   if (clrCounter <= 2) { // colorMapping.get("B").getPos(colorString)){
+  //     // System.out.println("gaming");
+  //     clrCounter++;
+  //     return false;
 
-    } else {
-      return true;
-    }
-  }
+  //   } else {
+  //     return true;
+  //   }
+  // }
 
   public int getTotalCount() {
     return clrCounter;
   }
-  
-  public int getColorCount(Color color) {
-    return colorCounts.get(color);
+
+  public int setColorCount(int num){
+    clrCounter = num;
+    return clrCounter;
   }
+  
+  //May be redundant, use getTotalCount() for now.
+  // public int getColorCount(Color color) {
+  //   return colorCounts.get(color);
+  // }
 
   public boolean checkColorChange(String colorString, Color color) {
     if (currColor != oriColor && colorString != "Unknown") {
