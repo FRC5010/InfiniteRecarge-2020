@@ -30,7 +30,7 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.set(joystick.getRawAxis(IntakeConstants.intakeAxis) * IntakeConstants.maxOutput);
     
   }
-  public void spin(){
+  public void spinIn(){
     intakeMotor.set(IntakeConstants.maxOutput);
   }
 

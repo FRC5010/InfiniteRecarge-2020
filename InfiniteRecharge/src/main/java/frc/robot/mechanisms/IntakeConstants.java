@@ -14,4 +14,6 @@ public class IntakeConstants {
     public static int intakeMotorChannel = 9;
     public static double maxOutput = 0.2;
     public static int intakeAxis = 5;
+    public static int leftPiston = 0;
+    public static int rightPiston = 1;
 }
