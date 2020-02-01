@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,10 +19,13 @@ public class IntakeSubsystem extends SubsystemBase {
    */
   SpeedController intakeMotor;
   Joystick joystick;
-  public IntakeSubsystem(SpeedController intakeMotor, Joystick joystick) {
+  DoubleSolenoid solenoid;
+  private boolean isExtended = false;
+
+  public IntakeSubsystem(SpeedController intakeMotor, Joystick joystick, DoubleSolenoid solenoid) {
     this.intakeMotor = intakeMotor;
     this.joystick = joystick;
-
+    this.solenoid = solenoid;
   }
 
   @Override
@@ -29,6 +33,23 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     intakeMotor.set(joystick.getRawAxis(IntakeConstants.intakeAxis) * IntakeConstants.maxOutput);
     
+  }
+  public void toggleIntake(){
+    if(isExtended)
+    {
+      retractIntake();
+    }else
+    {
+      extendIntake();
+    }
+  }
+  public void extendIntake(){
+    isExtended = true;
+    solenoid.set(DoubleSolenoid.Value.kForward);
+  }
+  public void retractIntake(){
+    isExtended = false;
+    solenoid.set(DoubleSolenoid.Value.kReverse);
   }
   public void spinIn(){
     intakeMotor.set(IntakeConstants.maxOutput);
