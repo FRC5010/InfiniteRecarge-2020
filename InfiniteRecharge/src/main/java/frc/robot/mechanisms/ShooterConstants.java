@@ -13,6 +13,12 @@ package frc.robot.mechanisms;
 public class ShooterConstants {
  public static double kP,kI,kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
+ public static final double earthGravity = 9.81; //m/s^2
+ public static final double ballRadius = 0.09; //m
+ public static final double innerPortRadius = 0.16; //m
+ public static final double innerPortHeight = 2.500; //meters, measured from floor to center
+
+
  public ShooterConstants(){
     kP =.1;
     kI= 0;

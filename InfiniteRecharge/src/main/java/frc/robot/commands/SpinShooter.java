@@ -10,17 +10,32 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.mechanisms.Shoot;
+import frc.robot.mechanisms.ShooterConstants;
 import frc.robot.subsystems.ShooterMain;
 
 public class SpinShooter extends CommandBase {
   /**
    * Creates a new SpinShoot.
    */
+  private double power = 0.0;
+
   ShooterMain shooter;
-  public SpinShooter(ShooterMain shooter) {
+  public SpinShooter(ShooterMain shooter, double power) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     addRequirements(shooter);
+    this.power = power;
+  }
+
+  //gets ball velocity required to reach target point (targetX, targetY) with robot at a specified angle (radians)
+  //  x = horizontal distance from shooter end to target
+  //  y = vertical distance from shooter end and target
+  //assumptions:
+  //  no air resistance (would increase required vel)
+  //  no magnus effect (would change required vel, depending on ball spin)
+  public double getBallVel(double targetX, double targetY, double angle) {
+    return (Math.sqrt(ShooterConstants.earthGravity) * targetX * (1/Math.cos(angle))) 
+            / (Math.sqrt(2) * Math.sqrt(targetX * Math.tan(angle) - targetY));
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +46,7 @@ public class SpinShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.spinUpWheel(100);
+    shooter.spinUpWheel(power);
     System.out.println("running ball shooter");
   
   }

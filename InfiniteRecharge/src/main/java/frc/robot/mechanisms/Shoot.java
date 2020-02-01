@@ -56,7 +56,7 @@ public class Shoot {
         shooterMain = new ShooterMain(shootMotor,m_pidController);
           
         
-        buttonA.whenPressed(new SpinShooter(shooterMain));
+        buttonA.whenPressed(new SpinShooter(shooterMain, 100));
     
     
     
