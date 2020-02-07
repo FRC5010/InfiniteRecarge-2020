@@ -10,6 +10,7 @@ package frc.robot.mechanisms;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -27,16 +28,18 @@ public class SpinControl {
     private JoystickButton rotationButton;
     private JoystickButton positionButton;
     private SpeedController spinnerMotor = new CANSparkMax(SpinConstants.spinnerMotorChannel, MotorType.kBrushless);
+    private DoubleSolenoid spinnerSolenoid;
 
 
-    public SpinControl(Joystick driver) {
+    public SpinControl(Joystick driver, DoubleSolenoid spinnerSolenoid) {
         this.driver = driver;
+        this.spinnerSolenoid = spinnerSolenoid;
         init();
         configureButtonBindings();
     }
 
     public void init() {
-        spinner = new Spinner(spinnerMotor, 0, 1);
+        spinner = new Spinner(spinnerMotor, 0, 1, spinnerSolenoid);
         wheelColor = new WheelColor();
     }
 

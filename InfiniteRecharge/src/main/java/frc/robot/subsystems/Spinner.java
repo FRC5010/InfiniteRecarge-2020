@@ -12,14 +12,18 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Spinner extends SubsystemBase {
-  SpeedController spinner;
-  DoubleSolenoid spinDeployment;
+  private SpeedController spinner;
+  private DoubleSolenoid spinDeployment;
+  private boolean isDeployed;
 
   /**
    * Creates a new Spinner.
    */
-  public Spinner(SpeedController spinner, int fwdChannel, int revChannel) {
+  public Spinner(SpeedController spinner, int fwdChannel, int revChannel, DoubleSolenoid spinDeployment) {
     this.spinner = spinner;
+    this.spinDeployment = spinDeployment;
+    //Set as false since spinner will not be deployed at start.
+    isDeployed = false;
    // spinDeployment = new DoubleSolenoid(fwdChannel, revChannel);
   }
 
@@ -34,5 +38,21 @@ public class Spinner extends SubsystemBase {
 
   public void stop(){
     spinner.set(0);
+  }
+
+  public void toggleSpinner(){
+    if(!isDeployed){
+      deploy();
+    }else{
+      retract();
+    }
+  }
+
+  public void deploy(){
+    spinDeployment.set(DoubleSolenoid.Value.kForward);
+  }
+
+  public void retract(){
+    spinDeployment.set(DoubleSolenoid.Value.kReverse);
   }
 }
