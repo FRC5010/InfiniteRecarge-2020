@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShaftSubsystem extends SubsystemBase {
@@ -21,34 +22,36 @@ public class ShaftSubsystem extends SubsystemBase {
    */
 
   // Change to speed controller later
-  private CANSparkMax controller;
+  private CANSparkMax barrelMotor;
   private CANPIDController m_pidController;
   private DoubleSolenoid solenoid;
   private boolean isExtended;
-  private Joystick speed;
+  private Joystick controller;
   private DigitalInput beamBreak;
-  public ShaftSubsystem(CANSparkMax controller, DoubleSolenoid solenoid, DigitalInput beamBreak) {
-    this.controller = controller;
+  public ShaftSubsystem(CANSparkMax motor, DoubleSolenoid solenoid, DigitalInput beamBreak) {
+    this.barrelMotor = motor;
     this.beamBreak = beamBreak;
     this.solenoid = solenoid;
     
   }
-  public ShaftSubsystem(DigitalInput beamBreak, CANSparkMax controller, Joystick operator){
+  public ShaftSubsystem(DigitalInput beamBreak, CANSparkMax motor, Joystick operator){
     this.beamBreak = beamBreak;
-    this.controller = controller;
-    this.speed = operator;
+    this.barrelMotor = motor;
+    this.controller = operator;
   }
 
   @Override
   public void periodic() {
-    spinUpShaft(speed.getRawAxis(3));
+    spinUpShaft(controller.getRawAxis(3));
     // This method will be called once per scheduler run
-   // System.out.println(beamBreak.get());
+    SmartDashboard.putNumber("Barrel Motor Temp", barrelMotor.getMotorTemperature());
+    SmartDashboard.putNumber("Barrel Duty Cycle", barrelMotor.getAppliedOutput());
+    SmartDashboard.putNumber("Barrel Output Current", barrelMotor.getOutputCurrent());
   }
 
   public void spinUpShaft(double speed) {
    
-    controller.set(speed);
+    barrelMotor.set(speed);
     
   }
 

@@ -35,6 +35,7 @@ public class ShaftMechanism {
     public DoubleSolenoid shaftLifter;
     
      public DigitalInput beamBreakIntake;
+     public DigitalInput beamBreakShooter;
     
 
     // //buttons
@@ -46,7 +47,7 @@ public class ShaftMechanism {
         this.driver = driver;
 
         this.shaftMotor = new CANSparkMax(8, MotorType.kBrushless);
-
+        shaftMotor.setSmartCurrentLimit(25);
 
         this.buttonB = new JoystickButton(driver, 2);
        // this.driverLB = new JoystickButton(driver, 5);
@@ -56,10 +57,6 @@ public class ShaftMechanism {
           
        // driverLB.whenPressed(new ToggleShaftHeight(shaftClimber));
       buttonB.whenPressed(new LoadShaftCommand(shaftClimber));
-        
-    
-    
-    
 
     }
 
