@@ -85,6 +85,13 @@ public class Drive {
       lEncoder = lDrive1.getEncoder();
       rEncoder = rDrive1.getEncoder();
 
+      lDrive1.setSmartCurrentLimit(38);
+      lDrive2.setSmartCurrentLimit(38);
+
+      rDrive1.setSmartCurrentLimit(38);
+      rDrive2.setSmartCurrentLimit(38);
+
+
       // lEncoder.setPositionConversionFactor(Constants.distancePerPulse);
       // rEncoder.setPositionConversionFactor(-Constants.distancePerPulse);
       

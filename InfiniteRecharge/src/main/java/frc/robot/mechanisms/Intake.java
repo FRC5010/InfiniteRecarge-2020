@@ -30,14 +30,14 @@ public class Intake {
     public Button leftBumper;
     public DoubleSolenoid solenoid;
 
-    public Intake(Joystick joystick,ShaftSubsystem shaft){
+    public Intake(Joystick joystick){
         this.joystick = joystick;
         this.rightBumper = new JoystickButton(joystick, 6);
         this.leftBumper = new JoystickButton(joystick, 5);
         this.solenoid = new DoubleSolenoid(IntakeConstants.leftPiston, IntakeConstants.rightPiston);
         intakeMotor = new CANSparkMax(IntakeConstants.intakeMotorChannel, MotorType.kBrushless);
         intakeMain = new IntakeSubsystem(intakeMotor, joystick, solenoid);
-        rightBumper.whenPressed (new ToggleIntake(intakeMain).raceWith(new LoadShaftCommand(shaft)));
+        //rightBumper.whenPressed ();
     }
 
 }

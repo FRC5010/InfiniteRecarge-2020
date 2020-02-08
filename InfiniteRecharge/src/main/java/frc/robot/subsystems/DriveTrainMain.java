@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -18,18 +20,21 @@ public class DriveTrainMain extends SubsystemBase {
   private SpeedController leftMaster;
   private SpeedController rightMaster;
   private Joystick driver;
+  private PowerDistributionPanel pdp;
 
   public DriveTrainMain(SpeedController left, SpeedController right, Joystick driver) {
     leftMaster = left;
     rightMaster = right;
     this.driver = driver;
+
+    pdp = new PowerDistributionPanel();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     arcadeDrive(scaleInputs(-driver.getRawAxis(1)), scaleInputs(driver.getRawAxis(4)));
-    System.out.println("Trying to drive from susbsystem");
+    //System.out.println("Trying to drive from susbsystem");
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -38,8 +43,8 @@ public class DriveTrainMain extends SubsystemBase {
   }
 
   public void arcadeDrive(double fPow, double tPow) {
-    leftMaster.set(fPow + tPow);
-    rightMaster.set(fPow - tPow);
+    leftMaster.setVoltage((fPow + tPow)*pdp.getVoltage());
+    rightMaster.setVoltage((fPow - tPow)*pdp.getVoltage());
   }
 
   public double scaleInputs(double input) {
@@ -53,7 +58,8 @@ public class DriveTrainMain extends SubsystemBase {
       return -1;
     }
     boolean speedControl = driver.getRawButton(6);
-    return Math.pow(input, 3) * (speedControl ? 1.0 : 0.3);
+    return Math.pow(input, 3) * (!speedControl ? 1.0 : 0.3);
+
   }
 
   public void setMaxOutput(double maxOutput) {

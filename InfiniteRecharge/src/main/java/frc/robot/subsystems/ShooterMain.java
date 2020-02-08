@@ -43,8 +43,8 @@ public class ShooterMain extends SubsystemBase {
 
   public void spinUpWheel(){
     
-    m_pidController.setReference(setPoint,ControlType.kVelocity);
-    
+   // m_pidController.setReference(setPoint,ControlType.kVelocity);
+    controller.set(-.50);
 
   }
 

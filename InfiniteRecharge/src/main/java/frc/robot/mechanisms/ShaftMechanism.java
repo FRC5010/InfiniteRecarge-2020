@@ -11,6 +11,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,34 +27,36 @@ import frc.robot.subsystems.ShaftSubsystem;
 
 
 public class ShaftMechanism {
-    public Joystick driver;
+   public Joystick driver;
     
-    public ShaftSubsystem shaftClimber;
+     public ShaftSubsystem shaftClimber;
     public CANSparkMax shaftMotor; 
    
     public DoubleSolenoid shaftLifter;
     
+     public DigitalInput beamBreakIntake;
+    
 
-    //buttons
+    // //buttons
     public Button buttonB;
-    public Button driverLB;
+     public Button driverLB;
 
     
-    public ShaftMechanism(Joystick driver,Joystick operator){
+    public ShaftMechanism( Joystick driver,  Joystick operator) {
         this.driver = driver;
 
         this.shaftMotor = new CANSparkMax(8, MotorType.kBrushless);
 
 
-        this.buttonB = new JoystickButton(operator, 2);
-        this.driverLB = new JoystickButton(driver, 5);
-    
-        shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
-      
-        shaftClimber = new ShaftSubsystem(shaftMotor, shaftLifter);
+        this.buttonB = new JoystickButton(driver, 2);
+       // this.driverLB = new JoystickButton(driver, 5);
+       // shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
+         beamBreakIntake = new DigitalInput(0);
+        shaftClimber = new ShaftSubsystem(beamBreakIntake, shaftMotor, driver);
           
-        driverLB.whenPressed(new ToggleShaftHeight(shaftClimber));
-        buttonB.whenPressed(new LoadShaftCommand(shaftClimber));
+       // driverLB.whenPressed(new ToggleShaftHeight(shaftClimber));
+      buttonB.whenPressed(new LoadShaftCommand(shaftClimber));
+        
     
     
     
