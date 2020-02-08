@@ -39,6 +39,7 @@ public class LoadShaftCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shaftClimber.spinUpShaft(0);
   }
 
   // Returns true when the command should end.

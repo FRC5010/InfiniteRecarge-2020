@@ -39,10 +39,10 @@ public class RobotContainer {
     // motor 10 is the spinner
     driver = new Joystick(0);
     operator = new Joystick(1);
-    // driveMechanism = new Drive(driver);
+     driveMechanism = new Drive(driver);
     //spinControl = new SpinControl(driver,operator);
     //shooter = new Shoot(operator);
-    //shaftMechanism = new ShaftMechanism(driver,operator);
+    shaftMechanism = new ShaftMechanism(driver,operator);
     intake = new IntakeMech(operator);
   }
 

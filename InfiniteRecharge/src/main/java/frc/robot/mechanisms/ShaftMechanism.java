@@ -49,14 +49,14 @@ public class ShaftMechanism {
         this.shaftMotor = new CANSparkMax(8, MotorType.kBrushless);
         shaftMotor.setSmartCurrentLimit(25);
 
-        this.buttonB = new JoystickButton(driver, 2);
+        this.buttonB = new JoystickButton(operator, 2);
        // this.driverLB = new JoystickButton(driver, 5);
        // shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
          beamBreakIntake = new DigitalInput(0);
         shaftClimber = new ShaftSubsystem(beamBreakIntake, shaftMotor, driver);
           
        // driverLB.whenPressed(new ToggleShaftHeight(shaftClimber));
-      buttonB.whenPressed(new LoadShaftCommand(shaftClimber));
+      buttonB.whileHeld(new LoadShaftCommand(shaftClimber));
 
     }
 

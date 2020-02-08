@@ -42,7 +42,7 @@ public class ShaftSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    spinUpShaft(controller.getRawAxis(3));
+   // spinUpShaft(controller.getRawAxis(3));
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Barrel Motor Temp", barrelMotor.getMotorTemperature());
     SmartDashboard.putNumber("Barrel Duty Cycle", barrelMotor.getAppliedOutput());

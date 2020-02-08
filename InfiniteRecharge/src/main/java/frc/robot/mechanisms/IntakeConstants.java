@@ -12,11 +12,11 @@ package frc.robot.mechanisms;
  */
 public class IntakeConstants {
     public static int intakeMotorChannel = 9;
-    public static double maxOutput = 0.1;
+    public static double maxOutput = 0.25;
     public static int intakeAxis = 3 ;
     public static int outtakeAxis = 2 ;
-    public static int leftPiston = 0;
-    public static int rightPiston = 1;
-    public static int safeIntakeButton = 1;
+    public static int forwardChannel = 0;
+    public static int reverseChannel = 1;
+    public static int intakeButton = 1;
     public static int toggleIntakeButton = 6;
 }
