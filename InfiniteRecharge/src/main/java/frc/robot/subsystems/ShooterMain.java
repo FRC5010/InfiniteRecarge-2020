@@ -21,7 +21,7 @@ public class ShooterMain extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
-  public double setPoint = 100;
+  public double setPoint = 500;
 
    //Change to speed controller later
    private CANSparkMax controller;
@@ -31,21 +31,42 @@ public class ShooterMain extends SubsystemBase {
     this.controller = controller; 
     this.m_pidController = pidControl;
 
+    m_pidController.setP(.0001);
+    m_pidController.setFF(.000301724);
+    m_pidController.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
+
+    // display PID coefficients on SmartDashboard
+    SmartDashboard.putNumber("P Gain", ShooterConstants.kP);
+    SmartDashboard.putNumber("Feed Forward",m_pidController.getFF());
+    SmartDashboard.putNumber("Max Output", ShooterConstants.kMaxOutput);
+    SmartDashboard.putNumber("Min Output", ShooterConstants.kMinOutput);
+
 
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("set point", setPoint);
     // This method will be called once per scheduler run
 
   }
 
+  public void end(){
+    m_pidController.setReference(0,ControlType.kVelocity);
+  }
+
 
   public void spinUpWheel(){
+     //System.out.println(" running shooter");
     
-   // m_pidController.setReference(setPoint,ControlType.kVelocity);
-    controller.set(-.50);
+    m_pidController.setReference(setPoint,ControlType.kVelocity);
+    SmartDashboard.putNumber("applied output", controller.getAppliedOutput());
+    SmartDashboard.putNumber("kf", m_pidController.getFF());
+    SmartDashboard.putNumber("kp", m_pidController.getP());
+    SmartDashboard.putNumber("velocity",controller.getEncoder().getVelocity());
+   // controller.set(-.50);
 
   }
 
 }
+

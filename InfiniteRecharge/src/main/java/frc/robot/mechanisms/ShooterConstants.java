@@ -18,15 +18,15 @@ public class ShooterConstants {
  public static final double innerPortRadius = 0.16; //m
  public static final double innerPortHeight = 2.500; //meters, measured from floor to center
 
-
- public ShooterConstants(){
-    kP =.1;
+static{
+ 
+    kP =0;
     kI= 0;
     kD = 0;
     kIz = 0;
-    kFF= .1;
-    kMaxOutput=40;
-    kMinOutput=1;
+    kFF= 1/5800;
+    kMaxOutput=1;
+    kMinOutput=-1;
     maxRPM=5800;
- }
+}
 }
