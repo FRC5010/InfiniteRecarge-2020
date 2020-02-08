@@ -40,10 +40,17 @@ public class RobotContainer {
     driver = new Joystick(0);
     operator = new Joystick(1);
     // driveMechanism = new Drive(driver);
+<<<<<<< HEAD
     //spinControl = new SpinControl(driver);
     shooter = new Shoot(driver);
      shaftMechanism = new ShaftMechanism(driver,operator);
    // intake = new Intake(driver);
+=======
+    spinControl = new SpinControl(driver,operator);
+    //shooter = new Shoot(operator);
+    //shaftMechanism = new ShaftMechanism(driver,operator);
+    //intake = new Intake(operator, shaftMechanism.getSubsystem());
+>>>>>>> 6e718e4e5d2a3d161f673dc0d4b25d0022985f19
   }
 
   /**
