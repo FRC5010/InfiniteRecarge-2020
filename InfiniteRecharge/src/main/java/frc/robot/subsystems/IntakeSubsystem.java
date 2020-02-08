@@ -7,9 +7,12 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.mechanisms.IntakeConstants;
 
@@ -17,12 +20,13 @@ public class IntakeSubsystem extends SubsystemBase {
   /**
    * Creates a new IntakeSubsystem.
    */
-  SpeedController intakeMotor;
+  CANSparkMax intakeMotor;
   Joystick joystick;
   DoubleSolenoid solenoid;
   private boolean isExtended = false;
+  private double manualInput = 0;
 
-  public IntakeSubsystem(SpeedController intakeMotor, Joystick joystick, DoubleSolenoid solenoid) {
+  public IntakeSubsystem(CANSparkMax intakeMotor, Joystick joystick, DoubleSolenoid solenoid) {
     this.intakeMotor = intakeMotor;
     this.joystick = joystick;
     this.solenoid = solenoid;
@@ -31,8 +35,11 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    intakeMotor.set(joystick.getRawAxis(IntakeConstants.intakeAxis) * IntakeConstants.maxOutput);
-
+    manualInput = (joystick.getRawAxis(IntakeConstants.intakeAxis) - joystick.getRawAxis(IntakeConstants.outtakeAxis)) * IntakeConstants.maxOutput;
+    intakeMotor.set(manualInput);
+    SmartDashboard.putNumber("Intake Motor Temp", intakeMotor.getMotorTemperature());
+    SmartDashboard.putNumber("Intake Duty Cycle", intakeMotor.getAppliedOutput());
+    SmartDashboard.putNumber("Intake Output Current", intakeMotor.getOutputCurrent());
   }
 
   public void toggleIntake() {
@@ -54,11 +61,15 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void spinIn() {
-    intakeMotor.set(IntakeConstants.maxOutput);
+    if (manualInput == 0) {
+      intakeMotor.set(IntakeConstants.maxOutput);
+    }
   }
 
   public void spinOut() {
-    intakeMotor.set(-0.5);
+    if (manualInput == 0) {
+      intakeMotor.set(-IntakeConstants.maxOutput);
+    }
   }
 
   public void stop() {
