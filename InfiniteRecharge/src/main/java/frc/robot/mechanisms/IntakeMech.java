@@ -32,8 +32,8 @@ public class IntakeMech {
     public IntakeMech(Joystick joystick){
         this.joystick = joystick;
         this.rightBumper = new JoystickButton(joystick, IntakeConstants.toggleIntakeButton);
-        buttonA = new JoystickButton(joystick, IntakeConstants.safeIntakeButton);
-        this.solenoid = new DoubleSolenoid(IntakeConstants.leftPiston, IntakeConstants.rightPiston);
+        buttonA = new JoystickButton(joystick, IntakeConstants.intakeButton);
+        this.solenoid = new DoubleSolenoid(IntakeConstants.forwardChannel, IntakeConstants.reverseChannel);
         intakeMotor = new CANSparkMax(IntakeConstants.intakeMotorChannel, MotorType.kBrushless);
         intakeMotor.setSmartCurrentLimit(25);
         intakeMain = new IntakeSubsystem(intakeMotor, joystick, solenoid);

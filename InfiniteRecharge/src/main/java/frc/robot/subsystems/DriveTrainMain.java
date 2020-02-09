@@ -43,8 +43,8 @@ public class DriveTrainMain extends SubsystemBase {
   }
 
   public void arcadeDrive(double fPow, double tPow) {
-    leftMaster.setVoltage((fPow + tPow)*pdp.getVoltage());
-    rightMaster.setVoltage((fPow - tPow)*pdp.getVoltage());
+    leftMaster.set(fPow + tPow);
+    rightMaster.set(fPow - tPow);
   }
 
   public double scaleInputs(double input) {
