@@ -24,7 +24,7 @@ static{
     kI= 0;
     kD = 0;
     kIz = 0;
-    kFF= 1/5800;
+    kFF= 1.0/5800.0;
     kMaxOutput=1;
     kMinOutput=-1;
     maxRPM=5800;

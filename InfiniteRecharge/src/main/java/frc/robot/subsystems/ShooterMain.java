@@ -32,7 +32,7 @@ public class ShooterMain extends SubsystemBase {
     this.m_pidController = pidControl;
 
     m_pidController.setP(.0001);
-    m_pidController.setFF(.000301724);
+    m_pidController.setFF(ShooterConstants.kFF);
     m_pidController.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
 
     // display PID coefficients on SmartDashboard
@@ -58,7 +58,7 @@ public class ShooterMain extends SubsystemBase {
 
   public void spinUpWheel(){
      //System.out.println(" running shooter");
-    
+    m_pidController.setFF(ShooterConstants.kFF+ (1.2/12*setPoint));
     m_pidController.setReference(setPoint,ControlType.kVelocity);
     SmartDashboard.putNumber("applied output", controller.getAppliedOutput());
     SmartDashboard.putNumber("kf", m_pidController.getFF());
