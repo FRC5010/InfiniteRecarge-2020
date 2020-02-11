@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Timer;
 
 public class ShaftSubsystem extends SubsystemBase {
   /**
@@ -27,32 +28,90 @@ public class ShaftSubsystem extends SubsystemBase {
   private DoubleSolenoid solenoid;
   private boolean isExtended;
   private Joystick controller;
-  private DigitalInput beamBreak;
+  private DigitalInput bb1;
+  private DigitalInput bb2;
+  private DigitalInput bb3;
+  private boolean isRunning = false;
+  private Timer timer;
+
+  private ShaftState state = ShaftState.fullStop;
+
   public ShaftSubsystem(CANSparkMax motor, DoubleSolenoid solenoid, DigitalInput beamBreak) {
     this.barrelMotor = motor;
-    this.beamBreak = beamBreak;
+    //this.beamBreak = beamBreak;
     this.solenoid = solenoid;
-    
+
   }
-  public ShaftSubsystem(DigitalInput beamBreak, CANSparkMax motor, Joystick operator){
-    this.beamBreak = beamBreak;
+
+  public ShaftSubsystem(DigitalInput bb1, DigitalInput bb2, DigitalInput bb3, CANSparkMax motor, Joystick operator) {
+    this.bb1 = bb1;
+    this.bb2 = bb2;
+    this.bb3 = bb3;
     this.barrelMotor = motor;
     this.controller = operator;
+    timer = new Timer();
+
+  }
+
+  private enum ShaftState {
+    fullStop, runningClear, indexing
+
   }
 
   @Override
   public void periodic() {
-   // spinUpShaft(controller.getRawAxis(3));
+    // spinUpShaft(controller.getRawAxis(3));
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Barrel Motor Temp", barrelMotor.getMotorTemperature());
     SmartDashboard.putNumber("Barrel Duty Cycle", barrelMotor.getAppliedOutput());
     SmartDashboard.putNumber("Barrel Output Current", barrelMotor.getOutputCurrent());
+
+    if(!bb1.get() && !isRunning){
+    spinUpShaft(.25);
+    timer.start();
+    isRunning = true;
+    }
+    if ((timer.get() > 0.5 && isRunning)||!bb3.get()) {
+    timer.stop();
+    timer.reset();
+    spinUpShaft(0);
+    isRunning = false;
+  }
+
+  SmartDashboard.putBoolean("bb1", bb1.get());
+  SmartDashboard.putBoolean("bb2", bb2.get());
+  SmartDashboard.putBoolean("bb3", bb3.get());
+    // if (!bb1.get() && state == ShaftState.fullStop) {
+    //   if (!bb3.get()) {
+    //     state = ShaftState.fullStop;
+    //     spinUpShaft(0);
+    //   } else {
+    //     spinUpShaft(.25);
+    //     if (!bb2.get()) {
+    //       state = ShaftState.indexing;
+
+    //     } else {
+    //       state = ShaftState.runningClear;
+
+    //     }
+
+    //   }
+    // }
+
+    // if (state == ShaftState.indexing && bb2.get()) {
+    //   state = ShaftState.runningClear;
+    // }
+    // if (state == ShaftState.runningClear && (!bb2.get() || !bb3.get())) {
+    //   spinUpShaft(0);
+    //   state = ShaftState.fullStop;
+
+    // }
+
   }
 
   public void spinUpShaft(double speed) {
-   
+
     barrelMotor.set(speed);
-    
   }
 
   public void toggleShaftHeight() {

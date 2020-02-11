@@ -35,6 +35,7 @@ public class ShaftMechanism {
     public DoubleSolenoid shaftLifter;
     
      public DigitalInput beamBreakIntake;
+     public DigitalInput beamBreakMiddle;
      public DigitalInput beamBreakShooter;
     
 
@@ -53,7 +54,9 @@ public class ShaftMechanism {
        // this.driverLB = new JoystickButton(driver, 5);
        // shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
          beamBreakIntake = new DigitalInput(0);
-        shaftClimber = new ShaftSubsystem(beamBreakIntake, shaftMotor, driver);
+         beamBreakMiddle = new DigitalInput(1);
+         beamBreakShooter = new DigitalInput(2);
+        shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver);
           
        // driverLB.whenPressed(new ToggleShaftHeight(shaftClimber));
       buttonB.whileHeld(new LoadShaftCommand(shaftClimber));
