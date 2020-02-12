@@ -41,11 +41,11 @@ public class RobotContainer {
     operator = new Joystick(1);
     // driveMechanism = new Drive(driver);
     // spinControl = new SpinControl(driver,operator);
-    shooter = new Shoot(operator);
+    //shooter = new Shoot(operator);
     shaftMechanism = new ShaftMechanism(driver,operator);
 
 
-    //intake = new IntakeMech(operator);
+    intake = new IntakeMech(operator);
   }
 
   /**

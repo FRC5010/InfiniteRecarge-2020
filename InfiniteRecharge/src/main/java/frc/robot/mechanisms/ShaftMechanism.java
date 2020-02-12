@@ -51,14 +51,14 @@ public class ShaftMechanism {
         shaftMotor.setSmartCurrentLimit(25);
 
         this.buttonB = new JoystickButton(operator, 2);
-       // this.driverLB = new JoystickButton(driver, 5);
-       // shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
+       this.driverLB = new JoystickButton(driver, 5);
+        shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
          beamBreakIntake = new DigitalInput(0);
          beamBreakMiddle = new DigitalInput(1);
          beamBreakShooter = new DigitalInput(2);
-        shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver);
+        shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver, shaftLifter);
           
-       // driverLB.whenPressed(new ToggleShaftHeight(shaftClimber));
+       driverLB.whenPressed(new ToggleShaftHeight(shaftClimber));
       buttonB.whileHeld(new LoadShaftCommand(shaftClimber));
 
     }

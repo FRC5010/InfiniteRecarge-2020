@@ -46,11 +46,12 @@ public class ShaftSubsystem extends SubsystemBase {
 
   }
 
-  public ShaftSubsystem(DigitalInput bb1, DigitalInput bb2, DigitalInput bb3, CANSparkMax motor, Joystick operator) {
+  public ShaftSubsystem(DigitalInput bb1, DigitalInput bb2, DigitalInput bb3, CANSparkMax motor, Joystick operator, DoubleSolenoid solenoid) {
     this.bb1 = bb1;
     this.bb2 = bb2;
     this.bb3 = bb3;
     this.barrelMotor = motor;
+    this.solenoid = solenoid;
     this.controller = operator;
     timer = new Timer();
 
