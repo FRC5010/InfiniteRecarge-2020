@@ -17,7 +17,8 @@ public class Climber extends SubsystemBase{
   //Will be changed to correct speed controller later.
   private SpeedController winch;
   private CANPIDController m_pidcontroller;
-
+  private boolean topExteded = false;
+  private boolean bottomExtended = false;
   public Climber(DoubleSolenoid topSolenoid, DoubleSolenoid bottomSolenoid, SpeedController winch, CANPIDController pidControl) {
       this.topSolenoid = topSolenoid;
       this.bottomSolenoid = bottomSolenoid;

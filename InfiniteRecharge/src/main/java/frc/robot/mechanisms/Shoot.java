@@ -38,26 +38,14 @@ public class Shoot {
         this.diver = operator;
         this.shootMotor = new CANSparkMax(5, MotorType.kBrushless); //This needs to be changed to 5
         this.buttonA = new JoystickButton(operator, 1);
+        shootMotor.setInverted(true);
+       shootMotor.setSmartCurrentLimit(60);
 
         spinUp = new  POVButton(operator, 0);
 
         spinDown = new POVButton(operator, 90);
         m_pidController = shootMotor.getPIDController();
-        m_pidController.setP(ShooterConstants.kP);
-        m_pidController.setI(ShooterConstants.kI);
-        m_pidController.setD(ShooterConstants.kD);
-        m_pidController.setIZone(ShooterConstants.kIz);
-        m_pidController.setFF(ShooterConstants.kFF);
-        m_pidController.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
-    
-        // display PID coefficients on SmartDashboard
-        SmartDashboard.putNumber("P Gain", ShooterConstants.kP);
-        SmartDashboard.putNumber("I Gain", ShooterConstants.kI);
-        SmartDashboard.putNumber("D Gain", ShooterConstants.kD);
-        SmartDashboard.putNumber("I Zone", ShooterConstants.kIz);
-        SmartDashboard.putNumber("Feed Forward",ShooterConstants.kFF);
-        SmartDashboard.putNumber("Max Output", ShooterConstants.kMaxOutput);
-        SmartDashboard.putNumber("Min Output", ShooterConstants.kMinOutput);
+       
         
         
         
@@ -66,7 +54,7 @@ public class Shoot {
         spinUp.whenPressed(new ChangeSpeed(shooterMain, true));
         spinDown.whenPressed(new ChangeSpeed(shooterMain, false));
         
-        buttonA.whenPressed(new SpinShooter(shooterMain));
+        buttonA.whileHeld(new SpinShooter(shooterMain));
     
     
     

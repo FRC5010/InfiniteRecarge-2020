@@ -8,8 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
-import frc.robot.mechanisms.Shoot;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.mechanisms.ShooterConstants;
 import frc.robot.subsystems.ShooterMain;
 
@@ -18,13 +17,16 @@ public class SpinShooter extends CommandBase {
    * Creates a new SpinShoot.
    */
   private double power = 0.0;
+  private Button cancel;
 
   ShooterMain shooter;
   public SpinShooter(ShooterMain shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     addRequirements(shooter);
-    this.power = power;
+    
+
+
   }
 
   //gets ball velocity required to reach target point (targetX, targetY) with robot at a specified angle (radians)
@@ -47,13 +49,14 @@ public class SpinShooter extends CommandBase {
   @Override
   public void execute() {
     shooter.spinUpWheel();
-    System.out.println("running ball shooter");
+    
   
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooter.end();
   }
 
   // Returns true when the command should end.
