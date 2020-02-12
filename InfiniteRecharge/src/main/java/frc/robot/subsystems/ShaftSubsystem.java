@@ -33,8 +33,11 @@ public class ShaftSubsystem extends SubsystemBase {
   private DigitalInput bb3;
   private boolean isRunning = false;
   private Timer timer;
+  public enum ShaftState {
+    fullStop, runningClear, indexing, shooting
 
-  private ShaftState state = ShaftState.fullStop;
+  }
+  public ShaftState state = ShaftState.fullStop;
 
   public ShaftSubsystem(CANSparkMax motor, DoubleSolenoid solenoid, DigitalInput beamBreak) {
     this.barrelMotor = motor;
@@ -53,10 +56,7 @@ public class ShaftSubsystem extends SubsystemBase {
 
   }
 
-  private enum ShaftState {
-    fullStop, runningClear, indexing
-
-  }
+  
 
   @Override
   public void periodic() {
@@ -66,48 +66,49 @@ public class ShaftSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Barrel Duty Cycle", barrelMotor.getAppliedOutput());
     SmartDashboard.putNumber("Barrel Output Current", barrelMotor.getOutputCurrent());
 
-    if(!bb1.get() && !isRunning){
-    spinUpShaft(.25);
-    timer.start();
-    isRunning = true;
-    }
-    if ((timer.get() > 0.5 && isRunning)||!bb3.get()) {
-    timer.stop();
-    timer.reset();
-    spinUpShaft(0);
-    isRunning = false;
-  }
+//     if(!bb1.get() && !isRunning){
+//     spinUpShaft(.25);
+//     timer.start();
+//     isRunning = true;
+//     }
+//     if ((timer.get() > 0.5 && isRunning)||!bb3.get()) {
+//     timer.stop();
+//     timer.reset();
+//     spinUpShaft(0);
+//     isRunning = false;
+//   }
 
   SmartDashboard.putBoolean("bb1", bb1.get());
   SmartDashboard.putBoolean("bb2", bb2.get());
   SmartDashboard.putBoolean("bb3", bb3.get());
-    // if (!bb1.get() && state == ShaftState.fullStop) {
-    //   if (!bb3.get()) {
-    //     state = ShaftState.fullStop;
-    //     spinUpShaft(0);
-    //   } else {
-    //     spinUpShaft(.25);
-    //     if (!bb2.get()) {
-    //       state = ShaftState.indexing;
+    if (!bb1.get() && state == ShaftState.fullStop) {
+      // if (!bb3.get()) {
+      //   state = ShaftState.fullStop;
+      //   spinUpShaft(0);
+      // } else {
+        spinUpShaft(.25);
+        if (!bb2.get()) {
+          state = ShaftState.indexing;
 
-    //     } else {
-    //       state = ShaftState.runningClear;
+        } else {
+          state = ShaftState.runningClear;
 
-    //     }
+        }
 
-    //   }
-    // }
+      
+    }
 
-    // if (state == ShaftState.indexing && bb2.get()) {
-    //   state = ShaftState.runningClear;
-    // }
-    // if (state == ShaftState.runningClear && (!bb2.get() || !bb3.get())) {
-    //   spinUpShaft(0);
-    //   state = ShaftState.fullStop;
+    if (state == ShaftState.indexing && bb2.get()) {
+      state = ShaftState.runningClear;
+    }
+    if (state == ShaftState.runningClear && (!bb2.get() || !bb3.get())) {
+      spinUpShaft(0);
+      state = ShaftState.fullStop;
 
-    // }
-
+    }
   }
+
+  
 
   public void spinUpShaft(double speed) {
 

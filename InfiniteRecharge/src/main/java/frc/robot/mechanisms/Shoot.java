@@ -39,6 +39,7 @@ public class Shoot {
         this.shootMotor = new CANSparkMax(5, MotorType.kBrushless); //This needs to be changed to 5
         this.buttonA = new JoystickButton(operator, 1);
         shootMotor.setInverted(true);
+       shootMotor.setSmartCurrentLimit(60);
 
         spinUp = new  POVButton(operator, 0);
 

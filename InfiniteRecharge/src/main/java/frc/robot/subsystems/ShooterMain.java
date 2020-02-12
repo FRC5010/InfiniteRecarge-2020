@@ -21,7 +21,8 @@ public class ShooterMain extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
-  public double setPoint = 500;
+  
+  public double setPoint = 1500;
 
    //Change to speed controller later
    private CANSparkMax controller;
@@ -31,8 +32,8 @@ public class ShooterMain extends SubsystemBase {
     this.controller = controller; 
     this.m_pidController = pidControl;
 
-    m_pidController.setP(.0001);
-    m_pidController.setFF(ShooterConstants.kFF);
+    m_pidController.setP(.0007);
+    m_pidController.setFF((1./4600)*1.25);
     m_pidController.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
 
     // display PID coefficients on SmartDashboard
@@ -48,6 +49,8 @@ public class ShooterMain extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("set point", setPoint);
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Shooter motor temp", controller.getMotorTemperature());
+    SmartDashboard.putNumber("current output", controller.getOutputCurrent());
 
   }
 
@@ -57,14 +60,19 @@ public class ShooterMain extends SubsystemBase {
 
 
   public void spinUpWheel(){
-     //System.out.println(" running shooter");
-    m_pidController.setFF(ShooterConstants.kFF+ (1.2/12*setPoint));
+    double accel = ((setPoint - controller.getEncoder().getVelocity()) / setPoint) * 100;
+    
+    m_pidController.setFF((ShooterConstants.kS/setPoint + (ShooterConstants.kV) + ((ShooterConstants.kA*accel)/setPoint)));
+
+    SmartDashboard.putNumber("velocity wheel", controller.getEncoder().getVelocity()*2);
+   
+   
     m_pidController.setReference(setPoint,ControlType.kVelocity);
     SmartDashboard.putNumber("applied output", controller.getAppliedOutput());
     SmartDashboard.putNumber("kf", m_pidController.getFF());
     SmartDashboard.putNumber("kp", m_pidController.getP());
     SmartDashboard.putNumber("velocity",controller.getEncoder().getVelocity());
-   // controller.set(-.50);
+  // controller.set(-.50);
 
   }
 

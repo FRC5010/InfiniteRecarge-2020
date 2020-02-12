@@ -30,11 +30,11 @@ public class Climb {
         bottomSolenoid = new DoubleSolenoid(6, 7);
         winchMotor = new CANSparkMax(6, MotorType.kBrushless);
         
-        climbPidController = winchMotor.getPIDController();
-        climbPidController.setP(ClimberConstants.kP);
-        climbPidController.setI(ClimberConstants.kI);
-        climbPidController.setD(ClimberConstants.kD);
-        climbPidController.setOutputRange(ClimberConstants.kMinOutput, ClimberConstants.kMaxOutput);
+        // climbPidController = winchMotor.getPIDController();
+        // climbPidController.setP(ClimberConstants.kP);
+        // climbPidController.setI(ClimberConstants.kI);
+        // climbPidController.setD(ClimberConstants.kD);
+        // climbPidController.setOutputRange(ClimberConstants.kMinOutput, ClimberConstants.kMaxOutput);
 
         climberMain = new Climber(topSolenoid, bottomSolenoid, winchMotor, climbPidController);
 }
