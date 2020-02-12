@@ -6,6 +6,7 @@ import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.mechanisms.ClimberConstants;
 
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
@@ -32,22 +33,32 @@ public class Climber extends SubsystemBase{
   }
 
   public void extendTop(){
-    topSolenoid.set(DoubleSolenoid.Value.kForward);
-  }
-
-  public void retractTop(){
-    topSolenoid.set(DoubleSolenoid.Value.kReverse);
-  }
+    if(topExteded == false){
+      topSolenoid.set(DoubleSolenoid.Value.kForward);
+      topExteded = true;
+    }else{
+      topSolenoid.set(DoubleSolenoid.Value.kReverse);
+      topExteded = false;
+    }
+  }  
 
   public void extendBottom(){
-    bottomSolenoid.set(DoubleSolenoid.Value.kForward);
+    if(bottomExtended == false){
+      bottomSolenoid.set(DoubleSolenoid.Value.kForward);
+      bottomExtended = true;
+    }else{
+      bottomSolenoid.set(DoubleSolenoid.Value.kReverse);
+      bottomExtended = false;
+    }
   }
 
-  public void retractBottom(){
-    bottomSolenoid.set(DoubleSolenoid.Value.kReverse);
+  public void spinUpWinch(){
+    winch.set(ClimberConstants.winchSpeed);
   }
 
-  public void spinUpWinch(double setpoint){
-    m_pidcontroller.setReference(setpoint, ControlType.kPosition);
+  public void stopWinch(){
+    winch.set(0);
   }
+  
+
 }

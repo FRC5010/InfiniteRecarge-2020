@@ -21,14 +21,19 @@ import frc.robot.subsystems.Climber;
 public class Climb {
     public DoubleSolenoid topSolenoid;
     public DoubleSolenoid bottomSolenoid;
-    public CANSparkMax winchMotor;
+    public CANSparkMax winchMotor1;
+    public CANSparkMax winchMotor2;
     public Climber climberMain;
     public CANPIDController climbPidController;
 
     public Climb(){
         topSolenoid = new DoubleSolenoid(4, 5);
         bottomSolenoid = new DoubleSolenoid(6, 7);
-        winchMotor = new CANSparkMax(6, MotorType.kBrushless);
+        winchMotor1 = new CANSparkMax(6, MotorType.kBrushless);
+        winchMotor2 = new CANSparkMax(7, MotorType.kBrushless);
+
+        //Different, scary and new, may need to change later.
+        winchMotor2.follow(winchMotor1);
         
         // climbPidController = winchMotor.getPIDController();
         // climbPidController.setP(ClimberConstants.kP);
@@ -36,6 +41,6 @@ public class Climb {
         // climbPidController.setD(ClimberConstants.kD);
         // climbPidController.setOutputRange(ClimberConstants.kMinOutput, ClimberConstants.kMaxOutput);
 
-        climberMain = new Climber(topSolenoid, bottomSolenoid, winchMotor, climbPidController);
+        climberMain = new Climber(topSolenoid, bottomSolenoid, winchMotor1, climbPidController);
 }
 }
