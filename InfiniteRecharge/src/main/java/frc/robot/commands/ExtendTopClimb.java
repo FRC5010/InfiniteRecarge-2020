@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
@@ -15,21 +16,29 @@ public class ExtendTopClimb extends CommandBase {
    * Creates a new ExtendTopClimb.
    */
   private Climber climberSubsystem;
-  public ExtendTopClimb(Climber climberSubsystem) {
+  private Joystick operatorJoystick;
+  private boolean isExtended;
+  public ExtendTopClimb(Climber climberSubsystem,Joystick operatorJoystick) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climberSubsystem = climberSubsystem;
+    this.operatorJoystick = operatorJoystick;
+    isExtended = false;
     addRequirements(climberSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climberSubsystem.extendTop();
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(operatorJoystick.getRawButtonPressed(8) && isExtended == false){
+      climberSubsystem.extendTop();
+      isExtended == true;
+    }
   }
 
   // Called once the command ends or is interrupted.
