@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
@@ -15,9 +16,11 @@ public class SpinWinchClimb extends CommandBase {
    * Creates a new SpinWinchClimb.
    */
   private Climber climberSubsystem;
-  public SpinWinchClimb(Climber climberSubsystem) {
+  private SpeedController motor;
+  public SpinWinchClimb(Climber climberSubsystem, SpeedController motor) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climberSubsystem = climberSubsystem;
+    this.motor = motor;
     addRequirements(climberSubsystem);
   }
 

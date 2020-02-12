@@ -37,7 +37,7 @@ public class ExtendTopClimb extends CommandBase {
   public void execute() {
     if(operatorJoystick.getRawButtonPressed(8) && isExtended == false){
       climberSubsystem.extendTop();
-      isExtended == true;
+      isExtended = true;
     }
   }
 
