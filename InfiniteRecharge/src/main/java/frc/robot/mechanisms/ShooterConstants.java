@@ -19,7 +19,7 @@ public class ShooterConstants {
  public static final double innerPortHeight = 2.500; //meters, measured from floor to center
 
 static{
-    kSC = 0;
+    kSC = .5;
     kVC = 0.0702;
     kAC = 0.208;
     kS = kSC / 12;

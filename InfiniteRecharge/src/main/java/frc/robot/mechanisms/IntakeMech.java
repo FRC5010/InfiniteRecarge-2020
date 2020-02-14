@@ -38,7 +38,7 @@ public class IntakeMech {
         intakeMotor.setSmartCurrentLimit(25);
         intakeMain = new IntakeSubsystem(intakeMotor, joystick, solenoid);
         rightBumper.whenPressed(new ToggleIntake(intakeMain));
-        buttonA.whenPressed(new IntakeBalls(intakeMain));
+        //buttonA.whenPressed(new IntakeBalls(intakeMain));
     }
 
 }

@@ -22,7 +22,7 @@ public class ShooterMain extends SubsystemBase {
    * Creates a new Shooter.
    */
   
-  public double setPoint = 1500;
+  public double setPoint = 2000;
 
    //Change to speed controller later
    private CANSparkMax controller;
@@ -32,8 +32,8 @@ public class ShooterMain extends SubsystemBase {
     this.controller = controller; 
     this.m_pidController = pidControl;
 
-    m_pidController.setP(.0007);
-    m_pidController.setFF((1./4600)*1.25);
+    m_pidController.setP(ShooterConstants.kP);
+    //m_pidController.setFF((1./4600)*1.25);
     m_pidController.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
 
     // display PID coefficients on SmartDashboard
@@ -47,10 +47,11 @@ public class ShooterMain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("set point", setPoint);
+    setPoint = SmartDashboard.getNumber("set point", setPoint);
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter motor temp", controller.getMotorTemperature());
     SmartDashboard.putNumber("current output", controller.getOutputCurrent());
+    SmartDashboard.putNumber("velocity wheel", controller.getEncoder().getVelocity()*2);
 
   }
 
@@ -60,11 +61,11 @@ public class ShooterMain extends SubsystemBase {
 
 
   public void spinUpWheel(){
-    double accel = ((setPoint - controller.getEncoder().getVelocity()) / setPoint) * 100;
+    double accel = ((setPoint - controller.getEncoder().getVelocity()) / setPoint) * 300;
     
-    m_pidController.setFF((ShooterConstants.kS/setPoint + (ShooterConstants.kV) + ((ShooterConstants.kA*accel)/setPoint)));
+    m_pidController.setFF((ShooterConstants.kS/setPoint + (ShooterConstants.kV)));
 
-    SmartDashboard.putNumber("velocity wheel", controller.getEncoder().getVelocity()*2);
+   
    
    
     m_pidController.setReference(setPoint,ControlType.kVelocity);
