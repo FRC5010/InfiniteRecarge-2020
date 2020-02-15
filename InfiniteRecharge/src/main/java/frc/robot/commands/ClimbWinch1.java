@@ -7,43 +7,35 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.TelescopSubsystem;
 
-public class ExtendTopClimb extends CommandBase {
+public class ClimbWinch1 extends CommandBase {
   /**
-   * Creates a new ExtendTopClimb.
+   * Creates a new climbArm1.
    */
-  private Climber climberSubsystem;
-  private Joystick operatorJoystick;
-  private boolean isExtended;
-  public ExtendTopClimb(Climber climberSubsystem,Joystick operatorJoystick) {
+  private TelescopSubsystem subsystem;
+  public ClimbWinch1() {
+   // this.subsystem = subsystem;
+    addRequirements(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
-    this.climberSubsystem = climberSubsystem;
-    this.operatorJoystick = operatorJoystick;
-    isExtended = false;
-    addRequirements(climberSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(operatorJoystick.getRawButtonPressed(8) && isExtended == false){
-      climberSubsystem.extendTop();
-      isExtended = true;
-    }
+    subsystem.spinWinchMotor1();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    subsystem.stopWinchMotor1();
   }
 
   // Returns true when the command should end.

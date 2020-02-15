@@ -32,8 +32,8 @@ public class Climb {
         winchMotor1 = new CANSparkMax(6, MotorType.kBrushless);
         winchMotor2 = new CANSparkMax(7, MotorType.kBrushless);
 
-        //Different, scary and new, may need to change later.
-        winchMotor2.follow(winchMotor1);
+        //Seperate motors will be used for now.
+        //winchMotor2.follow(winchMotor1);
         
         // climbPidController = winchMotor.getPIDController();
         // climbPidController.setP(ClimberConstants.kP);
