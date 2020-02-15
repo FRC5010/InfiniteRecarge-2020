@@ -10,24 +10,25 @@ package frc.robot.subsystems.Vision;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class VisionTable extends SubsystemBase {
+public class VisionSystem extends SubsystemBase {
   
-  // This class initializes and stores the tables
+  public static NetworkTableInstance table;
+  String name;
 
-  NetworkTableInstance table;
-  public VisionRawValues intakeCam;
-  public VisionRawValues shooterCam;
+  VisionValues rawValues, smoothedValues;
 
-  public VisionTable() {
+  public VisionSystem(String name) {
     table = NetworkTableInstance.getDefault();
-    intakeCam = new VisionRawValues(table, "intake");
-    shooterCam = new VisionRawValues(table, "shooter");
+    this.name = name;
+    rawValues = new VisionValues();
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    intakeCam.printValues();
-    shooterCam.printValues();
+    rawValues.updateViaNetworkTable("/OpenSight/" + name);
+  }
+
+  public VisionValues getRawValues() {
+    return rawValues;
   }
 }

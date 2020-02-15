@@ -8,6 +8,7 @@ import frc.robot.mechanisms.IntakeMech;
 import frc.robot.mechanisms.ShaftMechanism;
 import frc.robot.mechanisms.Shoot;
 import frc.robot.mechanisms.SpinControl;
+import frc.robot.subsystems.Vision.VisionSystem;
 import frc.robot.mechanisms.TelescopClimb;
 import frc.robot.mechanisms.ShaftMechanism;
 
@@ -29,6 +30,9 @@ public class RobotContainer {
   private IntakeMech intake;
   private TelescopClimb climb;
 
+  public VisionSystem intakeCam;
+  public VisionSystem shooterCam;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -48,6 +52,9 @@ public class RobotContainer {
 
     //climb = new TelescopClimb();
     intake = new IntakeMech(operator);
+
+    intakeCam = new VisionSystem("intake");
+    shooterCam = new VisionSystem("shooter");
   }
 
   /**
