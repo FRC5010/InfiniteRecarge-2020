@@ -39,6 +39,16 @@ public class SpinShooter extends CommandBase {
     return (Math.sqrt(ShooterConstants.earthGravity) * targetX * (1/Math.cos(angle))) 
             / (Math.sqrt(2) * Math.sqrt(targetX * Math.tan(angle) - targetY));
   }
+  //it will probably return NaN if impossible
+  //vel approaches infinity as the shooter gets closer to pointing directly at target
+
+  //some rough estimates for required velocities
+  //from init line (tx ~= 3.05m, ty ~= 1.6m, a = 54 deg)
+  //  vel = 7.130 m/s
+  //from trench run (tx ~= 5.68m, ty ~= 1.6m, a = 54 deg)
+  //  vel = 8.858 m/s
+  //from middle of field (tx ~= 7.79m, ty ~= 1.6m, a = 54 deg)
+  //  vel = 9.718 m/s
 
   // Called when the command is initially scheduled.
   @Override
