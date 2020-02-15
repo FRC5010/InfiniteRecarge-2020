@@ -7,6 +7,9 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
+import com.kauailabs.navx.frc.AHRS.SerialDataType;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import com.revrobotics.CANEncoder;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -43,7 +46,7 @@ public class Pose extends SubsystemBase {
     public final CANEncoder rightEncoder;
 
     // The gyro sensor
-    private final Gyro gyro = new ADXRS450_Gyro();
+    private final AHRS gyro = new AHRS(Port.kUSB1);
 
     // Odometry class for tracking robot pose
 

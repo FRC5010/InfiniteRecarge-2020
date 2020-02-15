@@ -22,7 +22,7 @@ public class ShooterMain extends SubsystemBase {
    * Creates a new Shooter.
    */
   
-  public double setPoint = 2000;
+  public double setPoint = 1625;
 
    //Change to speed controller later
    private CANSparkMax controller;
@@ -31,6 +31,7 @@ public class ShooterMain extends SubsystemBase {
   public ShooterMain(CANSparkMax controller,CANPIDController pidControl ) {  
     this.controller = controller; 
     this.m_pidController = pidControl;
+    SmartDashboard.putNumber("set point", setPoint);
 
     m_pidController.setP(ShooterConstants.kP);
     //m_pidController.setFF((1./4600)*1.25);
@@ -56,7 +57,7 @@ public class ShooterMain extends SubsystemBase {
   }
 
   public void end(){
-    m_pidController.setReference(0,ControlType.kVelocity);
+   controller.set(0);
   }
 
 

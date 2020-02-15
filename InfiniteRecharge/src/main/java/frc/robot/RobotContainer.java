@@ -47,14 +47,14 @@ public class RobotContainer {
     operator = new Joystick(1);
     driveMechanism = new Drive(driver);
     // spinControl = new SpinControl(driver,operator);
-    // shooter = new Shoot(operator);
+    shooter = new Shoot(operator);
     shaftMechanism = new ShaftMechanism(driver, operator);
 
     //climb = new TelescopClimb();
     intake = new IntakeMech(operator);
 
-    intakeCam = new VisionSystem("intake");
-    shooterCam = new VisionSystem("shooter");
+   // intakeCam = new VisionSystem("intake");
+    //shooterCam = new VisionSystem("shooter");
   }
 
   /**
