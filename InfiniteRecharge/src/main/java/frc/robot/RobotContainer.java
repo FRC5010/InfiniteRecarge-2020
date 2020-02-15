@@ -8,6 +8,7 @@ import frc.robot.mechanisms.IntakeMech;
 import frc.robot.mechanisms.ShaftMechanism;
 import frc.robot.mechanisms.Shoot;
 import frc.robot.mechanisms.SpinControl;
+import frc.robot.mechanisms.TelescopClimb;
 import frc.robot.mechanisms.ShaftMechanism;
 
 /**
@@ -26,23 +27,26 @@ public class RobotContainer {
   private Joystick operator;
   public Shoot shooter;
   private IntakeMech intake;
+  private TelescopClimb climb;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    //motors 1-4 are drivetrain, 
-    // motor 5 is the shooter, 
-    // motor 6 and 7 are the climb, 
-    // motor 8 is the shaft, 
+    // motors 1-4 are drivetrain,
+    // motor 5 is the shooter,
+    // motor 6 and 7 are the climb,
+    // motor 8 is the shaft,
     // motor 9 is the intake
     // motor 10 is the spinner
     driver = new Joystick(0);
     operator = new Joystick(1);
     driveMechanism = new Drive(driver);
     // spinControl = new SpinControl(driver,operator);
-    shooter = new Shoot(operator);
-    shaftMechanism = new ShaftMechanism(driver,operator);
+    // shooter = new Shoot(operator);
+    shaftMechanism = new ShaftMechanism(driver, operator);
+
+    //climb = new TelescopClimb();
     intake = new IntakeMech(operator);
   }
 

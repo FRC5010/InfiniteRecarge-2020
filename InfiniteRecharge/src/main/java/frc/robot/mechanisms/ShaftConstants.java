@@ -14,9 +14,9 @@ public class ShaftConstants {
    public static double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
    public static int fwdChannel, revChannel;
 
-   public ShaftConstants() {
-      fwdChannel = 2;
-      revChannel = 3;
+   static {
+      fwdChannel = 0;
+      revChannel = 1;
       kP = .01;
       kI = 0;
       kD = 0;
