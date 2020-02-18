@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems.Vision;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * Add your docs here.
  */
@@ -22,10 +24,12 @@ public class VisionValues {
     // variables needed to process new variables
     // plus the new variables
     double targetHeight, camHeight, angleFacingDown;
+    
     double distance;
 
     public VisionValues() {
-
+        targetHeight = 90;
+        camHeight = 26;
     }
 
     public VisionValues(double centerX, double centerY, double angleX, double angleY, double distance) {
@@ -40,6 +44,7 @@ public class VisionValues {
         this.targetHeight = targetHeight;
         this.camHeight = camHeight;
         this.angleFacingDown = angleFacingDown;
+        
     }
 
     public void updateViaNetworkTable(String path) {
@@ -51,6 +56,8 @@ public class VisionValues {
         area = 0;
         // calculating new variables
         distance = (targetHeight - camHeight) / Math.tan(Math.toRadians(angleY));
+        SmartDashboard.putNumber(path + " angle Y", angleY);
+        SmartDashboard.putNumber("Distance to target ", distance);
     }
 
     public double getCenterX() {

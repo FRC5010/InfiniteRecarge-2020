@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.Driving;
+import frc.robot.mechanisms.DriveConstants;
 
 public class DriveTrainMain extends SubsystemBase {
   /**
@@ -21,6 +23,7 @@ public class DriveTrainMain extends SubsystemBase {
   private SpeedController rightMaster;
   private Joystick driver;
   private PowerDistributionPanel pdp;
+  private double visionTPow;
 
   public DriveTrainMain(SpeedController left, SpeedController right, Joystick driver) {
     leftMaster = left;
@@ -28,12 +31,13 @@ public class DriveTrainMain extends SubsystemBase {
     this.driver = driver;
 
     pdp = new PowerDistributionPanel();
+    setDefaultCommand(new Driving(this, driver));
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    arcadeDrive(scaleInputs(-driver.getRawAxis(1)), scaleInputs(driver.getRawAxis(4)));
+    
     //System.out.println("Trying to drive from susbsystem");
   }
 
@@ -65,5 +69,12 @@ public class DriveTrainMain extends SubsystemBase {
   public void setMaxOutput(double maxOutput) {
     leftMaster.set(maxOutput);
     rightMaster.set(maxOutput);
+  }
+
+  public void visionSteer(double forwardPower, double angle){
+
+    visionTPow =  DriveConstants.kTurnP * angle;
+    
+    arcadeDrive(forwardPower, visionTPow + DriveConstants.minTurn);
   }
 }

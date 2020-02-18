@@ -29,17 +29,22 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Robot;
+import frc.robot.commands.IntakeAiming;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.Pose;
+import frc.robot.subsystems.Vision.VisionSystem;
 
 /**
  * Add your docs here.
  */
 public class Drive {
     private static DriveTrainMain driveTrain;
-  
+    private static VisionSystem intakeCam;
+    private static VisionSystem shooterCam;
+
     public Joystick driver;
     public static CANSparkMax lDrive1;
     public static CANSparkMax lDrive2;
@@ -52,6 +57,8 @@ public class Drive {
   
     public static Pose robotPose;
   
+    public JoystickButton intakeSteering;
+
     public Drive(Joystick driver) {
         init(driver); 
         configureButtonBindings();
@@ -64,6 +71,8 @@ public class Drive {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    intakeSteering = new JoystickButton(driver, 1);
+    intakeSteering.whenPressed(new IntakeAiming(driveTrain, intakeCam, driver));
   }
 
   public void init(Joystick driver) {
@@ -103,7 +112,8 @@ public class Drive {
     robotPose = new Pose(lEncoder, rEncoder);
 
     driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver);
-
+    intakeCam = new VisionSystem("intake");
+    shooterCam = new VisionSystem("shooter");
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

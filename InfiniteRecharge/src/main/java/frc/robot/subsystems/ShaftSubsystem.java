@@ -81,7 +81,7 @@ public class ShaftSubsystem extends SubsystemBase {
     // }
 
     if (state == ShaftState.shooting) {
-      spinUpShaft(.35);
+      spinUpShaft(.50);
     }
 
     SmartDashboard.putBoolean("bb1", bb1.get());
@@ -92,7 +92,7 @@ public class ShaftSubsystem extends SubsystemBase {
         state = ShaftState.fullStop;
         spinUpShaft(0);
       } else {
-        spinUpShaft(.35);
+        spinUpShaft(.50);
         if (!bb2.get()) {
           state = ShaftState.indexing;
         } else {
