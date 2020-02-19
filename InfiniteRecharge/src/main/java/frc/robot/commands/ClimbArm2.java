@@ -15,8 +15,8 @@ public class ClimbArm2 extends CommandBase {
    * Creates a new climbArm1.
    */
   private TelescopSubsystem subsystem;
-  public ClimbArm2() {
-    //this.subsystem = subsystem;
+  public ClimbArm2(TelescopSubsystem subsystem) {
+    this.subsystem = subsystem;
     addRequirements(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }

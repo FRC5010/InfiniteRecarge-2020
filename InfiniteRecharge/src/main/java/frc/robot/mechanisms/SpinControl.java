@@ -12,9 +12,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.SpinForNDetections;
+import frc.robot.commands.ToggleSpinnerDeploy;
 import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.WheelColor;
 
@@ -29,26 +31,26 @@ public class SpinControl {
     private JoystickButton rotationButton;
     private JoystickButton positionButton;
     private SpeedController spinnerMotor = new CANSparkMax(SpinConstants.spinnerMotorChannel, MotorType.kBrushless);
-    private DoubleSolenoid spinnerSolenoid;
-
+    private Solenoid spinnerSolenoid;
 
     public SpinControl(Joystick driver, Joystick operator) {
         this.driver = driver;
-        this.operator = operator; 
+        this.operator = operator;
         init();
         configureButtonBindings();
     }
 
     public void init() {
         spinner = new Spinner(spinnerMotor, 0, 1, spinnerSolenoid);
-        wheelColor = new WheelColor();
-        spinnerSolenoid = new DoubleSolenoid(SpinConstants.fwdChannel, SpinConstants.revChannel);
+        // wheelColor = new WheelColor();
+        spinnerSolenoid = new Solenoid(4);
     }
 
     public void configureButtonBindings() {
         rotationButton = new JoystickButton(driver, 1);
         positionButton = new JoystickButton(driver, 2);
-        rotationButton.whenPressed(new SpinForNDetections(spinner, wheelColor, 4));
-        positionButton.whenPressed(new SpinForNDetections(spinner, wheelColor));
+        // rotationButton.whenPressed(new SpinForNDetections(spinner, wheelColor, 4));
+        positionButton.whenPressed(new ToggleSpinnerDeploy(spinner));
+
     }
 }

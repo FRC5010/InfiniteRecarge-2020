@@ -23,7 +23,6 @@ public class TelescopSubsystem extends SubsystemBase {
   private CANSparkMax winch1, winch2, arm1, arm2;
   private Joystick driver;
   private Joystick operator;
-  private TelescopClimb climber = new TelescopClimb();
 
   public TelescopSubsystem(CANSparkMax winch1, CANSparkMax winch2, CANSparkMax arm1, CANSparkMax arm2, Joystick driver, Joystick operator) {
     this.winch1 = winch1;
@@ -73,9 +72,9 @@ public class TelescopSubsystem extends SubsystemBase {
 
   public boolean checkEncoderValue(double finalValue){
     //Currently set to only encoder one.
-    if(climber.winchEncoder1.get() == finalValue){
-      return true;
-    }
+    // // if(climber.winchEncoder1.get() == finalValue){
+    //   return true;
+    // }
     return false;
   }
 }

@@ -21,8 +21,8 @@ public class SpinConstants {
     static {
         spinnerMotorChannel = 10;
         // Will get implemented when the channels are ready.
-        // fwdChannel = __;
-        // revChannel = __;
+         fwdChannel = 4;
+         
 
         // light off red color r = 0.6, g = 0.27, b = 0.05
         // light off with change above makes confidence lower for the other colors

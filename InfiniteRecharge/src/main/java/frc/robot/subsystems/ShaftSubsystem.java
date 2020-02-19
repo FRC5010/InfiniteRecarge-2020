@@ -81,18 +81,18 @@ public class ShaftSubsystem extends SubsystemBase {
     // }
 
     if (state == ShaftState.shooting) {
-      spinUpShaft(.50);
+      spinUpShaft(.75);
     }
 
     SmartDashboard.putBoolean("bb1", bb1.get());
     SmartDashboard.putBoolean("bb2", bb2.get());
     SmartDashboard.putBoolean("bb3", bb3.get());
     if (!bb1.get() && state == ShaftState.fullStop) {
-      if (!bb3.get()) {
+      if (bb3.get()) {
         state = ShaftState.fullStop;
         spinUpShaft(0);
       } else {
-        spinUpShaft(0);
+        spinUpShaft(.50);
         if (!bb2.get()) {
           state = ShaftState.indexing;
         } else {
@@ -104,7 +104,7 @@ public class ShaftSubsystem extends SubsystemBase {
     if (state == ShaftState.indexing && bb2.get()) {
       state = ShaftState.runningClear;
     }
-    if (state == ShaftState.runningClear && (!bb2.get() || !bb3.get())) {
+    if (state == ShaftState.runningClear && (!bb2.get() || bb3.get())) {
       spinUpShaft(0);
       state = ShaftState.fullStop;
 

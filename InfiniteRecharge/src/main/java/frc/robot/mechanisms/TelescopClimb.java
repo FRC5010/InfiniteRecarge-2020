@@ -17,6 +17,7 @@ import frc.robot.commands.ClimbArm1;
 import frc.robot.commands.ClimbArm2;
 import frc.robot.commands.ClimbWinch1;
 import frc.robot.commands.ClimbWinch2;
+import frc.robot.subsystems.TelescopSubsystem;
 
 
 /**
@@ -30,21 +31,25 @@ public class TelescopClimb {
     public Encoder winchEncoder1;
     public Encoder winchEncoder2;
     public Joystick driver;
+    public Joystick operator;
     public JoystickButton armBtn1;
     public JoystickButton armBtn2;
     public JoystickButton winchBtn1;
     public JoystickButton winchBtn2;
+    private TelescopSubsystem subsystem;
 
-    public TelescopClimb(){
+    public TelescopClimb(Joystick driver, Joystick operator){
         armMotor1 = new CANSparkMax(TelescopConstants.arm1Port, MotorType.kBrushless);
         armMotor2 = new CANSparkMax(TelescopConstants.arm2Port, MotorType.kBrushless);
 
         winchMotor1 = new CANSparkMax(TelescopConstants.winch1Port, MotorType.kBrushless);
         winchMotor2 = new CANSparkMax(TelescopConstants.winch2Port, MotorType.kBrushless);
+        this.driver = driver;
+        this.operator = operator;
+        // winchEncoder1 = new Encoder(TelescopConstants.encoderPort1, TelescopConstants.encoderPort2);
+        // winchEncoder2 = new Encoder(TelescopConstants.encoderPort3, TelescopConstants.encoderPort4);
 
-        winchEncoder1 = new Encoder(TelescopConstants.encoderPort1, TelescopConstants.encoderPort2);
-        winchEncoder2 = new Encoder(TelescopConstants.encoderPort3, TelescopConstants.encoderPort4);
-
+        subsystem = new TelescopSubsystem(winchMotor1, winchMotor2, armMotor1, armMotor2, driver, operator);
         armMotor1.setSmartCurrentLimit(20);
         armMotor2.setSmartCurrentLimit(20);
         winchMotor1.setSmartCurrentLimit(20);
@@ -53,15 +58,15 @@ public class TelescopClimb {
         armMotor1.setInverted(true);
         armMotor2.setInverted(true);
         
-        armBtn1 = new JoystickButton(driver, 2);
-        armBtn2 = new JoystickButton(driver, 3);
-        winchBtn1 = new JoystickButton(driver, 4);
-        winchBtn2 = new JoystickButton(driver, 5);
+        armBtn1 = new JoystickButton(driver, 1);
+        armBtn2 = new JoystickButton(driver, 2);
+        winchBtn1 = new JoystickButton(driver, 3);
+        winchBtn2 = new JoystickButton(driver, 4);
 
-        armBtn1.whileHeld(new ClimbArm1());
-        armBtn2.whileHeld(new ClimbArm2());
-        winchBtn1.whileHeld(new ClimbWinch1());
-        winchBtn2.whileHeld(new ClimbWinch2());
+        armBtn1.whileHeld(new ClimbArm1(subsystem));
+        armBtn2.whileHeld(new ClimbArm2(subsystem));
+        winchBtn1.whileHeld(new ClimbWinch1(subsystem));
+        winchBtn2.whileHeld(new ClimbWinch2(subsystem));
     }
 
 

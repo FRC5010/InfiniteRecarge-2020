@@ -8,18 +8,19 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Spinner extends SubsystemBase {
   private SpeedController spinner;
-  private DoubleSolenoid spinDeployment;
+  private Solenoid spinDeployment;
   private boolean isDeployed;
 
   /**
    * Creates a new Spinner.
    */
-  public Spinner(SpeedController spinner, int fwdChannel, int revChannel, DoubleSolenoid spinDeployment) {
+  public Spinner(SpeedController spinner, int fwdChannel, int revChannel, Solenoid spinDeployment) {
     this.spinner = spinner;
     this.spinDeployment = spinDeployment;
     //Set as false since spinner will not be deployed at start.
@@ -49,10 +50,12 @@ public class Spinner extends SubsystemBase {
   }
 
   public void deploy(){
-    spinDeployment.set(DoubleSolenoid.Value.kForward);
+     spinDeployment.set(true);
+     isDeployed = true;
   }
 
   public void retract(){
-    spinDeployment.set(DoubleSolenoid.Value.kReverse);
+    spinDeployment.set(false);
+    isDeployed = false;
   }
 }

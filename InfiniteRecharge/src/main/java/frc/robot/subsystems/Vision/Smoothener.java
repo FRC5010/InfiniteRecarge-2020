@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems.Vision;
+package frc.robot.subsystems.vision;
 
 /**
  * Add your docs here.
