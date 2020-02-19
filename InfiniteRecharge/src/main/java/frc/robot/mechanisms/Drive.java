@@ -113,7 +113,7 @@ public class Drive {
 
     driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver);
     intakeCam = new VisionSystem("intake");
-    shooterCam = new VisionSystem("shooter");
+    shooterCam = new VisionSystem("shooter", 26, 0, 90);
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

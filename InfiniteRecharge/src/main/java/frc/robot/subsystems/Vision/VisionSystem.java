@@ -23,6 +23,12 @@ public class VisionSystem extends SubsystemBase {
     rawValues = new VisionValues();
   }
 
+  public VisionSystem(String name, double camHeight, double camAngle, double targetHeight) {
+    table = NetworkTableInstance.getDefault();
+    this.name = name;
+    rawValues = new VisionValues(camHeight, camAngle, targetHeight);
+  }
+
   @Override
   public void periodic() {
     rawValues.updateViaNetworkTable("/OpenSight/" + name);

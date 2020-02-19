@@ -12,8 +12,8 @@ package frc.robot.mechanisms;
  */
 public class TelescopConstants {
     //Values left null must be decided by electric.
-    public static int arm1Port;
-    public static int arm2Port;
+    public static int arm1Port = 11;
+    public static int arm2Port = 12;
     public static int winch1Port = 6;
     public static int winch2Port = 7;
 

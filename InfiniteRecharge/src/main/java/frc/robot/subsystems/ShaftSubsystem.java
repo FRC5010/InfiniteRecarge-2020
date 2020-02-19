@@ -92,7 +92,7 @@ public class ShaftSubsystem extends SubsystemBase {
         state = ShaftState.fullStop;
         spinUpShaft(0);
       } else {
-        spinUpShaft(.50);
+        spinUpShaft(0);
         if (!bb2.get()) {
           state = ShaftState.indexing;
         } else {

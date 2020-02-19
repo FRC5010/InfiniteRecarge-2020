@@ -15,42 +15,37 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class VisionValues {
 
     // the essential variables, stuff they already give me
-    double centerX;
-    double centerY;
+    // TODO: If you ever get rid of a networkentry variable in opensight, update vision classes
     double angleX;
     double angleY;
     double area;
 
     // variables needed to process new variables
     // plus the new variables
-    double targetHeight, camHeight, angleFacingDown;
-    
+    double camHeight, camAngle, targetHeight;
     double distance;
 
     public VisionValues() {
-        targetHeight = 90;
-        camHeight = 26;
     }
 
     public VisionValues(double centerX, double centerY, double angleX, double angleY, double distance) {
-        this.centerX = centerX;
-        this.centerY = centerY;
+        // this.centerX = centerX;
+        // this.centerY = centerY;
         this.angleX = angleX;
         this.angleY = angleY;
         this.distance = distance;
     }
 
-    public VisionValues(double targetHeight, double camHeight, double angleFacingDown) {
-        this.targetHeight = targetHeight;
+    public VisionValues(double camHeight, double camAngle, double targetHeight) {
         this.camHeight = camHeight;
-        this.angleFacingDown = angleFacingDown;
-        
+        this.camAngle = camAngle;
+        this.targetHeight = targetHeight;
     }
 
     public void updateViaNetworkTable(String path) {
         // essential variables
-        centerX = VisionSystem.table.getTable(path).getEntry("center-x").getDouble(0);
-        centerX = VisionSystem.table.getTable(path).getEntry("center-y").getDouble(0);
+        // centerX = VisionSystem.table.getTable(path).getEntry("center-x").getDouble(0);
+        // centerX = VisionSystem.table.getTable(path).getEntry("center-y").getDouble(0);
         angleX = VisionSystem.table.getTable(path).getEntry("angle-x").getDouble(0);
         angleY = VisionSystem.table.getTable(path).getEntry("angle-y").getDouble(0);
         area = 0;
@@ -60,13 +55,13 @@ public class VisionValues {
         SmartDashboard.putNumber("Distance to target ", distance);
     }
 
-    public double getCenterX() {
-        return centerX;
-    }
+    // public double getCenterX() {
+    //     return centerX;
+    // }
 
-    public double getCenterY() {
-        return centerY;
-    }
+    // public double getCenterY() {
+    //     return centerY;
+    // }
 
     public double getAngleX() {
         return angleX;
