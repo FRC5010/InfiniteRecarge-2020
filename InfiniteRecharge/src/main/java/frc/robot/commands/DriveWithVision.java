@@ -9,21 +9,25 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.mechanisms.DriveConstants;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.VisionSystem;
 
-public class IntakeAiming extends CommandBase {
+public class DriveWithVision extends CommandBase {
+  
+  // Drive with vision TURNS the robot till it sees it and DRIVES the robot to set distance
+
   DriveTrainMain drive;
   VisionSystem vision;
-  Joystick driver;
-  /**
-   * Creates a new IntakeAiming.
-   */
-  public IntakeAiming(DriveTrainMain drive, VisionSystem vision, Joystick driver) {
+  
+  double targetDistance;
+  double angleTolerance = 5;
+  double distanceTolerance = 5;
+
+  public DriveWithVision(DriveTrainMain drive, VisionSystem vision, double targetDistance) {
     this.drive = drive;
     this.vision = vision;
-    this.driver = driver;
-    // Use addRequirements() here to declare subsystem dependencies.
+    this.targetDistance = targetDistance;
     addRequirements(drive);
     addRequirements(vision);
   }
@@ -36,7 +40,9 @@ public class IntakeAiming extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drive.visionSteer(drive.scaleInputs(-driver.getRawAxis(1)), vision.getRawValues().getAngleX());
+    double turnCorrection = vision.getRawValues().getAngleX() * DriveConstants.kTurnP;
+    double driveCorrection = (vision.getRawValues().getDistance() - targetDistance) * DriveConstants.kPDriveVel;
+    drive.arcadeDrive(driveCorrection + DriveConstants.minTurn, turnCorrection + DriveConstants.minTurn);
   }
 
   // Called once the command ends or is interrupted.
@@ -47,7 +53,6 @@ public class IntakeAiming extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
-    return driver.getRawAxis(4)!=0 || vision.getRawValues().getAngleX()==0;
+    return vision.getRawValues().getAngleX() < angleTolerance && vision.getRawValues().getDistance() < distanceTolerance;
   }
 }

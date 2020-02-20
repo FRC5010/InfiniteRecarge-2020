@@ -16,12 +16,16 @@ public class VisionValues {
 
     // the essential variables, stuff they already give me
     // TODO: If you ever get rid of a networkentry variable in opensight, update vision classes
-    double angleX;
-    double angleY;
+    double centerX;
+    double centerY;
     double area;
 
-    // variables needed to process new variables
-    // plus the new variables
+    // variables needed to process new variables, plus the new variables
+    // angles
+    double screenSizeX, screenSizeY, camFovX, camFovY;
+    double angleX;
+    double angleY;
+    // distance
     double camHeight, camAngle, targetHeight;
     double distance;
 
@@ -29,8 +33,8 @@ public class VisionValues {
     }
 
     public VisionValues(double centerX, double centerY, double angleX, double angleY, double distance) {
-        // this.centerX = centerX;
-        // this.centerY = centerY;
+        this.centerX = centerX;
+        this.centerY = centerY;
         this.angleX = angleX;
         this.angleY = angleY;
         this.distance = distance;
@@ -40,28 +44,36 @@ public class VisionValues {
         this.camHeight = camHeight;
         this.camAngle = camAngle;
         this.targetHeight = targetHeight;
+        this.screenSizeX = 160;
+        this.screenSizeY = 120;
+        this.camFovX = 61;
+        this.camFovY = 34.3;
     }
 
     public void updateViaNetworkTable(String path) {
-        // essential variables
-        // centerX = VisionSystem.table.getTable(path).getEntry("center-x").getDouble(0);
-        // centerX = VisionSystem.table.getTable(path).getEntry("center-y").getDouble(0);
-        angleX = VisionSystem.table.getTable(path).getEntry("angle-x").getDouble(0);
-        angleY = VisionSystem.table.getTable(path).getEntry("angle-y").getDouble(0);
+        // essential variables from NetworkTables
+        centerX = VisionSystem.table.getTable(path).getEntry("center-x").getDouble(0);
+        centerY = VisionSystem.table.getTable(path).getEntry("center-y").getDouble(0);
         area = 0;
-        // calculating new variables
+        // calculating angle
+        angleY = camFovY * (screenSizeY / 2 - centerY) / screenSizeY;
+        angleX = camFovX * (screenSizeX / 2 - centerX) / screenSizeX;
+        // calculating distance
         distance = (targetHeight - camHeight) / Math.tan(Math.toRadians(angleY));
-        SmartDashboard.putNumber(path + " angle Y", angleY);
-        SmartDashboard.putNumber("Distance to target ", distance);
+
+        SmartDashboard.putNumber(path + " centerX", centerX);
+        SmartDashboard.putNumber(path + " centerY", centerY);
+        SmartDashboard.putNumber(path + " angleX", angleX);
+        SmartDashboard.putNumber(path + " angleY", angleY);
     }
 
-    // public double getCenterX() {
-    //     return centerX;
-    // }
+    public double getCenterX() {
+        return centerX;
+    }
 
-    // public double getCenterY() {
-    //     return centerY;
-    // }
+    public double getCenterY() {
+        return centerY;
+    }
 
     public double getAngleX() {
         return angleX;

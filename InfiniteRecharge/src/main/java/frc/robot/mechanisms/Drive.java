@@ -31,7 +31,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Robot;
-import frc.robot.commands.IntakeAiming;
+import frc.robot.commands.AimWithVision;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.Pose;
@@ -57,22 +57,20 @@ public class Drive {
   
     public static Pose robotPose;
   
-    public JoystickButton intakeSteering;
+    public JoystickButton intakeAimButton;
+    public JoystickButton shooterAimButton;
 
     public Drive(Joystick driver) {
         init(driver); 
         configureButtonBindings();
     }
-
-      /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by instantiating a {@link GenericHID} or one of its subclasses
-   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
+  
   private void configureButtonBindings() {
-    intakeSteering = new JoystickButton(driver, 1);
-    intakeSteering.whenPressed(new IntakeAiming(driveTrain, intakeCam, driver));
+    intakeAimButton = new JoystickButton(driver, 1);
+    intakeAimButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver));
+    // TODO: configue buttons so that it doesn't interfere with anything else
+    shooterAimButton = new JoystickButton(driver, 2);
+    shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver));
   }
 
   public void init(Joystick driver) {

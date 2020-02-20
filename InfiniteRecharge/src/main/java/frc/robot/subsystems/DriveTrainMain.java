@@ -70,11 +70,4 @@ public class DriveTrainMain extends SubsystemBase {
     leftMaster.set(maxOutput);
     rightMaster.set(maxOutput);
   }
-
-  public void visionSteer(double forwardPower, double angle){
-
-    visionTPow =  DriveConstants.kTurnP * angle;
-    
-    arcadeDrive(forwardPower, visionTPow + DriveConstants.minTurn);
-  }
 }
