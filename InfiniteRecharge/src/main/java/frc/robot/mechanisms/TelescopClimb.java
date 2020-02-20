@@ -58,10 +58,10 @@ public class TelescopClimb {
         armMotor1.setInverted(true);
         armMotor2.setInverted(true);
         
-        armBtn1 = new JoystickButton(driver, 1);
-        armBtn2 = new JoystickButton(driver, 2);
-        winchBtn1 = new JoystickButton(driver, 3);
-        winchBtn2 = new JoystickButton(driver, 4);
+        armBtn1 = new JoystickButton(operator, 1);
+        armBtn2 = new JoystickButton(operator, 2);
+        winchBtn1 = new JoystickButton(operator, 3);
+        winchBtn2 = new JoystickButton(operator, 4);
 
         armBtn1.whileHeld(new ClimbArm1(subsystem));
         armBtn2.whileHeld(new ClimbArm2(subsystem));
