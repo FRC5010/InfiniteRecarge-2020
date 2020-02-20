@@ -35,7 +35,7 @@ import frc.robot.commands.IntakeAiming;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.Pose;
-import frc.robot.subsystems.vision.VisionSystem;
+import frc.robot.subsystems.VisionSystem;
 
 /**
  * Add your docs here.
