@@ -23,7 +23,7 @@ public class ShooterMain extends SubsystemBase {
    */
   
   public double setPoint = 3400;
-
+  public static boolean readyToShoot = false;
    //Change to speed controller later
    private CANSparkMax controller;
    private CANPIDController m_pidController;
@@ -48,7 +48,7 @@ public class ShooterMain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    setPoint = SmartDashboard.getNumber("set point", setPoint);
+    SmartDashboard.putNumber("set point", setPoint);
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter motor temp", controller.getMotorTemperature());
     SmartDashboard.putNumber("current output", controller.getOutputCurrent());
@@ -74,6 +74,12 @@ public class ShooterMain extends SubsystemBase {
     SmartDashboard.putNumber("kf", m_pidController.getFF());
     SmartDashboard.putNumber("kp", m_pidController.getP());
     SmartDashboard.putNumber("velocity",controller.getEncoder().getVelocity());
+    if (controller.getEncoder().getVelocity() > setPoint) {
+      SmartDashboard.putBoolean("Ready to Shoot", true);
+      readyToShoot = true;
+    } else {
+      readyToShoot = false;
+    }
   // controller.set(-.50);
 
   }

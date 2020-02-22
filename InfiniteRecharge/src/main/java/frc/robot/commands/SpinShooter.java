@@ -62,8 +62,14 @@ public class SpinShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setPoint =  vision.getRawValues().getDistance()* 5.2 + 2550;
-    shooter.spinUpWheel();
+    double distance = vision.getRawValues().getDistance();
+
+    if(distance > 50 || distance < 480){
+      shooter.setPoint =  vision.getRawValues().getDistance()* 5.2 + 2550;
+      shooter.spinUpWheel();
+    }else{
+      shooter.end();
+    }
   }
 
   // Called once the command ends or is interrupted.

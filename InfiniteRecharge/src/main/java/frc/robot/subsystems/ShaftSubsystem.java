@@ -35,7 +35,7 @@ public class ShaftSubsystem extends SubsystemBase {
   private Timer timer;
 
   public enum ShaftState {
-    fullStop, runningClear, indexing, shooting
+    fullStop, runningClear, indexing, shooting, shootIndex, shootWait
 
   }
 
@@ -80,18 +80,31 @@ public class ShaftSubsystem extends SubsystemBase {
     // isRunning = false;
     // }
 
-    if (state == ShaftState.shooting) {
+    if (state == ShaftState.shooting) {  
       spinUpShaft(.75);
+
+      if(bb3.get() == true)
+        state = ShaftState.shootIndex;
+    }
+    if(state == ShaftState.shootIndex){
+      spinUpShaft(.75);
+
+      if(bb3.get() == false)
+        state = ShaftState.shootWait;
+    }
+    if(state == ShaftState.shootWait){
+      spinUpShaft(0);
+      if (ShooterMain.readyToShoot) {
+        state = ShaftState.shooting;
+      }
     }
 
     SmartDashboard.putBoolean("bb1", bb1.get());
     SmartDashboard.putBoolean("bb2", bb2.get());
     SmartDashboard.putBoolean("bb3", bb3.get());
-    if (!bb1.get() && state == ShaftState.fullStop) {
-      if (bb3.get()) {
-        state = ShaftState.fullStop;
-        spinUpShaft(0);
-      } else {
+    SmartDashboard.putString("Beam break", state.toString());
+    if (state == ShaftState.fullStop) {
+      if (!bb1.get() && bb3.get()) {
         spinUpShaft(.50);
         if (!bb2.get()) {
           state = ShaftState.indexing;
@@ -104,10 +117,9 @@ public class ShaftSubsystem extends SubsystemBase {
     if (state == ShaftState.indexing && bb2.get()) {
       state = ShaftState.runningClear;
     }
-    if (state == ShaftState.runningClear && (!bb2.get() || bb3.get())) {
+    if (state == ShaftState.runningClear && (!bb2.get() || !bb3.get())) {
       spinUpShaft(0);
       state = ShaftState.fullStop;
-
     }
   }
 

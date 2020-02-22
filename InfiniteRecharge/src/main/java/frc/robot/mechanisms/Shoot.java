@@ -38,7 +38,6 @@ public class Shoot {
     public Shoot(Joystick operator, VisionSystem shooterVision){
         this.diver = operator;
         this.shootMotor = new CANSparkMax(5, MotorType.kBrushless); //This needs to be changed to 5
-        this.buttonA = new JoystickButton(operator, 1);
         shootMotor.setInverted(true);
        shootMotor.setSmartCurrentLimit(40);
 
@@ -55,7 +54,7 @@ public class Shoot {
         spinUp.whenPressed(new ChangeSpeed(shooterMain, true));
         spinDown.whenPressed(new ChangeSpeed(shooterMain, false));
         
-        buttonA.whileHeld(new SpinShooter(shooterMain, shooterVision));
+        
     
     
     

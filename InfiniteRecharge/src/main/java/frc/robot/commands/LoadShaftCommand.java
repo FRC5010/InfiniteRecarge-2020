@@ -32,7 +32,7 @@ public class LoadShaftCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shaftClimber.state= ShaftState.shooting;
+    shaftClimber.state = ShaftState.shootWait;
     System.out.println("Running Shaft Climb");
   
   }
@@ -41,7 +41,7 @@ public class LoadShaftCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shaftClimber.spinUpShaft(0);
-    shaftClimber.state= ShaftState.fullStop;
+    shaftClimber.state = ShaftState.fullStop;
   }
 
   // Returns true when the command should end.

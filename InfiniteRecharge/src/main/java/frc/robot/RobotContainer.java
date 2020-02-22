@@ -46,10 +46,11 @@ public class RobotContainer {
     driveMechanism = new Drive(driver, shooterVision);
      spinControl = new SpinControl(driver,operator);
    shooter = new Shoot(operator, shooterVision);
-    shaftMechanism = new ShaftMechanism(driver, operator);
+   intake = new IntakeMech(operator);
+    shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain,shooter.shooterMain,shooterVision);
 
    // climb = new TelescopClimb(driver, operator);
-    intake = new IntakeMech(operator);
+    
   }
 
   /**
