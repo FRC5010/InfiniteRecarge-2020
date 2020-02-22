@@ -28,7 +28,7 @@ public class TelescopConstants {
     public static int arm1Axis = 1;
     public static int arm2Axis = 5;
     public static int winch1Axis = 2;
-    public static int winch21Axis = 3;
+    public static int winch2Axis = 3;
     
 
 }
