@@ -45,7 +45,7 @@ public class TelescopSubsystem extends SubsystemBase {
   }
 
   public void spinArmMotor2(){
-    arm2.set(operator.getRawAxis(TelescopConstants.arm2Axis));
+    arm2.set(operator.getRawAxis(TelescopConstants.arm1Axis));
   }
 
   public void stopArmMotor2(){
@@ -61,7 +61,7 @@ public class TelescopSubsystem extends SubsystemBase {
   }
 
   public void spinWinchMotor2(){
-    winch2.set(operator.getRawAxis(TelescopConstants.winch21Axis));
+    winch2.set(operator.getRawAxis(TelescopConstants.winch1Axis));
   }
 
   public void stopWinchMotor2(){

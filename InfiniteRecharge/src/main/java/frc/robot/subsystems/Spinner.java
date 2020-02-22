@@ -34,7 +34,7 @@ public class Spinner extends SubsystemBase {
   }
 
   public void spin(){
-    spinner.set(0.05);
+    spinner.set(0.25);
   }
 
   public void stop(){

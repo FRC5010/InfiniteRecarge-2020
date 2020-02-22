@@ -22,7 +22,7 @@ public class ShooterMain extends SubsystemBase {
    * Creates a new Shooter.
    */
   
-  public double setPoint = 1625;
+  public double setPoint = 3400;
 
    //Change to speed controller later
    private CANSparkMax controller;

@@ -56,8 +56,8 @@ public class VisionValues {
         centerY = VisionSystem.table.getTable(path).getEntry("center-y").getDouble(0);
         area = 0;
         // calculating angle
-        angleY = camFovY * (screenSizeY / 2 - centerY) / screenSizeY;
-        angleX = camFovX * (screenSizeX / 2 - centerX) / screenSizeX;
+        angleY = camFovY * (screenSizeY / 2 - (centerY * (screenSizeY/2))) / screenSizeY;
+        angleX = camFovX * (screenSizeX / 2 - (centerX * (screenSizeX/2))) / screenSizeX;
         // calculating distance
         distance = (targetHeight - camHeight) / Math.tan(Math.toRadians(angleY));
 
@@ -65,6 +65,7 @@ public class VisionValues {
         SmartDashboard.putNumber(path + " centerY", centerY);
         SmartDashboard.putNumber(path + " angleX", angleX);
         SmartDashboard.putNumber(path + " angleY", angleY);
+        SmartDashboard.putNumber(path + " distance", distance);
     }
 
     public double getCenterX() {

@@ -30,12 +30,14 @@ public class ClimbWinch1 extends CommandBase {
   @Override
   public void execute() {
     subsystem.spinWinchMotor1();
+    subsystem.spinWinchMotor2();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     subsystem.stopWinchMotor1();
+    subsystem.stopWinchMotor2();
   }
 
   // Returns true when the command should end.

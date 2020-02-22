@@ -32,6 +32,7 @@ public class SpinControl {
     private JoystickButton positionButton;
     private SpeedController spinnerMotor = new CANSparkMax(SpinConstants.spinnerMotorChannel, MotorType.kBrushless);
     private Solenoid spinnerSolenoid;
+    private JoystickButton deployButton;
 
     public SpinControl(Joystick driver, Joystick operator) {
         this.driver = driver;
@@ -41,16 +42,20 @@ public class SpinControl {
     }
 
     public void init() {
-        spinner = new Spinner(spinnerMotor, 0, 1, spinnerSolenoid);
-        // wheelColor = new WheelColor();
         spinnerSolenoid = new Solenoid(4);
+        spinner = new Spinner(spinnerMotor, 0, 1, spinnerSolenoid);
+        wheelColor = new WheelColor();
+        
     }
 
     public void configureButtonBindings() {
-        rotationButton = new JoystickButton(driver, 1);
-        positionButton = new JoystickButton(driver, 2);
-        // rotationButton.whenPressed(new SpinForNDetections(spinner, wheelColor, 4));
-        positionButton.whenPressed(new ToggleSpinnerDeploy(spinner));
+        rotationButton = new JoystickButton(driver, 3);
+        positionButton = new JoystickButton(driver, 4);
+        deployButton = new JoystickButton(driver, 8);
+        rotationButton.whenPressed(new SpinForNDetections(spinner, wheelColor, 27));
+        positionButton.whenPressed(new SpinForNDetections(spinner, wheelColor));
+        deployButton.whenPressed(new ToggleSpinnerDeploy(spinner));
 
     }
+
 }

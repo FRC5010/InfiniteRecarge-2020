@@ -60,8 +60,8 @@ public class Drive {
     public JoystickButton intakeAimButton;
     public JoystickButton shooterAimButton;
 
-    public Drive(Joystick driver) {
-        init(driver); 
+    public Drive(Joystick driver, VisionSystem shooterVision) {
+        init(driver, shooterVision); 
         configureButtonBindings();
     }
   
@@ -73,7 +73,7 @@ public class Drive {
     shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver));
   }
 
-  public void init(Joystick driver) {
+  public void init(Joystick driver, VisionSystem shooterVision) {
     if (RobotBase.isReal()) {
       this.driver = driver;
         // Neos HAVE to be in brushless
@@ -108,10 +108,10 @@ public class Drive {
     }
 
     robotPose = new Pose(lEncoder, rEncoder);
-
+    shooterCam = shooterVision;
     driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver);
     intakeCam = new VisionSystem("intake");
-    shooterCam = new VisionSystem("shooter", 26, 0, 90);
+ 
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

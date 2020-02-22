@@ -9,6 +9,7 @@ import frc.robot.mechanisms.ShaftMechanism;
 import frc.robot.mechanisms.Shoot;
 import frc.robot.mechanisms.SpinControl;
 import frc.robot.mechanisms.TelescopClimb;
+import frc.robot.subsystems.VisionSystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -27,6 +28,7 @@ public class RobotContainer {
   public Shoot shooter;
   private IntakeMech intake;
   private TelescopClimb climb;
+  private VisionSystem shooterVision;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -40,13 +42,14 @@ public class RobotContainer {
     // motor 10 is the spinner
     driver = new Joystick(0);
     operator = new Joystick(1);
-    //driveMechanism = new Drive(driver);
-     //spinControl = new SpinControl(driver,operator);
-    //shooter = new Shoot(operator);
-    //shaftMechanism = new ShaftMechanism(driver, operator);
+    shooterVision = new VisionSystem("shooter",26,0,90);
+    driveMechanism = new Drive(driver, shooterVision);
+     spinControl = new SpinControl(driver,operator);
+   shooter = new Shoot(operator, shooterVision);
+    shaftMechanism = new ShaftMechanism(driver, operator);
 
-    //climb = new TelescopClimb(driver, operator);
-    //intake = new IntakeMech(operator);
+   // climb = new TelescopClimb(driver, operator);
+    intake = new IntakeMech(operator);
   }
 
   /**

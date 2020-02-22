@@ -25,7 +25,7 @@ static{
     kS = kSC / 12;
     kV = kVC / 60 / 1 / (12 - kS);
     kA = kAC / 60 / 1 / (12 - kS);
-    kP =0.001;
+    kP =0.002;
     kI= 0;
     kD = 0;
     kIz = 0;
