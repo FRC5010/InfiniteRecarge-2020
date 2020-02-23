@@ -22,20 +22,19 @@ public class ChangeSpeed extends CommandBase {
   public ChangeSpeed(ShooterMain subsystem,boolean up) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.subsystem = subsystem;
-    this.setPoint = subsystem.setPoint;
+    this.setPoint = subsystem.baseSpeed;
     this.up = up;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    setPoint = (up)?subsystem.setPoint++:subsystem.setPoint--;
+    setPoint = (up)?subsystem.baseSpeed++:subsystem.baseSpeed--;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("shooter setpoint", setPoint);
   }
 
   // Called once the command ends or is interrupted.

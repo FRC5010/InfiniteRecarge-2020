@@ -27,6 +27,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.ShooterMain;
 import frc.robot.subsystems.VisionSystem;
+import frc.robot.subsystems.ShaftSubsystem.ShaftState;
 
 /**
  * Add your docs here.
@@ -61,8 +62,8 @@ public class ShaftMechanism {
 
     this.launchButton = new JoystickButton(operator, ControlConstants.launchButton);
     this.heightToggle = new JoystickButton(driver, ControlConstants.heightToggle);
-    povUp = new POVButton(operator, 0);
-    povDown = new POVButton(operator, 180);
+    povUp = new POVButton(operator, ControlConstants.barrelUp);
+    povDown = new POVButton(operator, ControlConstants.barrelDown);
     shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
     beamBreakIntake = new DigitalInput(0);
     beamBreakMiddle = new DigitalInput(1);
@@ -72,9 +73,18 @@ public class ShaftMechanism {
 
     heightToggle.whenPressed(new ParallelCommandGroup(new ToggleShaftHeight(shaftClimber),new ToggleIntake(intakeSubsystem)));
     launchButton.whileHeld(new ParallelCommandGroup(new LoadShaftCommand(shaftClimber),new SpinShooter(shooterMain, visionSubsystem)));
-    povUp.whileHeld(new FunctionalCommand(()->{}, () -> shaftClimber.spinUpShaft(.5), (intr) -> shaftClimber.spinUpShaft(0), () -> false, shaftClimber));
-    povDown.whileHeld(new FunctionalCommand(()->{}, () -> shaftClimber.spinUpShaft(-.5), (intr) -> shaftClimber.spinUpShaft(0), () -> false, shaftClimber));
-
+    povUp.whileHeld(new FunctionalCommand(
+      () -> shaftClimber.state = ShaftState.manual, 
+      () -> shaftClimber.spinUpShaft(.5), 
+      (intr) -> { shaftClimber.spinUpShaft(0); shaftClimber.state = ShaftState.fullStop; }, 
+      () -> false, 
+      shaftClimber));
+    povDown.whileHeld(new FunctionalCommand(
+      () -> shaftClimber.state = ShaftState.manual, 
+      () -> shaftClimber.spinUpShaft(-.5), 
+      (intr) -> {shaftClimber.spinUpShaft(0); shaftClimber.state = ShaftState.fullStop;}, 
+      () -> false, 
+      shaftClimber));
   }
 
   public ShaftSubsystem getSubsystem() {

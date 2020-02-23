@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.ControlConstants;
 import frc.robot.subsystems.DriveTrainMain;
 
 public class Driving extends CommandBase {
@@ -32,7 +33,9 @@ public class Driving extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveSubsystem.arcadeDrive(driveSubsystem.scaleInputs(-driver.getRawAxis(1)), driveSubsystem.scaleInputs(driver.getRawAxis(4)));
+    driveSubsystem.arcadeDrive(
+      driveSubsystem.scaleInputs(-driver.getRawAxis(ControlConstants.throttle)), 
+      driveSubsystem.scaleInputs(driver.getRawAxis(ControlConstants.steer)));
   }
 
   // Called once the command ends or is interrupted.

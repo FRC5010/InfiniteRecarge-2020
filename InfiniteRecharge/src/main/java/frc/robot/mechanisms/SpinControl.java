@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.ControlConstants;
 import frc.robot.commands.SpinForNDetections;
 import frc.robot.commands.ToggleSpinnerDeploy;
 import frc.robot.subsystems.Spinner;
@@ -45,13 +46,12 @@ public class SpinControl {
         spinnerSolenoid = new Solenoid(4);
         spinner = new Spinner(spinnerMotor, 0, 1, spinnerSolenoid);
         wheelColor = new WheelColor();
-        
     }
 
     public void configureButtonBindings() {
-        rotationButton = new JoystickButton(driver, 3);
-        positionButton = new JoystickButton(driver, 4);
-        deployButton = new JoystickButton(driver, 8);
+        rotationButton = new JoystickButton(driver, ControlConstants.rotationControl);
+        positionButton = new JoystickButton(driver, ControlConstants.positionControl);
+        deployButton = new JoystickButton(driver, ControlConstants.spinDeploy);
         rotationButton.whenPressed(new SpinForNDetections(spinner, wheelColor, 27));
         positionButton.whenPressed(new SpinForNDetections(spinner, wheelColor));
         deployButton.whenPressed(new ToggleSpinnerDeploy(spinner));

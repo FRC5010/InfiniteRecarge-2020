@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ControlConstants;
 import frc.robot.mechanisms.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
@@ -40,8 +41,8 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    manualInput = (joystick.getRawAxis(IntakeConstants.intakeAxis) - joystick.getRawAxis(IntakeConstants.outtakeAxis)) * IntakeConstants.maxOutput;
-    intakeMotor.set(manualInput);
+    manualInput = (joystick.getRawAxis(ControlConstants.intakeAxis) - joystick.getRawAxis(ControlConstants.outtakeAxis)) * IntakeConstants.maxOutput;
+    intakeMotor.set(manualInput * IntakeConstants.maxOutput);
     SmartDashboard.putNumber("Intake Motor Temp", intakeMotor.getMotorTemperature());
     SmartDashboard.putNumber("Intake Duty Cycle", intakeMotor.getAppliedOutput());
     SmartDashboard.putNumber("Intake Output Current", intakeMotor.getOutputCurrent());

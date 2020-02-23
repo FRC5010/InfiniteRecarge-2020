@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.IntakeBalls;
+import frc.robot.ControlConstants;
 import frc.robot.commands.ToggleIntake;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -26,19 +26,16 @@ public class IntakeMech {
     public IntakeSubsystem intakeMain;
     public Joystick joystick;
     public Button rightBumper;
-    public Button buttonA;
     public DoubleSolenoid solenoid;
 
     public IntakeMech(Joystick joystick){
         this.joystick = joystick;
-        this.rightBumper = new JoystickButton(joystick, IntakeConstants.toggleIntakeButton);
-        buttonA = new JoystickButton(joystick, IntakeConstants.intakeButton);
+        this.rightBumper = new JoystickButton(joystick, ControlConstants.toggleIntakeButton);
         this.solenoid = new DoubleSolenoid(IntakeConstants.forwardChannel, IntakeConstants.reverseChannel);
         intakeMotor = new CANSparkMax(IntakeConstants.intakeMotorChannel, MotorType.kBrushless);
         intakeMotor.setSmartCurrentLimit(25);
         intakeMain = new IntakeSubsystem(intakeMotor, joystick, solenoid);
         rightBumper.whenPressed(new ToggleIntake(intakeMain));
-        //buttonA.whenPressed(new IntakeBalls(intakeMain));
     }
 
 }

@@ -35,8 +35,7 @@ public class ShaftSubsystem extends SubsystemBase {
   private Timer timer;
 
   public enum ShaftState {
-    fullStop, runningClear, indexing, shooting, shootIndex, shootWait
-
+    fullStop, runningClear, indexing, shooting, shootIndex, shootWait, manual
   }
 
   public ShaftState state = ShaftState.fullStop;
@@ -45,7 +44,6 @@ public class ShaftSubsystem extends SubsystemBase {
     this.barrelMotor = motor;
     // this.beamBreak = beamBreak;
     this.solenoid = solenoid;
-
   }
 
   public ShaftSubsystem(DigitalInput bb1, DigitalInput bb2, DigitalInput bb3, CANSparkMax motor, Joystick operator,
@@ -62,7 +60,6 @@ public class ShaftSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // spinUpShaft(controller.getRawAxis(3));
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Barrel Motor Temp", barrelMotor.getMotorTemperature());
     SmartDashboard.putNumber("Barrel Duty Cycle", barrelMotor.getAppliedOutput());
@@ -80,47 +77,61 @@ public class ShaftSubsystem extends SubsystemBase {
     // isRunning = false;
     // }
 
-    if (state == ShaftState.shooting) {  
-      spinUpShaft(.75);
-
-      if(bb3.get() == true)
-        state = ShaftState.shootIndex;
-    }
-    if(state == ShaftState.shootIndex){
-      spinUpShaft(.75);
-
-      if(bb3.get() == false)
-        state = ShaftState.shootWait;
-    }
-    if(state == ShaftState.shootWait){
-      spinUpShaft(0);
-      if (ShooterMain.readyToShoot) {
-        state = ShaftState.shooting;
-      }
-    }
-
     SmartDashboard.putBoolean("bb1", bb1.get());
     SmartDashboard.putBoolean("bb2", bb2.get());
     SmartDashboard.putBoolean("bb3", bb3.get());
     SmartDashboard.putString("Beam break", state.toString());
-    if (state == ShaftState.fullStop) {
-      if (!bb1.get() && bb3.get()) {
-        spinUpShaft(.50);
-        if (!bb2.get()) {
-          state = ShaftState.indexing;
-        } else {
+
+    switch (state) {
+      case shooting : {
+        if(bb3.get())
+          state = ShaftState.shootIndex;
+        break;
+      }
+      case shootIndex : {
+        if(!bb3.get()) {
+          spinUpShaft(0);
+          state = ShaftState.shootWait;
+        }
+        break;
+      }
+      case shootWait : {
+        if (ShooterMain.readyToShoot) {
+          spinUpShaft(.75);
+          state = ShaftState.shooting;
+        }
+        break;
+      }
+      case fullStop : {
+        if (!bb1.get() && bb3.get()) {
+          spinUpShaft(.50);
+          if (bb2.get()) {
+            state = ShaftState.runningClear;
+          } else {
+            state = ShaftState.indexing;
+          }
+        }
+        break;
+      }
+      case indexing : {
+        if (bb2.get()) {
           state = ShaftState.runningClear;
         }
+        if (!bb3.get()) {
+          state = ShaftState.fullStop;
+        }
+        break;
       }
+      case runningClear : {
+        if (!bb2.get() || !bb3.get()) {
+          spinUpShaft(0);
+          state = ShaftState.fullStop;
+        }  
+        break;  
+      }
+      case manual : break;
     }
 
-    if (state == ShaftState.indexing && bb2.get()) {
-      state = ShaftState.runningClear;
-    }
-    if (state == ShaftState.runningClear && (!bb2.get() || !bb3.get())) {
-      spinUpShaft(0);
-      state = ShaftState.fullStop;
-    }
   }
 
   public void spinUpShaft(double speed) {

@@ -28,9 +28,6 @@ public class SpinShooter extends CommandBase {
     this.shooter = shooter;
     this.vision = vision;
     addRequirements(shooter);
-    
-
-
   }
 
   //gets ball velocity required to reach target point (targetX, targetY) with robot at a specified angle (radians)
@@ -64,11 +61,11 @@ public class SpinShooter extends CommandBase {
   public void execute() {
     double distance = vision.getRawValues().getDistance();
 
-    if(distance > 50 || distance < 480){
-      shooter.setPoint =  vision.getRawValues().getDistance()* 5.2 + 2550;
+    if(distance > 48 || distance < 480){
+      shooter.setPoint =  distance * ShooterConstants.distanceToRPM + ShooterConstants.baseSpeed;
       shooter.spinUpWheel();
     }else{
-      shooter.end();
+      shooter.setPoint = ShooterConstants.baseSpeed;
     }
   }
 

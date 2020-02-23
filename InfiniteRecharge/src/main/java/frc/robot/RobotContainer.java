@@ -42,15 +42,15 @@ public class RobotContainer {
     // motor 10 is the spinner
     driver = new Joystick(0);
     operator = new Joystick(1);
-    shooterVision = new VisionSystem("shooter",26,0,90);
+    shooterVision = new VisionSystem("shooter", 26, 0, 90);
     driveMechanism = new Drive(driver, shooterVision);
-     spinControl = new SpinControl(driver,operator);
-   shooter = new Shoot(operator, shooterVision);
-   intake = new IntakeMech(operator);
-    shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain,shooter.shooterMain,shooterVision);
+    spinControl = new SpinControl(driver, operator);
+    shooter = new Shoot(operator, shooterVision);
+    intake = new IntakeMech(operator);
+    shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
 
-   // climb = new TelescopClimb(driver, operator);
-    
+    // climb = new TelescopClimb(driver, operator);
+
   }
 
   /**
