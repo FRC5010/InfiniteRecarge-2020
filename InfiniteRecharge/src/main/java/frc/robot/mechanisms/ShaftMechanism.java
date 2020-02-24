@@ -25,9 +25,9 @@ import frc.robot.commands.ToggleIntake;
 import frc.robot.commands.ToggleShaftHeight;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShaftSubsystem;
+import frc.robot.subsystems.ShaftSubsystem.ShaftState;
 import frc.robot.subsystems.ShooterMain;
 import frc.robot.subsystems.VisionSystem;
-import frc.robot.subsystems.ShaftSubsystem.ShaftState;
 
 /**
  * Add your docs here.
@@ -50,9 +50,10 @@ public class ShaftMechanism {
 
   // //buttons
   public Button launchButton;
-  public Button heightToggle;
-  public Button povUp;
-  public Button povDown;
+  public Button heightModeToggle;
+  public Button heightButton;
+  public Button manualUp;
+  public Button manualDown;
 
   public ShaftMechanism(Joystick driver, Joystick operator, IntakeSubsystem intakeSubsystem, ShooterMain shooterMain, VisionSystem visionSubsystem) {
     this.driver = driver;
@@ -61,9 +62,10 @@ public class ShaftMechanism {
     shaftMotor.setSmartCurrentLimit(25);
 
     this.launchButton = new JoystickButton(operator, ControlConstants.launchButton);
-    this.heightToggle = new JoystickButton(driver, ControlConstants.heightToggle);
-    povUp = new POVButton(operator, ControlConstants.barrelUp);
-    povDown = new POVButton(operator, ControlConstants.barrelDown);
+    this.heightModeToggle = new JoystickButton(driver, ControlConstants.heightModeToggle);
+    this.heightButton = new JoystickButton(operator, ControlConstants.toggleBarrelHeight);
+    manualUp = new POVButton(operator, ControlConstants.barrelUp);
+    manualDown = new POVButton(operator, ControlConstants.barrelDown);
     shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
     beamBreakIntake = new DigitalInput(0);
     beamBreakMiddle = new DigitalInput(1);
@@ -71,15 +73,16 @@ public class ShaftMechanism {
     shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,
         shaftLifter);
 
-    heightToggle.whenPressed(new ParallelCommandGroup(new ToggleShaftHeight(shaftClimber),new ToggleIntake(intakeSubsystem)));
+    heightButton.whenPressed(new ToggleShaftHeight(shaftClimber));
+    heightModeToggle.whenPressed(new ParallelCommandGroup(new ToggleShaftHeight(shaftClimber),new ToggleIntake(intakeSubsystem)));
     launchButton.whileHeld(new ParallelCommandGroup(new LoadShaftCommand(shaftClimber),new SpinShooter(shooterMain, visionSubsystem)));
-    povUp.whileHeld(new FunctionalCommand(
+    manualUp.whileHeld(new FunctionalCommand(
       () -> shaftClimber.state = ShaftState.manual, 
       () -> shaftClimber.spinUpShaft(.5), 
       (intr) -> { shaftClimber.spinUpShaft(0); shaftClimber.state = ShaftState.fullStop; }, 
       () -> false, 
       shaftClimber));
-    povDown.whileHeld(new FunctionalCommand(
+    manualDown.whileHeld(new FunctionalCommand(
       () -> shaftClimber.state = ShaftState.manual, 
       () -> shaftClimber.spinUpShaft(-.5), 
       (intr) -> {shaftClimber.spinUpShaft(0); shaftClimber.state = ShaftState.fullStop;}, 

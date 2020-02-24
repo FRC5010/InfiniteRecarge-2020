@@ -24,24 +24,32 @@ public class ControlConstants {
     public static int throttle = AxisNums.LEFT_Y.ordinal();
     public static int steer = AxisNums.RIGHT_X.ordinal();
     public static int winch1Axis = AxisNums.L_TRIGGER.ordinal();
-    public static int winch21Axis = AxisNums.R_TRIGGER.ordinal();
+    public static int winch2Axis = AxisNums.R_TRIGGER.ordinal();
 
     public static int intakeAimButton = ButtonNums.A_BUTTON.ordinal();
     public static int shooterAimButton = ButtonNums.B_BUTTON.ordinal();
     public static int rotationControl = ButtonNums.X_BUTTON.ordinal();
     public static int positionControl = ButtonNums.Y_BUTTON.ordinal();
+    public static int heightModeToggle = ButtonNums.LEFT_BUMPER.ordinal();
     public static int spinDeploy = ButtonNums.RIGHT_BUMPER.ordinal();
-    public static int heightToggle = ButtonNums.LEFT_BUMPER.ordinal();
+    public static int calibrate = ButtonNums.START_BUTTON.ordinal(); // Implement
+    public static int manualRotation = ButtonNums.BACK_BUTTON.ordinal(); // Implement
 
     //Operator
-    public static int arm1Axis = AxisNums.LEFT_Y.ordinal();
-    public static int arm2Axis = AxisNums.RIGHT_Y.ordinal();
+    public static int flyWheelManual = AxisNums.LEFT_Y.ordinal(); // Implement
+    public static int climbDeployAxis = AxisNums.RIGHT_Y.ordinal(); // Implement
     public static int outtakeAxis = AxisNums.L_TRIGGER.ordinal() ;
     public static int intakeAxis = AxisNums.R_TRIGGER.ordinal();
+
     public static int launchButton = ButtonNums.A_BUTTON.ordinal();
+    public static int barrelDown = ButtonNums.B_BUTTON.ordinal(); 
+    public static int lowGoalShoot = ButtonNums.X_BUTTON.ordinal(); // implement
+    public static int barrelUp = ButtonNums.Y_BUTTON.ordinal(); 
+    public static int toggleBarrelHeight = ButtonNums.LEFT_BUMPER.ordinal();
     public static int toggleIntakeButton = ButtonNums.RIGHT_BUMPER.ordinal();
-    public static int barrelUp = POVDirs.UP.ordinal() * 90;
-    public static int barrelDown = POVDirs.DOWN.ordinal() * 90;
-    public static int incShooter = POVDirs.RIGHT.ordinal() * 90;
-    public static int decShooter = POVDirs.LEFT.ordinal() * 90;
+    public static int startClimb = ButtonNums.START_BUTTON.ordinal(); // Implement
+    public static int retractClimb = ButtonNums.BACK_BUTTON.ordinal(); // Implement
+    
+    public static int incShooter = POVDirs.UP.ordinal() * 90;
+    public static int decShooter = POVDirs.DOWN.ordinal() * 90;
 }
