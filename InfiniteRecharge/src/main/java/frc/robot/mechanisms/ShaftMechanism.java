@@ -62,10 +62,9 @@ public class ShaftMechanism {
     shaftMotor.setSmartCurrentLimit(25);
 
     this.launchButton = new JoystickButton(operator, ControlConstants.launchButton);
-    this.heightModeToggle = new JoystickButton(driver, ControlConstants.heightModeToggle);
-    this.heightButton = new JoystickButton(operator, ControlConstants.toggleBarrelHeight);
-    manualUp = new POVButton(operator, ControlConstants.barrelUp);
-    manualDown = new POVButton(operator, ControlConstants.barrelDown);
+    this.heightButton = new JoystickButton(driver, ControlConstants.heightModeToggle);
+    manualUp = new JoystickButton(operator, ControlConstants.barrelUp);
+    manualDown = new JoystickButton(operator, ControlConstants.barrelDown);
     shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
     beamBreakIntake = new DigitalInput(0);
     beamBreakMiddle = new DigitalInput(1);
@@ -73,8 +72,7 @@ public class ShaftMechanism {
     shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,
         shaftLifter);
 
-    heightButton.whenPressed(new ToggleShaftHeight(shaftClimber));
-    heightModeToggle.whenPressed(new ParallelCommandGroup(new ToggleShaftHeight(shaftClimber),new ToggleIntake(intakeSubsystem)));
+    heightButton.whenPressed(new ToggleShaftHeight(shaftClimber, shooterMain));
     launchButton.whileHeld(new ParallelCommandGroup(new LoadShaftCommand(shaftClimber),new SpinShooter(shooterMain, visionSubsystem)));
     manualUp.whileHeld(new FunctionalCommand(
       () -> shaftClimber.state = ShaftState.manual, 

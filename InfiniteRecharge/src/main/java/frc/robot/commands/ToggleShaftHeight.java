@@ -8,16 +8,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShaftSubsystem;
+import frc.robot.subsystems.ShooterMain;
 
 public class ToggleShaftHeight extends CommandBase {
   /**
    * Creates a new ToggleIntake.
    */
   ShaftSubsystem shaftSubsystem;
-  public ToggleShaftHeight(ShaftSubsystem shaftSubsystem) {
+  ShooterMain shooterMain;
+  public ToggleShaftHeight(ShaftSubsystem shaftSubsystem, ShooterMain shooterMain) {
     this.shaftSubsystem = shaftSubsystem;
+    this.shooterMain = shooterMain;
     addRequirements(shaftSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -26,6 +28,11 @@ public class ToggleShaftHeight extends CommandBase {
   @Override
   public void initialize() {
     shaftSubsystem.toggleShaftHeight();
+    if (shaftSubsystem.isExtended()) {
+      shooterMain.setPoint = 1000;
+    } else {
+      shooterMain.end();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -63,7 +63,6 @@ public class SpinShooter extends CommandBase {
 
     if(distance > 48 || distance < 480){
       shooter.setPoint =  distance * ShooterConstants.distanceToRPM + ShooterConstants.baseSpeed;
-      shooter.spinUpWheel();
     }else{
       shooter.setPoint = ShooterConstants.baseSpeed;
     }

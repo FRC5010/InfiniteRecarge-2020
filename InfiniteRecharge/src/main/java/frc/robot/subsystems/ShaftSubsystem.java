@@ -97,14 +97,14 @@ public class ShaftSubsystem extends SubsystemBase {
       }
       case shootWait : {
         if (ShooterMain.readyToShoot) {
-          spinUpShaft(.75);
+          spinUpShaft(.9);
           state = ShaftState.shooting;
         }
         break;
       }
       case fullStop : {
+        spinUpShaft(0);
         if (!bb1.get() && bb3.get()) {
-          spinUpShaft(.50);
           if (bb2.get()) {
             state = ShaftState.runningClear;
           } else {
@@ -114,16 +114,18 @@ public class ShaftSubsystem extends SubsystemBase {
         break;
       }
       case indexing : {
+        spinUpShaft(.50);
         if (bb2.get()) {
           state = ShaftState.runningClear;
         }
-        if (!bb3.get()) {
+        if (!bb3.get() || bb1.get()) {
           state = ShaftState.fullStop;
         }
         break;
       }
       case runningClear : {
-        if (!bb2.get() || !bb3.get()) {
+        spinUpShaft(.50);
+        if (!bb2.get() || !bb3.get() || bb1.get()) {
           spinUpShaft(0);
           state = ShaftState.fullStop;
         }  
@@ -157,4 +159,5 @@ public class ShaftSubsystem extends SubsystemBase {
     solenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
+  public boolean isExtended() { return isExtended; }
 }

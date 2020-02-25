@@ -50,10 +50,14 @@ public class ShooterMain extends SubsystemBase {
     SmartDashboard.putNumber("Shooter motor temp", controller.getMotorTemperature());
     SmartDashboard.putNumber("current output", controller.getOutputCurrent());
     SmartDashboard.putNumber("Base speed", ShooterConstants.baseSpeed);
+    if (setPoint > 0) {
+      spinUpWheel();
+    }
   }
 
   public void end() {
     controller.set(0);
+    setPoint = 0;
   }
 
   public void spinUpWheel() {
@@ -68,7 +72,7 @@ public class ShooterMain extends SubsystemBase {
     SmartDashboard.putNumber("kp", m_pidController.getP());
     SmartDashboard.putNumber("velocity", controller.getEncoder().getVelocity());
 
-    if (Math.abs(controller.getEncoder().getVelocity() - setPoint) < 50) {
+    if (Math.abs(controller.getEncoder().getVelocity() - setPoint) < 75) {
       readyToShoot = true;
     } else {
       readyToShoot = false;
