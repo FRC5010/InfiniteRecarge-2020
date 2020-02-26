@@ -8,7 +8,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.ControlConstants;
 import frc.robot.mechanisms.DriveConstants;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.VisionSystem;
@@ -20,21 +22,24 @@ public class AimWithVision extends CommandBase {
   DriveTrainMain drive;
   VisionSystem vision;
   Joystick driver;
-  
-  double angleTolerance = 5;
+  double targetAngle, driveSpeed;
 
-  public AimWithVision(DriveTrainMain drive, VisionSystem vision, Joystick driver) {
+  double angleTolerance = 2;
+
+  public AimWithVision(DriveTrainMain drive, VisionSystem vision, Joystick driver, double targetAngle) {
     this.drive = drive;
     this.vision = vision;
     this.driver = driver;
+    this.targetAngle = targetAngle;
     addRequirements(drive);
     addRequirements(vision);
   }
 
-  public AimWithVision(DriveTrainMain drive, VisionSystem vision) {
+  public AimWithVision(DriveTrainMain drive, VisionSystem vision, double targetAngle, double driveSpeed) {
     this.drive = drive;
     this.vision = vision;
-    this.driver = null;
+    this.targetAngle = targetAngle;
+    this.driveSpeed = driveSpeed;
     addRequirements(drive);
     addRequirements(vision);
   }
@@ -47,14 +52,17 @@ public class AimWithVision extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Our target value is that angle is 0, thus our error is the angle we are reading
-    double correction = vision.getRawValues().getAngleX() * DriveConstants.kTurnP;
-    drive.arcadeDrive(drive == null ? drive.scaleInputs(driver.getRawAxis(1)) : 0, correction + DriveConstants.minTurn);
+    double error = vision.getRawValues().getAngleX() - targetAngle;
+    double correction = error * -DriveConstants.kTurnP;
+    drive.arcadeDrive(driver != null ? drive.scaleInputs(-driver.getRawAxis(ControlConstants.throttle)) : -driveSpeed, correction + Math.signum(correction) * DriveConstants.minTurn);
+    SmartDashboard.putNumber("shooterVisionError", error);
+    SmartDashboard.putNumber("shooterVisionCorrection", correction);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    drive.arcadeDrive(0, 0);
   }
 
   // Returns true when the command should end.

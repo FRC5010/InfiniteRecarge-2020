@@ -61,7 +61,7 @@ public class SpinShooter extends CommandBase {
   public void execute() {
     double distance = vision.getRawValues().getDistance();
 
-    if(distance > 48 || distance < 480){
+    if(distance > 48 && distance < 480){
       shooter.setPoint =  distance * ShooterConstants.distanceToRPM + ShooterConstants.baseSpeed;
     }else{
       shooter.setPoint = ShooterConstants.baseSpeed;
