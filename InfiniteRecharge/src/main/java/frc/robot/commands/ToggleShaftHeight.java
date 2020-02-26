@@ -29,9 +29,9 @@ public class ToggleShaftHeight extends CommandBase {
   public void initialize() {
     shaftSubsystem.toggleShaftHeight();
     if (shaftSubsystem.isExtended()) {
-      shooterMain.setPoint = 1000;
-    } else {
       shooterMain.end();
+    } else {
+      shooterMain.setPoint = 1000;
     }
   }
 

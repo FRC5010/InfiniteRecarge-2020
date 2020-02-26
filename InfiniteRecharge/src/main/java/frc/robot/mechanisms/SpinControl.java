@@ -52,8 +52,9 @@ public class SpinControl {
         rotationButton = new JoystickButton(driver, ControlConstants.rotationControl);
         positionButton = new JoystickButton(driver, ControlConstants.positionControl);
         deployButton = new JoystickButton(driver, ControlConstants.spinDeploy);
-        rotationButton.whenPressed(new SpinForNDetections(spinner, wheelColor, 27));
-        positionButton.whenPressed(new SpinForNDetections(spinner, wheelColor));
+        //change rotation and position to whenPressed for when color sensor attached
+        rotationButton.whileHeld(new SpinForNDetections(spinner, wheelColor, 27));
+        positionButton.whileHeld(new SpinForNDetections(spinner, wheelColor));
         deployButton.whenPressed(new ToggleSpinnerDeploy(spinner));
 
     }
