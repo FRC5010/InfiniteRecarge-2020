@@ -48,8 +48,24 @@ public class RobotContainer {
     shooter = new Shoot(operator, shooterVision);
     intake = new IntakeMech(operator);
     shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
+    
+    //climb = new TelescopClimb(driver, operator);
 
-    // climb = new TelescopClimb(driver, operator);
+    //buttons driver
+    //x = spin spinner
+    //joysticks move robot
+    //left bumper = toggle barrel height
+    //b = angle towards target
+    //
+
+
+    //buttons co-driver(operator cause jackson)
+    //y = spin shaft/conveyer belt
+    //a = spins shooter to the correct speed
+    //right trigger = spin intake in
+    //left trigger = spin intake out
+    //right bumper = toggle intake height
+    //?? = toggle spinner height
 
   }
 
