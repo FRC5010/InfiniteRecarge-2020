@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.mechanisms.DriveConstants;
 import frc.robot.subsystems.DriveTrainMain;
@@ -20,11 +21,12 @@ public class DriveWithVision extends CommandBase {
   DriveTrainMain drive;
   VisionSystem vision;
   
-  double targetDistance;
+  double targetAngle, targetDistance, driveSpeed;
+  double angleError, distanceError;
   double angleTolerance = 5;
   double distanceTolerance = 5;
 
-  public DriveWithVision(DriveTrainMain drive, VisionSystem vision, double targetDistance) {
+  public DriveWithVision(DriveTrainMain drive, VisionSystem vision, double targetAngle, double targetDistance, double driveSpeed) {
     this.drive = drive;
     this.vision = vision;
     this.targetDistance = targetDistance;
@@ -40,19 +42,25 @@ public class DriveWithVision extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double turnCorrection = vision.getRawValues().getAngleX() * DriveConstants.kTurnP;
-    double driveCorrection = (vision.getRawValues().getDistance() - targetDistance) * DriveConstants.kPDriveVel;
-    drive.arcadeDrive(driveCorrection + DriveConstants.minTurn, turnCorrection + DriveConstants.minTurn);
+    angleError = vision.getRawValues().getAngleX() - targetAngle;
+    distanceError = vision.getRawValues().getDistance() - targetDistance;
+    SmartDashboard.putNumber("intakeVisionAngleError", angleError);
+    SmartDashboard.putNumber("intakeVisionDistanceError", distanceError);
+
+    double turnCorrection = angleError * DriveConstants.kTurnP;
+    double driveCorrection = distanceError * DriveConstants.kPDriveVel;
+    drive.arcadeDrive(driveCorrection + Math.signum(driveCorrection) * DriveConstants.minTurn, turnCorrection + Math.signum(turnCorrection) *  DriveConstants.minTurn);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    drive.arcadeDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return vision.getRawValues().getAngleX() < angleTolerance && vision.getRawValues().getDistance() < distanceTolerance;
+    return angleError < angleTolerance && distanceError < distanceTolerance;
   }
 }

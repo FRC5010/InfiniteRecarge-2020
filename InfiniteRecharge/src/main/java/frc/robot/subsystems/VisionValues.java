@@ -15,14 +15,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class VisionValues {
 
     // the essential variables, stuff they already give me
-    // TODO: If you ever get rid of a networkentry variable in opensight, update vision classes
+    // TODO: If you ever get rid of a networkentry variable in opensight, update
+    // vision classes
     double centerX;
     double centerY;
     double area;
 
     // variables needed to process new variables, plus the new variables
     // angles
-    double screenSizeX, screenSizeY, camFovX, camFovY;
+    static double screenSizeX = 160;
+    static double screenSizeY = 120;
+    static double camFovX = 61;
+    static double camFovY = 34.3;
     double angleX;
     double angleY;
     // distance
@@ -30,6 +34,7 @@ public class VisionValues {
     double distance;
 
     public VisionValues() {
+        
     }
 
     public VisionValues(double centerX, double centerY, double angleX, double angleY, double distance) {
@@ -44,10 +49,6 @@ public class VisionValues {
         this.camHeight = camHeight;
         this.camAngle = camAngle;
         this.targetHeight = targetHeight;
-        this.screenSizeX = 160;
-        this.screenSizeY = 120;
-        this.camFovX = 61;
-        this.camFovY = 34.3;
     }
 
     public void updateViaNetworkTable(String path) {
@@ -56,8 +57,8 @@ public class VisionValues {
         centerY = VisionSystem.table.getTable(path).getEntry("center-y").getDouble(0);
         area = 0;
         // calculating angle
-        angleY = camFovY * (screenSizeY / 2 - (centerY * (screenSizeY/2))) / screenSizeY;
-        angleX = camFovX * (screenSizeX / 2 - (centerX * (screenSizeX/2))) / screenSizeX;
+        angleY = camFovY * (screenSizeY / 2 - (centerY * (screenSizeY / 2))) / screenSizeY;
+        angleX = camFovX * (screenSizeX / 2 - (centerX * (screenSizeX / 2))) / screenSizeX;
         // calculating distance
         distance = (targetHeight - camHeight) / Math.tan(Math.toRadians(angleY));
 

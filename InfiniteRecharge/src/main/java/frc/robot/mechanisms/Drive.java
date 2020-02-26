@@ -13,10 +13,8 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -28,12 +26,17 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.ControlConstants;
 import frc.robot.Robot;
 import frc.robot.commands.AimWithVision;
+import frc.robot.commands.DriveWithVision;
+import frc.robot.commands.IntakeBalls;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.subsystems.DriveTrainMain;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Pose;
 import frc.robot.subsystems.VisionSystem;
 
@@ -44,6 +47,7 @@ public class Drive {
     private static DriveTrainMain driveTrain;
     private static VisionSystem intakeCam;
     private static VisionSystem shooterCam;
+    private static IntakeSubsystem intakeSystem;
 
     public Joystick driver;
     public static CANSparkMax lDrive1;
@@ -60,20 +64,24 @@ public class Drive {
     public JoystickButton intakeAimButton;
     public JoystickButton shooterAimButton;
 
-    public Drive(Joystick driver, VisionSystem shooterVision) {
-        init(driver, shooterVision); 
+    public JoystickButton intakeDriveButton;
+
+    public Drive(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSystem) {
+        init(driver, shooterVision, intakeVision, intakeSystem); 
         configureButtonBindings();
     }
   
   private void configureButtonBindings() {
-    intakeAimButton = new JoystickButton(driver, 1);
-    intakeAimButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver));
-    // TODO: configue buttons so that it doesn't interfere with anything else
-    shooterAimButton = new JoystickButton(driver, 2);
-    shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver));
+    intakeAimButton = new JoystickButton(driver, ControlConstants.intakeAimButton);
+    intakeAimButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver, 30));
+    shooterAimButton = new JoystickButton(driver, ControlConstants.shooterAimButton);
+    shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 30));
+
+    intakeDriveButton = new JoystickButton(driver, ControlConstants.startClimb);
+    intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.2)));
   }
 
-  public void init(Joystick driver, VisionSystem shooterVision) {
+  public void init(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSubsystem) {
     if (RobotBase.isReal()) {
       this.driver = driver;
         // Neos HAVE to be in brushless
@@ -110,8 +118,9 @@ public class Drive {
     robotPose = new Pose(lEncoder, rEncoder);
     shooterCam = shooterVision;
     driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver);
-    intakeCam = new VisionSystem("intake");
- 
+    intakeCam = intakeVision;
+    intakeSystem = intakeSubsystem;
+
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

@@ -55,6 +55,6 @@ public final class DriveConstants {
     public static final double rightVelocityConv = rpmToMetersPerSec * (rightReversed ? -1.0 : 1.0) * rightFudgeFactor;
 
     public static final double kTurnP = .4 /180;
-    public static final double minTurn = .1;
+    public static final double minTurn = .05;
 
 }

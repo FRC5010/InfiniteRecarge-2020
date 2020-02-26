@@ -29,6 +29,7 @@ public class RobotContainer {
   private IntakeMech intake;
   private TelescopClimb climb;
   private VisionSystem shooterVision;
+  private VisionSystem intakeVision;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -43,11 +44,12 @@ public class RobotContainer {
     driver = new Joystick(0);
     operator = new Joystick(1);
     shooterVision = new VisionSystem("shooter", 26, 0, 90);
-    driveMechanism = new Drive(driver, shooterVision);
+    intakeVision = new VisionSystem("intake", 20, 0, 3.5);
     spinControl = new SpinControl(driver, operator);
     shooter = new Shoot(operator, shooterVision);
     intake = new IntakeMech(operator);
     shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
+    driveMechanism = new Drive(driver, shooterVision, intakeVision, intake.intakeMain);
     
     //climb = new TelescopClimb(driver, operator);
 
