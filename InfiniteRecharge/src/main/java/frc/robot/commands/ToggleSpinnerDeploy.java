@@ -8,13 +8,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.Spinner;
 
 public class ToggleSpinnerDeploy extends CommandBase {
   private Spinner spinner;
+
+  ShaftSubsystem shaftSubsystem;
   
   public ToggleSpinnerDeploy(Spinner spinner) {
     // Use addRequirements() here to declare subsystem dependencies.
+    // this.shaftSubsystem = shaftSubsystem;
     this.spinner = spinner;
     addRequirements(spinner);
   }

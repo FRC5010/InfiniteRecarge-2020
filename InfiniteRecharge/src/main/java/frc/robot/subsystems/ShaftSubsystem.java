@@ -65,18 +65,6 @@ public class ShaftSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Barrel Duty Cycle", barrelMotor.getAppliedOutput());
     SmartDashboard.putNumber("Barrel Output Current", barrelMotor.getOutputCurrent());
 
-    // if(!bb1.get() && !isRunning){
-    // spinUpShaft(.25);
-    // timer.start();
-    // isRunning = true;
-    // }
-    // if ((timer.get() > 0.5 && isRunning)||!bb3.get()) {
-    // timer.stop();
-    // timer.reset();
-    // spinUpShaft(0);
-    // isRunning = false;
-    // }
-
     SmartDashboard.putBoolean("bb1", bb1.get());
     SmartDashboard.putBoolean("bb2", bb2.get());
     SmartDashboard.putBoolean("bb3", bb3.get());
@@ -157,7 +145,12 @@ public class ShaftSubsystem extends SubsystemBase {
   public void lowerShaft() {
     isExtended = false;
     solenoid.set(DoubleSolenoid.Value.kReverse);
+    //spinner.retract();
   }
-
+    // public void setSpinner(Spinner spinner){
+    //   if(isExtended && spinner.isDeployed()){
+    //     spinner.retract();
+    //   }
+  //}
   public boolean isExtended() { return isExtended; }
 }

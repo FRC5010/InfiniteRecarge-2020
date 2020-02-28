@@ -32,7 +32,7 @@ public class ControlConstants {
     public static int positionControl = ButtonNums.Y_BUTTON.ordinal();
     public static int heightModeToggle = ButtonNums.LEFT_BUMPER.ordinal();
     public static int spinDeploy = ButtonNums.RIGHT_BUMPER.ordinal();
-    public static int calibrate = ButtonNums.START_BUTTON.ordinal(); // Implement
+    public static int calibrate = ButtonNums.START_BUTTON.ordinal(); 
     public static int manualRotation = ButtonNums.BACK_BUTTON.ordinal(); // Implement
 
     //Operator

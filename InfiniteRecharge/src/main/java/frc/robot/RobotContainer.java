@@ -9,6 +9,8 @@ import frc.robot.mechanisms.ShaftMechanism;
 import frc.robot.mechanisms.Shoot;
 import frc.robot.mechanisms.SpinControl;
 import frc.robot.mechanisms.TelescopClimb;
+import frc.robot.subsystems.ShaftSubsystem;
+import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.VisionSystem;
 
 /**
@@ -45,11 +47,11 @@ public class RobotContainer {
     operator = new Joystick(1);
     shooterVision = new VisionSystem("shooter", 26, 0, 90);
     intakeVision = new VisionSystem("intake", 20, 0, 3.5);
-    spinControl = new SpinControl(driver, operator);
     shooter = new Shoot(operator, shooterVision);
     intake = new IntakeMech(operator);
     shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
-    driveMechanism = new Drive(driver, shooterVision, intakeVision, intake.intakeMain);
+    spinControl = new SpinControl(driver, operator, shaftMechanism.shaftClimber);
+    //driveMechanism = new Drive(driver, shooterVision, intakeVision, intake.intakeMain);
     
     //climb = new TelescopClimb(driver, operator);
 

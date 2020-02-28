@@ -56,7 +56,7 @@ public class ColorMap {
         }else if(color == "Yellow"){
             return kYellowPos;
         }else{
-            return 420;
+            return -1;
             //might be uh oh
         }
     }

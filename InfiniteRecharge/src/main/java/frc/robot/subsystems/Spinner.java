@@ -15,17 +15,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Spinner extends SubsystemBase {
   private SpeedController spinner;
   private Solenoid spinDeployment;
-  private boolean isDeployed;
+  public boolean isDeployed;
 
+  ShaftSubsystem shaftSubsystem;
   /**
    * Creates a new Spinner.
    */
-  public Spinner(SpeedController spinner, int fwdChannel, int revChannel, Solenoid spinDeployment) {
+  public Spinner(SpeedController spinner, int fwdChannel, int revChannel, Solenoid spinDeployment, ShaftSubsystem shaftSubsystem) {
     this.spinner = spinner;
     this.spinDeployment = spinDeployment;
+    this.shaftSubsystem = shaftSubsystem;
     //Set as false since spinner will not be deployed at start.
     isDeployed = false;
-   // spinDeployment = new DoubleSolenoid(fwdChannel, revChannel);
+    spinner.setInverted(true);
+    //spinDeployment = new DoubleSolenoid(fwdChannel, revChannel);
   }
 
   @Override
@@ -34,7 +37,7 @@ public class Spinner extends SubsystemBase {
   }
 
   public void spin(){
-    spinner.set(0.25);
+    spinner.set(0.15);
   }
 
   public void stop(){
@@ -43,7 +46,9 @@ public class Spinner extends SubsystemBase {
 
   public void toggleSpinner(){
     if(!isDeployed){
-      deploy();
+      if(!(shaftSubsystem.isExtended())) {
+        deploy();
+      }
     }else{
       retract();
     }
@@ -58,4 +63,8 @@ public class Spinner extends SubsystemBase {
     spinDeployment.set(false);
     isDeployed = false;
   }
+  // public boolean isDeployed(){
+  //   return isDeployed;
+  // }
+
 }

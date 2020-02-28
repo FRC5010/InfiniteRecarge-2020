@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.ShooterMain;
+import frc.robot.subsystems.Spinner;
 
 public class ToggleShaftHeight extends CommandBase {
   /**
@@ -28,10 +29,12 @@ public class ToggleShaftHeight extends CommandBase {
   @Override
   public void initialize() {
     shaftSubsystem.toggleShaftHeight();
+
     if (shaftSubsystem.isExtended()) {
-      shooterMain.end();
-    } else {
+      //shaftSubsystem.setSpinner(spinner);
       shooterMain.setPoint = 1000;
+    } else {
+      shooterMain.end();
     }
   }
 

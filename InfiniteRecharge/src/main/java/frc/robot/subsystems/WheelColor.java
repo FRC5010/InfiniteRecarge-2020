@@ -118,6 +118,8 @@ public class WheelColor extends SubsystemBase {
     SmartDashboard.putNumber("Yellow Count", yellowColorCounter);
 
     SmartDashboard.putBoolean("Find Target Color", findTargetColor());
+
+    SmartDashboard.putNumber("distance (wheelcolor)", determineGameData());
     // SmartDashboard.putBoolean("Adjust Color", adjustToTargetColor());
     // below code is only for the exact values of the color instead of asking the
     // code to tell what the code is
@@ -161,6 +163,7 @@ public class WheelColor extends SubsystemBase {
         break;
       }
     } else {
+      return -1;
       // System.out.println("Wait");
     }
     distance = targetColorMap.getPos(colorString);
@@ -168,7 +171,7 @@ public class WheelColor extends SubsystemBase {
   }
 
   public boolean debounce(final double matchNum) {
-    if (matchNum > 0.95) {
+    if (matchNum > 0.92) {
       return true;
     }
     return false;

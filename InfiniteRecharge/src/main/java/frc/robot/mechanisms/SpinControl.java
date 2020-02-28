@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.ControlConstants;
 import frc.robot.commands.SpinForNDetections;
 import frc.robot.commands.ToggleSpinnerDeploy;
+import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.WheelColor;
 
@@ -34,27 +35,30 @@ public class SpinControl {
     private SpeedController spinnerMotor = new CANSparkMax(SpinConstants.spinnerMotorChannel, MotorType.kBrushless);
     private Solenoid spinnerSolenoid;
     private JoystickButton deployButton;
+    ShaftSubsystem shaftSubsystem;
 
-    public SpinControl(Joystick driver, Joystick operator) {
+    public SpinControl(Joystick driver, Joystick operator, ShaftSubsystem shaftSubsystem) {
         this.driver = driver;
         this.operator = operator;
+        this.shaftSubsystem = shaftSubsystem;
         init();
         configureButtonBindings();
     }
 
     public void init() {
         spinnerSolenoid = new Solenoid(4);
-        spinner = new Spinner(spinnerMotor, 0, 1, spinnerSolenoid);
+        spinner = new Spinner(spinnerMotor, 0, 1, spinnerSolenoid, shaftSubsystem);
         wheelColor = new WheelColor();
+        //shaftSubsystem.setSpinner(spinner);
     }
 
     public void configureButtonBindings() {
         rotationButton = new JoystickButton(driver, ControlConstants.rotationControl);
         positionButton = new JoystickButton(driver, ControlConstants.positionControl);
-        deployButton = new JoystickButton(driver, ControlConstants.spinDeploy);
+        deployButton = new JoystickButton(driver, 6);
         //change rotation and position to whenPressed for when color sensor attached
-        rotationButton.whileHeld(new SpinForNDetections(spinner, wheelColor, 27));
-        positionButton.whileHeld(new SpinForNDetections(spinner, wheelColor));
+        rotationButton.whenPressed(new SpinForNDetections(spinner, wheelColor, 27));
+        positionButton.whenPressed(new SpinForNDetections(spinner, wheelColor));
         deployButton.whenPressed(new ToggleSpinnerDeploy(spinner));
 
     }

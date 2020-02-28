@@ -25,6 +25,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.ShaftSubsystem.ShaftState;
 import frc.robot.subsystems.ShooterMain;
+import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.VisionSystem;
 
 /**
