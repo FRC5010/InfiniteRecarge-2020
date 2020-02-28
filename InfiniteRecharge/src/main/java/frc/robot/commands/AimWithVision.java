@@ -38,6 +38,7 @@ public class AimWithVision extends CommandBase {
   public AimWithVision(DriveTrainMain drive, VisionSystem vision, double targetAngle, double driveSpeed) {
     this.drive = drive;
     this.vision = vision;
+    this.driver = null;
     this.targetAngle = targetAngle;
     this.driveSpeed = driveSpeed;
     addRequirements(drive);
@@ -53,8 +54,8 @@ public class AimWithVision extends CommandBase {
   @Override
   public void execute() {
     double error = vision.getRawValues().getAngleX() - targetAngle;
-    double correction = error * -DriveConstants.kTurnP;
-    drive.arcadeDrive(driver != null ? drive.scaleInputs(-driver.getRawAxis(ControlConstants.throttle)) : -driveSpeed, correction + Math.signum(correction) * DriveConstants.minTurn);
+    double correction = error * DriveConstants.kTurnP;
+    drive.arcadeDrive(drive.scaleInputs(-driver.getRawAxis(ControlConstants.throttle)), correction + Math.signum(correction) * DriveConstants.minTurn);
     SmartDashboard.putNumber("shooterVisionError", error);
     SmartDashboard.putNumber("shooterVisionCorrection", correction);
   }
@@ -68,6 +69,6 @@ public class AimWithVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(vision.getRawValues().getAngleX()) < angleTolerance;
+    return false;
   }
 }

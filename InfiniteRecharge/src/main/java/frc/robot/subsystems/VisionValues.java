@@ -53,20 +53,25 @@ public class VisionValues {
 
     public void updateViaNetworkTable(String path) {
         // essential variables from NetworkTables
+    
         centerX = VisionSystem.table.getTable(path).getEntry("center-x").getDouble(0);
         centerY = VisionSystem.table.getTable(path).getEntry("center-y").getDouble(0);
         area = 0;
         // calculating angle
         angleY = camFovY * (screenSizeY / 2 - (centerY * (screenSizeY / 2))) / screenSizeY;
-        angleX = camFovX * (screenSizeX / 2 - (centerX * (screenSizeX / 2))) / screenSizeX;
+        angleX = camFovX / 2 * centerX / 0.9;
+       
         // calculating distance
-        distance = (targetHeight - camHeight) / Math.tan(Math.toRadians(angleY));
+        distance = (targetHeight - camHeight) / Math.tan(Math.toRadians(angleY+camAngle));
 
         SmartDashboard.putNumber(path + " centerX", centerX);
         SmartDashboard.putNumber(path + " centerY", centerY);
         SmartDashboard.putNumber(path + " angleX", angleX);
         SmartDashboard.putNumber(path + " angleY", angleY);
         SmartDashboard.putNumber(path + " distance", distance);
+    }
+    public void calibarateCamAngle(){
+        camAngle = angleY-Math.atan(64/120);
     }
 
     public double getCenterX() {
