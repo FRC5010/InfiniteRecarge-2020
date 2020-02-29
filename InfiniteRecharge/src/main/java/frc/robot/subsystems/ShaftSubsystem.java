@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Timer;
@@ -34,6 +35,8 @@ public class ShaftSubsystem extends SubsystemBase {
   private boolean isRunning = false;
   private Timer timer;
 
+  private Solenoid ledRing;
+
   public enum ShaftState {
     fullStop, runningClear, indexing, shooting, shootIndex, shootWait, manual
   }
@@ -47,7 +50,9 @@ public class ShaftSubsystem extends SubsystemBase {
   }
 
   public ShaftSubsystem(DigitalInput bb1, DigitalInput bb2, DigitalInput bb3, CANSparkMax motor, Joystick operator,
-      DoubleSolenoid solenoid) {
+      DoubleSolenoid solenoid//, Solenoid ledRing
+      ) {
+    //this.ledRing = ledRing;
     this.bb1 = bb1;
     this.bb2 = bb2;
     this.bb3 = bb3;
@@ -102,18 +107,18 @@ public class ShaftSubsystem extends SubsystemBase {
         break;
       }
       case indexing : {
-        spinUpShaft(.50);
+        spinUpShaft(.75);
         if (bb2.get()) {
           state = ShaftState.runningClear;
         }
-        if (!bb3.get() || bb1.get()) {
+        if (!bb3.get() ) {
           state = ShaftState.fullStop;
         }
         break;
       }
       case runningClear : {
-        spinUpShaft(.50);
-        if (!bb2.get() || !bb3.get() || bb1.get()) {
+        spinUpShaft(.75);
+        if (!bb2.get() || !bb3.get() ) {
           spinUpShaft(0);
           state = ShaftState.fullStop;
         }  
@@ -140,11 +145,15 @@ public class ShaftSubsystem extends SubsystemBase {
   public void raiseShaft() {
     isExtended = true;
     solenoid.set(DoubleSolenoid.Value.kForward);
+    //ledRing.set(true)
   }
+
+  
 
   public void lowerShaft() {
     isExtended = false;
     solenoid.set(DoubleSolenoid.Value.kReverse);
+    //ledRing.set(false);
     //spinner.retract();
   }
     // public void setSpinner(Spinner spinner){

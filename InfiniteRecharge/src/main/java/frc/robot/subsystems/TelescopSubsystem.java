@@ -44,14 +44,16 @@ public class TelescopSubsystem extends SubsystemBase {
   
   public void stopArmMotors(){
     arm1.set(0);
+    arm2.set(0);
+
   }
 
   
 
 
   public void spinWinchMotors(){
-    winch1.set(Math.abs(operator.getRawAxis(ControlConstants.winch1Axis)));
-    winch2.set(Math.abs(operator.getRawAxis(ControlConstants.winch1Axis)));
+    winch1.set(Math.abs(driver.getRawAxis(ControlConstants.winch1Axis)));
+    winch2.set(Math.abs(driver.getRawAxis(ControlConstants.winch1Axis)));
   }
 
   

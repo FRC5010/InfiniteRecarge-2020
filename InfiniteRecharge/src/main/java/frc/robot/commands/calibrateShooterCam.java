@@ -10,12 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.VisionSystem;
 
-public class calibrateShooterCam extends CommandBase {
+public class CalibrateShooterCam extends CommandBase {
   /**
    * Creates a new calibrateShooterCam.
    */
   VisionSystem system;
-  public calibrateShooterCam(VisionSystem system) {
+  public CalibrateShooterCam(VisionSystem system) {
     // Use addRequirements() here to declare subsystem dependencies.
     
     this.system = system;
@@ -24,7 +24,8 @@ public class calibrateShooterCam extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    system.getRawValues().calibarateCamAngle();
+   
+   system.getRawValues().calibarateCamAngle();
    }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,11 +36,12 @@ public class calibrateShooterCam extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+  system.getRawValues().setCamAngle(system.getRawValues().getCamAngle());
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

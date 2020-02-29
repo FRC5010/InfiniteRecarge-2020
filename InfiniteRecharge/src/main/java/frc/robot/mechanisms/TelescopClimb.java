@@ -54,7 +54,7 @@ public class TelescopClimb {
         winchMotor1.setSmartCurrentLimit(20);
         winchMotor2.setSmartCurrentLimit(20);
         
-        armMotor1.setInverted(true);
+        armMotor1.setInverted(false);
         armMotor2.setInverted(true);
 
         winchMotor2.setInverted(true);
