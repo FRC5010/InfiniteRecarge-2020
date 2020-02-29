@@ -44,7 +44,7 @@ import frc.robot.subsystems.VisionSystem;
  * Add your docs here.
  */
 public class Drive {
-    private static DriveTrainMain driveTrain;
+    public  DriveTrainMain driveTrain;
     private static VisionSystem intakeCam;
     private static VisionSystem shooterCam;
     private static IntakeSubsystem intakeSystem;
@@ -131,19 +131,10 @@ public class Drive {
    */
   public Command getAutonomousCommand() {
     // Create a voltage constraint to ensure we don't accelerate too fast
-    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(DriveConstants.ksVolts,
-        DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter), DriveConstants.kDriveKinematics, 10);
+   
 
     // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
-        DriveConstants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(DriveConstants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-    TrajectoryConfig backwardsConfig = new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared)
-    //set reversed allows robot to go backwards
-    .setReversed(true);
+    
     // An example trajectory to follow. All units in meters.
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
@@ -156,7 +147,7 @@ public class Drive {
         // End 3 meters straight ahead of where we started, facing forward
         new Pose2d(3, 0, new Rotation2d(0)),
         // Pass config
-        config);
+        DriveConstants.config);
 
     Trajectory anotherExample = TrajectoryGenerator.generateTrajectory(
       List.of(
@@ -165,7 +156,7 @@ public class Drive {
         new Pose2d(2, -1, new Rotation2d(0)),
         new Pose2d(3, 0, new Rotation2d(0)),
         new Pose2d(3.5, 0, new Rotation2d(0))
-        ), config);
+        ), DriveConstants.config);
 
         Trajectory driveStraight = TrajectoryGenerator.generateTrajectory(
           List.of(
@@ -173,7 +164,7 @@ public class Drive {
           new Pose2d(2.5, 0,new Rotation2d(0)), 
           new Pose2d(5,0,new Rotation2d(0))
          
-          ),  config);
+          ),  DriveConstants.config);
           Pose2d endPoint = new Pose2d(9, 0, new Rotation2d(0));
           Trajectory comeBack = TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
@@ -184,7 +175,7 @@ public class Drive {
            )
            ,
             // Pass config
-            backwardsConfig);
+            DriveConstants.backwardsConfig);
             Trajectory revTrajectory = comeBack;
     RamseteCommand ramseteCommand = new RamseteFollower(driveStraight, robotPose::getPose,
         new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
@@ -208,6 +199,7 @@ public class Drive {
 
     );
     Command result = ramseteCommand.andThen(()->backCommand.schedule());
+    
     // Run path following command, then stop at the end.
     return result;
   }

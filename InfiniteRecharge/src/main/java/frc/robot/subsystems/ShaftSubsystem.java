@@ -77,6 +77,7 @@ public class ShaftSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("bb2", bb2.get());
     SmartDashboard.putBoolean("bb3", bb3.get());
     SmartDashboard.putString("Beam break", state.toString());
+    SmartDashboard.putNumber(" shotcount", shotCount);
 
     switch (state) {
       case shooting : {
@@ -86,6 +87,7 @@ public class ShaftSubsystem extends SubsystemBase {
         break;
       }
       case shootIndex : {
+        spinUpShaft(.5);
         if(!bb3.get()) {
           spinUpShaft(0);
           state = ShaftState.shootWait;

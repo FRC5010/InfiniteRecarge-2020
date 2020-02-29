@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.ControlConstants;
-import frc.robot.commands.calibrateShooterCam;
+import frc.robot.commands.CalibrateShooterCam;
 import frc.robot.subsystems.ShooterMain;
 import frc.robot.subsystems.VisionSystem;
 
@@ -46,7 +46,7 @@ public class Shoot {
 
         m_pidController = shootMotor.getPIDController();
         shooterMain = new ShooterMain(shootMotor, m_pidController);
-         calButton.whileHeld(new calibrateShooterCam(shooterVision));
+         calButton.whileHeld(new CalibrateShooterCam(shooterVision));
         spinUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed++));
         spinDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed--));
     }

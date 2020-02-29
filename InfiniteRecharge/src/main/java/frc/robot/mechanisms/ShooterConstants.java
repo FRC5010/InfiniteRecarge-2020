@@ -18,7 +18,7 @@ public class ShooterConstants {
     public static final double innerPortRadius = 0.16; // m
     public static final double innerPortHeight = 2.500; // meters, measured from floor to center
     public static double baseSpeed = 2510;
-    public static double distanceToRPM = 5.2;
+    public static double distanceToRPM = 5.5;
 
     static {
         kSC = .1;
