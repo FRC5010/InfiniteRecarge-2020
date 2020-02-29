@@ -27,6 +27,7 @@ public class VisionSystem extends SubsystemBase {
     table = NetworkTableInstance.getDefault();
     this.name = name;
     rawValues = new VisionValues(camHeight, camAngle, targetHeight);
+    
   }
 
   @Override

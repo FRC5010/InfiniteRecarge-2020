@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ControlConstants;
 import frc.robot.mechanisms.TelescopConstants;
 
 public class TelescopSubsystem extends SubsystemBase {
@@ -36,45 +37,34 @@ public class TelescopSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void spinArmMotor1(){
-    arm1.set(operator.getRawAxis(TelescopConstants.arm1Axis));
+  public void spinArmMotors(){
+    arm1.set(operator.getRawAxis(ControlConstants.climbDeployAxis));
+    arm2.set(operator.getRawAxis(ControlConstants.climbDeployAxis));
   }
   
-  public void stopArmMotor1(){
+  public void stopArmMotors(){
     arm1.set(0);
-  }
-
-  public void spinArmMotor2(){
-    arm2.set(operator.getRawAxis(TelescopConstants.arm2Axis));
-  }
-
-  public void stopArmMotor2(){
     arm2.set(0);
+
   }
 
-  public void spinWinchMotor1(){
-    winch1.set(operator.getRawAxis(TelescopConstants.winch1Axis));
+  
+
+
+  public void spinWinchMotors(){
+    winch1.set(Math.abs(driver.getRawAxis(ControlConstants.winch1Axis)));
+    winch2.set(Math.abs(driver.getRawAxis(ControlConstants.winch1Axis)));
   }
 
-  public void spinWinchMotor1Reversed(){
-    winch1.set(operator.getRawAxis(TelescopConstants.winch1Axis));
-  }
+  
 
-  public void stopWinchMotor1(){
+  public void stopWinchMotors(){
     winch1.set(0);
-  }
-
-  public void spinWinchMotor2(){
-    winch2.set(operator.getRawAxis(TelescopConstants.winch2Axis));
-  }
-
-  public void spinWinchMotor2Reversed(){
-    winch2.set(operator.getRawAxis(TelescopConstants.winch2Axis));
-  }
-
-  public void stopWinchMotor2(){
     winch2.set(0);
   }
+
+
+ 
 
   public boolean checkEncoderValue(double finalValue){
     //Currently set to only encoder one.

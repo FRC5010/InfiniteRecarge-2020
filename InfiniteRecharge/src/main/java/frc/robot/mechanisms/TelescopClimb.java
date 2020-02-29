@@ -13,10 +13,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ClimbArm1;
-import frc.robot.commands.ClimbArm2;
-import frc.robot.commands.ClimbWinch1;
-import frc.robot.commands.ClimbWinch2;
+import frc.robot.ControlConstants;
+import frc.robot.commands.ClimbArm;
+import frc.robot.commands.ClimbWinch;
 import frc.robot.subsystems.TelescopSubsystem;
 
 
@@ -32,10 +31,10 @@ public class TelescopClimb {
     public Encoder winchEncoder2;
     public Joystick driver;
     public Joystick operator;
-    public JoystickButton armBtn1;
-    public JoystickButton armBtn2;
-    public JoystickButton winchBtn1;
-    public JoystickButton winchBtn2;
+    public JoystickButton armBtn;
+   
+    public JoystickButton winchBtn;
+    
     private TelescopSubsystem subsystem;
 
     public TelescopClimb(Joystick driver, Joystick operator){
@@ -55,20 +54,20 @@ public class TelescopClimb {
         winchMotor1.setSmartCurrentLimit(20);
         winchMotor2.setSmartCurrentLimit(20);
         
-        armMotor1.setInverted(true);
+        armMotor1.setInverted(false);
         armMotor2.setInverted(true);
 
         winchMotor2.setInverted(true);
         
-        armBtn1 = new JoystickButton(operator, 1);
-        armBtn2 = new JoystickButton(operator, 2);
-        winchBtn1 = new JoystickButton(operator, 3);
-        winchBtn2 = new JoystickButton(operator, 4);
+        armBtn = new JoystickButton(operator, ControlConstants.startClimb );
+        
+        winchBtn = new JoystickButton(operator, ControlConstants.retractClimb);
+        
 
-        armBtn1.whileHeld(new ClimbArm1(subsystem));
-        armBtn2.whileHeld(new ClimbArm2(subsystem));
-        winchBtn1.whileHeld(new ClimbWinch1(subsystem));
-        winchBtn2.whileHeld(new ClimbWinch2(subsystem));
+        armBtn.whileHeld(new ClimbArm(subsystem));
+       
+        winchBtn.whileHeld(new ClimbWinch(subsystem));
+        
     }
 
 

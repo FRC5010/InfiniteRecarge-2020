@@ -10,7 +10,6 @@ import frc.robot.mechanisms.Shoot;
 import frc.robot.mechanisms.SpinControl;
 import frc.robot.mechanisms.TelescopClimb;
 import frc.robot.subsystems.ShaftSubsystem;
-import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.VisionSystem;
 
 /**
@@ -46,22 +45,22 @@ public class RobotContainer {
     driver = new Joystick(0);
     operator = new Joystick(1);
     shooterVision = new VisionSystem("shooter", 26, 0, 90);
+    //shooterVision.getRawValues().calibarateCamAngle();
     intakeVision = new VisionSystem("intake", 20, 0, 3.5);
-    shooter = new Shoot(operator, shooterVision);
+    
+    shooter = new Shoot(operator, driver, shooterVision);
     intake = new IntakeMech(operator);
     shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
-    spinControl = new SpinControl(driver, operator, shaftMechanism.shaftClimber);
-    //driveMechanism = new Drive(driver, shooterVision, intakeVision, intake.intakeMain);
-    
-    //climb = new TelescopClimb(driver, operator);
+    driveMechanism = new Drive(driver, shooterVision, intakeVision, intake.intakeMain);
+    spinControl = new SpinControl(driver, operator, shaftMechanism.getSubsystem());
+    climb = new TelescopClimb(driver, operator);
 
     //buttons driver
     //x = spin spinner
     //joysticks move robot
     //left bumper = toggle barrel height
     //b = angle towards target
-    //right bumper = toggle spinner height
-
+    //
 
 
     //buttons co-driver(operator cause jackson)
@@ -70,6 +69,7 @@ public class RobotContainer {
     //right trigger = spin intake in
     //left trigger = spin intake out
     //right bumper = toggle intake height
+    //?? = toggle spinner height
 
   }
 

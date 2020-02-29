@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
@@ -43,6 +44,8 @@ public class ShaftMechanism {
 
   public DoubleSolenoid shaftLifter;
 
+  public Solenoid ledRing;
+
   public DigitalInput beamBreakIntake;
   public DigitalInput beamBreakMiddle;
   public DigitalInput beamBreakShooter;
@@ -65,12 +68,17 @@ public class ShaftMechanism {
     manualUp = new JoystickButton(operator, ControlConstants.barrelUp);
     manualDown = new JoystickButton(operator, ControlConstants.barrelDown);
     shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
+
+    //ledRing = new Solenoid(20); // CHANGE TO ACTUAL PORT
+
     beamBreakIntake = new DigitalInput(0);
     beamBreakMiddle = new DigitalInput(1);
     beamBreakShooter = new DigitalInput(2);
+
     shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,
         shaftLifter);
 
+        //new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,shaftLifter, ledRing);
     heightButton.whenPressed(new ToggleShaftHeight(shaftClimber, shooterMain));
     launchButton.whileHeld(new ParallelCommandGroup(new LoadShaftCommand(shaftClimber),new SpinShooter(shooterMain, visionSubsystem)));
     manualUp.whileHeld(new FunctionalCommand(

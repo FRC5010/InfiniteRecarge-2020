@@ -21,9 +21,9 @@ public class ShooterConstants {
     public static double distanceToRPM = 5.2;
 
     static {
-        kSC = .2;
-        kVC = 0.132;
-        kAC = 0.208;
+        kSC = .1;
+        kVC = 0.131;
+        kAC = 0.102;
         kS = kSC / 12;
         kV = kVC / 60 / 1 / (12 - kS);
         kA = kAC / 60 / 1 / (12 - kS);

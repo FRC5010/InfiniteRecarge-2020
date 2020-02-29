@@ -10,12 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TelescopSubsystem;
 
-public class ClimbArm1 extends CommandBase {
+public class ClimbArm extends CommandBase {
   /**
    * Creates a new climbArm1.
    */
   private TelescopSubsystem subsystem;
-  public ClimbArm1(TelescopSubsystem subsystem){
+  public ClimbArm(TelescopSubsystem subsystem){
     this.subsystem = subsystem;
     addRequirements(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,14 +29,15 @@ public class ClimbArm1 extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.spinArmMotor1();
-    subsystem.spinWinchMotor1Reversed();
+    subsystem.spinArmMotors();
+
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.stopArmMotor1();
+    subsystem.stopArmMotors();
   }
 
   // Returns true when the command should end.

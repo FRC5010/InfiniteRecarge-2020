@@ -66,6 +66,8 @@ public class Drive {
 
     public JoystickButton intakeDriveButton;
 
+    
+
     public Drive(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSystem) {
         init(driver, shooterVision, intakeVision, intakeSystem); 
         configureButtonBindings();
@@ -73,12 +75,12 @@ public class Drive {
   
   private void configureButtonBindings() {
     intakeAimButton = new JoystickButton(driver, ControlConstants.intakeAimButton);
-    intakeAimButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver, 30));
+    intakeAimButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver, 0));
     shooterAimButton = new JoystickButton(driver, ControlConstants.shooterAimButton);
-    shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 30));
+    shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
 
     intakeDriveButton = new JoystickButton(driver, ControlConstants.startClimb);
-    intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.2)));
+    intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.7)));
   }
 
   public void init(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSubsystem) {
