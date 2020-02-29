@@ -75,11 +75,11 @@ public class SpinForNDetections extends CommandBase {
       detections = wheel.determineGameData();
       if(detections > -1){
         detections += 2;
-        spinner.spin(0.22);
+        spinner.spin(-0.22);
       }
     }
     else if (isRotationTime){
-      spinner.spin(0.35);
+      spinner.spin(-0.35);
     }
     
 

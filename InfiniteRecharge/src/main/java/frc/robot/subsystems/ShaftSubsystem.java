@@ -151,16 +151,15 @@ public class ShaftSubsystem extends SubsystemBase {
 
   
 
-  public void lowerShaft() {
+  public void lowerShaft(){
     isExtended = false;
     solenoid.set(DoubleSolenoid.Value.kReverse);
     //ledRing.set(false);
-    //spinner.retract();
   }
-    public void retractSpinner(){
-      if(isExtended && spinner.isDeployed()){
-        spinner.retract();
-      }
+  public void retractSpinner(){
+    if(isExtended && spinner.isDeployed()){
+      spinner.retract();
+    }
   }
   public void setSpinner(Spinner spinner){
     this.spinner = spinner;

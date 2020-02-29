@@ -56,10 +56,12 @@ public class RobotContainer {
     climb = new TelescopClimb(driver, operator);
 
     //buttons driver
-    //x = spin spinner
+    //x = spin spinner(rotation controller)
     //joysticks move robot
     //left bumper = toggle barrel height
     //b = angle towards target
+    //right bumper = toggle spinner height
+    //y = spin spinner(position controller)
     //
 
 
@@ -69,7 +71,6 @@ public class RobotContainer {
     //right trigger = spin intake in
     //left trigger = spin intake out
     //right bumper = toggle intake height
-    //?? = toggle spinner height
 
   }
 
