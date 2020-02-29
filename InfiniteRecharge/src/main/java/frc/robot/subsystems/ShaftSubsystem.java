@@ -34,6 +34,7 @@ public class ShaftSubsystem extends SubsystemBase {
   private DigitalInput bb3;
   private boolean isRunning = false;
   private Timer timer;
+  private Spinner spinner;
 
   private int shotCount = 0;
   private int shotTimes = 0;
@@ -166,10 +167,13 @@ public class ShaftSubsystem extends SubsystemBase {
     //ledRing.set(false);
     //spinner.retract();
   }
-    // public void setSpinner(Spinner spinner){
-    //   if(isExtended && spinner.isDeployed()){
-    //     spinner.retract();
-    //   }
-  //}
+    public void retractSpinner(){
+      if(isExtended && spinner.isDeployed()){
+        spinner.retract();
+      }
+  }
+  public void setSpinner(Spinner spinner){
+    this.spinner = spinner;
+  }
   public boolean isExtended() { return isExtended; }
 }

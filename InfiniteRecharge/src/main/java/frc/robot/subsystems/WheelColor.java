@@ -171,7 +171,7 @@ public class WheelColor extends SubsystemBase {
   }
 
   public boolean debounce(final double matchNum) {
-    if (matchNum > 0.92) {
+    if (matchNum > 0.94) {
       return true;
     }
     return false;

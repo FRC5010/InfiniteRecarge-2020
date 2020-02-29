@@ -32,7 +32,7 @@ public class SpinControl {
     private Joystick operator;
     private JoystickButton rotationButton;
     private JoystickButton positionButton;
-    private SpeedController spinnerMotor = new CANSparkMax(SpinConstants.spinnerMotorChannel, MotorType.kBrushless);
+    private CANSparkMax spinnerMotor;
     private Solenoid spinnerSolenoid;
     private JoystickButton deployButton;
     ShaftSubsystem shaftSubsystem;
@@ -46,10 +46,13 @@ public class SpinControl {
     }
 
     public void init() {
+        spinnerMotor = new CANSparkMax(SpinConstants.spinnerMotorChannel, MotorType.kBrushless);
+        //spinnerMotor.setInverted(true);
         spinnerSolenoid = new Solenoid(4);
         spinner = new Spinner(spinnerMotor, 0, 1, spinnerSolenoid, shaftSubsystem);
         wheelColor = new WheelColor();
-        //shaftSubsystem.setSpinner(spinner);
+ 
+        shaftSubsystem.setSpinner(spinner);
     }
 
     public void configureButtonBindings() {

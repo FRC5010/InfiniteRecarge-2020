@@ -27,7 +27,7 @@ public class Spinner extends SubsystemBase {
     this.shaftSubsystem = shaftSubsystem;
     //Set as false since spinner will not be deployed at start.
     isDeployed = false;
-    spinner.setInverted(true);
+
     //spinDeployment = new DoubleSolenoid(fwdChannel, revChannel);
   }
 
@@ -36,8 +36,8 @@ public class Spinner extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void spin(){
-    spinner.set(0.15);
+  public void spin(Double power){
+    spinner.set(power);
   }
 
   public void stop(){
@@ -63,8 +63,8 @@ public class Spinner extends SubsystemBase {
     spinDeployment.set(false);
     isDeployed = false;
   }
-  // public boolean isDeployed(){
-  //   return isDeployed;
-  // }
+  public boolean isDeployed(){
+    return isDeployed;
+  }
 
 }

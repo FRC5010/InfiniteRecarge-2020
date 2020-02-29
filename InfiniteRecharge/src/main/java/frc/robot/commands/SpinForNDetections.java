@@ -63,7 +63,9 @@ public class SpinForNDetections extends CommandBase {
   public void initialize() {
     //Resent the color counter to count the total colors upon initialization of this command.
     wheel.setColorCount(0);
-    
+    if(needGameData){
+      detections = -1;
+    }   
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -73,12 +75,13 @@ public class SpinForNDetections extends CommandBase {
       detections = wheel.determineGameData();
       if(detections > -1){
         detections += 2;
-        spinner.spin();
+        spinner.spin(0.22);
       }
     }
     else if (isRotationTime){
-      spinner.spin();
+      spinner.spin(0.35);
     }
+    
 
     SmartDashboard.putNumber("Distance to Objective", detections);
   }
