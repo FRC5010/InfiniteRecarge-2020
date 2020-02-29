@@ -36,6 +36,8 @@ public class ShaftSubsystem extends SubsystemBase {
   private Timer timer;
   private Spinner spinner;
 
+  private int shotCount = 0;
+  private int shotTimes = 0;
   private Solenoid ledRing;
 
   public enum ShaftState {
@@ -79,7 +81,11 @@ public class ShaftSubsystem extends SubsystemBase {
     switch (state) {
       case shooting : {
         if(bb3.get())
-          state = ShaftState.shootIndex;
+          shotCount++;
+          if(shotCount == shotTimes)
+            state = ShaftState.fullStop;
+          else
+            state = ShaftState.shootIndex;
         break;
       }
       case shootIndex : {
@@ -114,6 +120,9 @@ public class ShaftSubsystem extends SubsystemBase {
         }
         if (!bb3.get() ) {
           state = ShaftState.fullStop;
+          spinUpShaft(0);
+          shotTimes++;
+
         }
         break;
       }
@@ -122,6 +131,7 @@ public class ShaftSubsystem extends SubsystemBase {
         if (!bb2.get() || !bb3.get() ) {
           spinUpShaft(0);
           state = ShaftState.fullStop;
+          shotTimes++;
         }  
         break;  
       }
