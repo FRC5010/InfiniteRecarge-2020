@@ -52,6 +52,7 @@ public class ShaftMechanism {
 
   // //buttons
   public Button launchButton;
+  public Button lowGoalButton;
   public Button heightModeToggle;
   public Button heightButton;
   public Button manualUp;
@@ -65,6 +66,7 @@ public class ShaftMechanism {
 
     this.launchButton = new JoystickButton(operator, ControlConstants.launchButton);
     this.heightButton = new JoystickButton(driver, ControlConstants.heightModeToggle);
+    lowGoalButton = new JoystickButton(operator, ControlConstants.lowGoalShoot);
     manualUp = new JoystickButton(operator, ControlConstants.barrelUp);
     manualDown = new JoystickButton(operator, ControlConstants.barrelDown);
     shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
@@ -81,6 +83,7 @@ public class ShaftMechanism {
         //new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,shaftLifter, ledRing);
     heightButton.whenPressed(new ToggleShaftHeight(shaftClimber, shooterMain));
     launchButton.whileHeld(new ParallelCommandGroup(new LoadShaftCommand(shaftClimber),new SpinShooter(shooterMain, visionSubsystem)));
+    lowGoalButton.whileHeld(new SpinShooter(shooterMain, visionSubsystem));
     manualUp.whileHeld(new FunctionalCommand(
       () -> shaftClimber.state = ShaftState.manual, 
       () -> shaftClimber.spinUpShaft(.5), 
