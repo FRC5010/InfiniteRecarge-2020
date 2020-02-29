@@ -35,7 +35,6 @@ public class SpinControl {
     private CANSparkMax spinnerMotor;
     private Solenoid spinnerSolenoid;
     private JoystickButton deployButton;
-    private JoystickButton manualRotationButton;
     ShaftSubsystem shaftSubsystem;
 
     public SpinControl(Joystick driver, Joystick operator, ShaftSubsystem shaftSubsystem) {
@@ -48,7 +47,6 @@ public class SpinControl {
 
     public void init() {
         spinnerMotor = new CANSparkMax(SpinConstants.spinnerMotorChannel, MotorType.kBrushless);
-        //spinnerMotor.setInverted(true);
         spinnerSolenoid = new Solenoid(4);
         spinner = new Spinner(spinnerMotor, 0, 1, spinnerSolenoid, shaftSubsystem);
         wheelColor = new WheelColor();
@@ -60,12 +58,10 @@ public class SpinControl {
         rotationButton = new JoystickButton(driver, ControlConstants.rotationControl);
         positionButton = new JoystickButton(driver, ControlConstants.positionControl);
         deployButton = new JoystickButton(driver, 6);
-        manualRotationButton = new JoystickButton(driver, ControlConstants.manualRotation);
         //change rotation and position to whenPressed for when color sensor attached
         rotationButton.whenPressed(new SpinForNDetections(spinner, wheelColor, 27));
         positionButton.whenPressed(new SpinForNDetections(spinner, wheelColor));
         deployButton.whenPressed(new ToggleSpinnerDeploy(spinner));
-       // manualRotationButton.whileHeld(new Spinn)
 
 
     }
