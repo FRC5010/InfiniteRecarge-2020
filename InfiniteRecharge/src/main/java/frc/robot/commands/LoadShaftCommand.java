@@ -17,11 +17,16 @@ public class LoadShaftCommand extends CommandBase {
    * Creates a new ShaftClimberSubsystem.
    */
   ShaftSubsystem shaftClimber;
+  int numShoot = 0;
 
   public LoadShaftCommand(ShaftSubsystem shaftClimber) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shaftClimber = shaftClimber;
     addRequirements(shaftClimber);
+  }
+  public LoadShaftCommand(ShaftSubsystem shaftClimber, int numShoot){
+    this.shaftClimber = shaftClimber;
+    this.numShoot = numShoot;
   }
 
   // Called when the command is initially scheduled.
@@ -45,6 +50,6 @@ public class LoadShaftCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return shaftClimber.getShotCount() == numShoot && numShoot !=0;
   }
 }

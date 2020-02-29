@@ -82,10 +82,7 @@ public class ShaftSubsystem extends SubsystemBase {
       case shooting : {
         if(bb3.get())
           shotCount++;
-          if(shotCount == shotTimes)
-            state = ShaftState.fullStop;
-          else
-            state = ShaftState.shootIndex;
+          state = ShaftState.shootIndex;
         break;
       }
       case shootIndex : {
@@ -121,7 +118,7 @@ public class ShaftSubsystem extends SubsystemBase {
         if (!bb3.get() ) {
           state = ShaftState.fullStop;
           spinUpShaft(0);
-          shotTimes++;
+         
 
         }
         break;
@@ -131,7 +128,7 @@ public class ShaftSubsystem extends SubsystemBase {
         if (!bb2.get() || !bb3.get() ) {
           spinUpShaft(0);
           state = ShaftState.fullStop;
-          shotTimes++;
+          
         }  
         break;  
       }
@@ -174,6 +171,9 @@ public class ShaftSubsystem extends SubsystemBase {
   }
   public void setSpinner(Spinner spinner){
     this.spinner = spinner;
+  }
+  public int getShotCount(){
+    return shotCount;
   }
   public boolean isExtended() { return isExtended; }
 }
