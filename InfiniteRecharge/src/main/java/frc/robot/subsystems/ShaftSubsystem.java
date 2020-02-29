@@ -33,6 +33,7 @@ public class ShaftSubsystem extends SubsystemBase {
   private DigitalInput bb3;
   private boolean isRunning = false;
   private Timer timer;
+  private Spinner spinner;
 
   public enum ShaftState {
     fullStop, runningClear, indexing, shooting, shootIndex, shootWait, manual
@@ -147,10 +148,13 @@ public class ShaftSubsystem extends SubsystemBase {
     solenoid.set(DoubleSolenoid.Value.kReverse);
     //spinner.retract();
   }
-    // public void setSpinner(Spinner spinner){
-    //   if(isExtended && spinner.isDeployed()){
-    //     spinner.retract();
-    //   }
-  //}
+    public void retractSpinner(){
+      if(isExtended && spinner.isDeployed()){
+        spinner.retract();
+      }
+  }
+  public void setSpinner(Spinner spinner){
+    this.spinner = spinner;
+  }
   public boolean isExtended() { return isExtended; }
 }

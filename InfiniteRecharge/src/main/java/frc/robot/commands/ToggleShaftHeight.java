@@ -31,7 +31,7 @@ public class ToggleShaftHeight extends CommandBase {
     shaftSubsystem.toggleShaftHeight();
 
     if (shaftSubsystem.isExtended()) {
-      //shaftSubsystem.setSpinner(spinner);
+      shaftSubsystem.retractSpinner();
       shooterMain.setPoint = 1000;
     } else {
       shooterMain.end();
