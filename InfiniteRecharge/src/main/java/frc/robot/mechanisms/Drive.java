@@ -79,8 +79,8 @@ public class Drive {
     shooterAimButton = new JoystickButton(driver, ControlConstants.shooterAimButton);
     shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
 
-    intakeDriveButton = new JoystickButton(driver, ControlConstants.startClimb);
-    intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.7)));
+    // intakeDriveButton = new JoystickButton(driver, ControlConstants.startClimb);
+    // intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.7)));
   }
 
   public void init(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSubsystem) {

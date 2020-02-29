@@ -36,7 +36,7 @@ public class CalibrateShooterCam extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-  system.getRawValues().setCamAngle(system.getRawValues().getCamAngle());
+ // system.getRawValues().setCamAngle(system.getRawValues().getCamAngle());
   }
 
   // Returns true when the command should end.
