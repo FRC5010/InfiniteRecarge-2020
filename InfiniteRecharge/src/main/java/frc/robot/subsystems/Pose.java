@@ -104,7 +104,7 @@ public class Pose extends SubsystemBase {
         SmartDashboard.putNumber("right velocity", getEncoderVel(rightEncoder, DriveConstants.rightVelocityConv));
         SmartDashboard.putNumber("left raw velocity", leftEncoder.getVelocity());
         SmartDashboard.putNumber("right raw velocity", rightEncoder.getVelocity());
-        SmartDashboard.putNumber("gyro heading", getHeading());
+        SmartDashboard.putNumber("gyro he@ading", getHeading());
 
         SmartDashboard.putNumber("Robot X pos", odometry.getPoseMeters().getTranslation().getX());
         SmartDashboard.putNumber("Robot Y pos", odometry.getPoseMeters().getTranslation().getY());
