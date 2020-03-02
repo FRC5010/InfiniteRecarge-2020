@@ -71,16 +71,15 @@ public class ShaftMechanism {
     manualDown = new JoystickButton(operator, ControlConstants.barrelDown);
     shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
 
-    //ledRing = new Solenoid(20); // CHANGE TO ACTUAL PORT
+    ledRing = new Solenoid(5); 
 
     beamBreakIntake = new DigitalInput(0);
     beamBreakMiddle = new DigitalInput(1);
     beamBreakShooter = new DigitalInput(2);
 
-    shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,
-        shaftLifter);
-
-        //new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,shaftLifter, ledRing);
+     shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,shaftLifter, ledRing);
+     
+        
     heightButton.whenPressed(new ToggleShaftHeight(shaftClimber, shooterMain));
     launchButton.whileHeld(new ParallelCommandGroup(new LoadShaftCommand(shaftClimber),new SpinShooter(shooterMain, visionSubsystem)));
     lowGoalButton.whileHeld(new SpinShooter(shooterMain, visionSubsystem, 1000));

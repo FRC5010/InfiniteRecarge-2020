@@ -62,9 +62,9 @@ public class ShaftSubsystem extends SubsystemBase {
   }
 
   public ShaftSubsystem(DigitalInput bb1, DigitalInput bb2, DigitalInput bb3, CANSparkMax motor, Joystick operator,
-      DoubleSolenoid solenoid//, Solenoid ledRing
+      DoubleSolenoid solenoid, Solenoid ledRing
       ) {
-    //this.ledRing = ledRing;
+    this.ledRing = ledRing;
     this.bb1 = bb1;
     this.bb2 = bb2;
     this.bb3 = bb3;
@@ -175,13 +175,13 @@ public class ShaftSubsystem extends SubsystemBase {
   public void raiseShaft() {
     isExtended = true;
     solenoid.set(DoubleSolenoid.Value.kForward);
-    //ledRing.set(true)
+    ledRing.set(true);
   }
 
   public void lowerShaft(){
     isExtended = false;
     solenoid.set(DoubleSolenoid.Value.kReverse);
-    //ledRing.set(false);
+    ledRing.set(false);
   }
   public void retractSpinner(){
     if(isExtended && spinner.isDeployed()){
