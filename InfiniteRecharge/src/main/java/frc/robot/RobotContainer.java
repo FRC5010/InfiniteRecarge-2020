@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -61,20 +62,21 @@ public class RobotContainer {
     // motor 10 is the spinner
     driver = new Joystick(0);
     operator = new Joystick(1);
-    shooterVision = new VisionSystem("shooter", 26, 0, 90);
+    Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
+    shooterVision = new VisionSystem("shooter", 26, 0, 90, ControlConstants.shooterVisionColumn);
     //shooterVision.getRawValues().calibarateCamAngle();
-    intakeVision = new VisionSystem("intake", 20, 0, 3.5);
+    intakeVision = new VisionSystem("intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
     
     shooter = new Shoot(operator, driver, shooterVision);
     intake = new IntakeMech(operator);
     shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
-    driveMechanism = new Drive(driver, shooterVision, intakeVision, intake.intakeMain);
+    //driveMechanism = new Drive(driver, shooterVision, intakeVision, intake.intakeMain);
     spinControl = new SpinControl(driver, operator, shaftMechanism.getSubsystem());
     climb = new TelescopClimb(driver, operator);
 
 
     robotPose = Drive.robotPose;
-    driveTrain = driveMechanism.driveTrain;
+    //driveTrain = driveMechanism.driveTrain;
 
     //buttons driver
     //x = spin spinner(rotation controller)

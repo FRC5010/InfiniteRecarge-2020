@@ -23,10 +23,10 @@ public class VisionSystem extends SubsystemBase {
     rawValues = new VisionValues();
   }
 
-  public VisionSystem(String name, double camHeight, double camAngle, double targetHeight) {
+  public VisionSystem(String name, double camHeight, double camAngle, double targetHeight, int colIndex) {
     table = NetworkTableInstance.getDefault();
     this.name = name;
-    rawValues = new VisionValues(camHeight, camAngle, targetHeight);
+    rawValues = new VisionValues(name, camHeight, camAngle, targetHeight, colIndex);
     
   }
 

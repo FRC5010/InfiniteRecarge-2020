@@ -7,7 +7,15 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.ControlConstants;
 
 /**
  * Add your docs here.
@@ -32,6 +40,7 @@ public class VisionValues {
     // distance
     double camHeight, camAngle, targetHeight;
     double distance;
+    ShuffleboardLayout visionLayout;
 
     public VisionValues() {
         
@@ -45,10 +54,18 @@ public class VisionValues {
         this.distance = distance;
     }
 
-    public VisionValues(double camHeight, double camAngle, double targetHeight) {
+    public VisionValues(String path, double camHeight, double camAngle, double targetHeight, int columnIndex) {
         this.camHeight = camHeight;
         this.camAngle = camAngle;
         this.targetHeight = targetHeight;
+        ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
+        visionLayout = driverTab.getLayout(path + " Vision", BuiltInLayouts.kList)
+            .withPosition(columnIndex, 0).withSize(2, 4);
+        visionLayout.add(path + " cam", "").withWidget(BuiltInWidgets.kCameraStream);
+        visionLayout.addNumber(path + " Distance", this::getDistance).withSize(1, 1);
+        visionLayout.addNumber(path + " Cam Angle", this::getCamAngle).withSize(1, 1);
+        visionLayout.addNumber(path + " X Angle", this::getAngleX).withSize(1, 1);
+        visionLayout.addNumber(path + " Y Angle", this::getAngleY).withSize(1, 1);
     }
 
     public void updateViaNetworkTable(String path) {
@@ -69,7 +86,6 @@ public class VisionValues {
         SmartDashboard.putNumber(path + " angleX", angleX);
         SmartDashboard.putNumber(path + " angleY", angleY);
         SmartDashboard.putNumber(path + " distance", distance);
-        
     }
     public void calibarateCamAngle(){
        camAngle =  Math.toDegrees(Math.atan(64/120))-  angleY;

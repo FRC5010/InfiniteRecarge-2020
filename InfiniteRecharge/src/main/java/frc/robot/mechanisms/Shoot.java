@@ -12,6 +12,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -31,8 +35,8 @@ public class Shoot {
     public ShooterMain shooterMain;
     public CANSparkMax shootMotor;
     public CANPIDController m_pidController;
-    public POVButton spinUp;
-    public POVButton spinDown;
+    public POVButton spinUp, baseUp;
+    public POVButton spinDown, baseDown;
     public Button calButton;
 
     public Shoot(Joystick operator, Joystick driver, VisionSystem shooterVision) {
@@ -43,11 +47,15 @@ public class Shoot {
         calButton = new JoystickButton(driver, ControlConstants.calibrate);
         spinUp = new POVButton(operator, ControlConstants.incShooter);
         spinDown = new POVButton(operator, ControlConstants.decShooter);
+        baseUp = new POVButton(driver, ControlConstants.incShooter);
+        baseDown = new POVButton(driver, ControlConstants.decShooter);
 
         m_pidController = shootMotor.getPIDController();
         shooterMain = new ShooterMain(shootMotor, m_pidController);
          calButton.whileHeld(new CalibrateShooterCam(shooterVision));
-        spinUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed++));
-        spinDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed--));
+        spinUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed+=10));
+        spinDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed-=10));
+        baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.distanceToRPM+=.1));
+        baseDown.whenPressed(new InstantCommand(() -> ShooterConstants.distanceToRPM-=.1));
     }
 }

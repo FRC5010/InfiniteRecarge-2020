@@ -7,14 +7,19 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.commands.SpinShooter;
+import frc.robot.ControlConstants;
 import frc.robot.mechanisms.ShooterConstants;
 
 public class ShooterMain extends SubsystemBase {
@@ -41,6 +46,15 @@ public class ShooterMain extends SubsystemBase {
     SmartDashboard.putNumber("Feed Forward", m_pidController.getFF());
     SmartDashboard.putNumber("Max Output", ShooterConstants.kMaxOutput);
     SmartDashboard.putNumber("Min Output", ShooterConstants.kMinOutput);
+    ShuffleboardLayout layout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
+        .getLayout("Shooter", BuiltInLayouts.kList).withPosition(ControlConstants.shooterColumn, 0).withSize(2, 4);
+    layout.addNumber("Velocity", controller.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kDial)
+        .withProperties(Map.of("Max", 6000));
+    layout.addNumber("Set Point", this::getSetPoint).withWidget(BuiltInWidgets.kDial)
+        .withProperties(Map.of("Max", 6000));
+    layout.addBoolean("Ready To Shoot", this::getReadyToShoot).withWidget(BuiltInWidgets.kBooleanBox).withSize(1, 1);
+    layout.addNumber("Distance to RPM", ShooterConstants::getDistanceToRPM);
+    layout.addNumber("Base Speed", ShooterConstants::getBaseSpeed);
   }
 
   @Override
@@ -80,4 +94,11 @@ public class ShooterMain extends SubsystemBase {
     SmartDashboard.putBoolean("Ready to Shoot", readyToShoot);
   }
 
+  public boolean getReadyToShoot() {
+    return readyToShoot;
+  }
+
+  public double getSetPoint() {
+    return setPoint;
+  }
 }
