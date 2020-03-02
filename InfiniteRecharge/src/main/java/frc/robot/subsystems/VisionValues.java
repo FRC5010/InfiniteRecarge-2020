@@ -7,13 +7,13 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.cscore.VideoSink;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.ControlConstants;
 
@@ -59,9 +59,10 @@ public class VisionValues {
         this.camAngle = camAngle;
         this.targetHeight = targetHeight;
         ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
-        visionLayout = driverTab.getLayout(path + " Vision", BuiltInLayouts.kList)
-            .withPosition(columnIndex, 0).withSize(2, 4);
-        visionLayout.add(path + " cam", "").withWidget(BuiltInWidgets.kCameraStream);
+        visionLayout = driverTab.getLayout(path + " Vision", BuiltInLayouts.kList).withPosition(columnIndex, 0).withSize(2, 4);
+        // CameraServer camera = CameraServer.getInstance();
+        // VideoSink vs = camera.getVideo();
+        // visionLayout.add(path + " cam", vs).withWidget(BuiltInWidgets.kCameraStream);
         visionLayout.addNumber(path + " Distance", this::getDistance).withSize(1, 1);
         visionLayout.addNumber(path + " Cam Angle", this::getCamAngle).withSize(1, 1);
         visionLayout.addNumber(path + " X Angle", this::getAngleX).withSize(1, 1);

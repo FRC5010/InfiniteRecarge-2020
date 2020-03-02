@@ -160,6 +160,10 @@ public class ShaftSubsystem extends SubsystemBase {
     return state.toString();
   }
 
+  public ShaftState getShaftState() {
+    return state;
+  }
+  
   public void toggleShaftHeight() {
     if (isExtended) {
       lowerShaft();

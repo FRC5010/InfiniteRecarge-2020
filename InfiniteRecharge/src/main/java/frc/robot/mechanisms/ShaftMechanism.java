@@ -83,7 +83,7 @@ public class ShaftMechanism {
         //new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,shaftLifter, ledRing);
     heightButton.whenPressed(new ToggleShaftHeight(shaftClimber, shooterMain));
     launchButton.whileHeld(new ParallelCommandGroup(new LoadShaftCommand(shaftClimber),new SpinShooter(shooterMain, visionSubsystem)));
-    lowGoalButton.whileHeld(new SpinShooter(shooterMain, visionSubsystem));
+    lowGoalButton.whileHeld(new SpinShooter(shooterMain, visionSubsystem, 1000));
     manualUp.whileHeld(new FunctionalCommand(
       () -> shaftClimber.state = ShaftState.manual, 
       () -> shaftClimber.spinUpShaft(.5), 

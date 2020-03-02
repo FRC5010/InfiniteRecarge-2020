@@ -21,8 +21,10 @@ public class SpinShooter extends CommandBase {
   private double power = 0.0;
   private Button cancel;
   private VisionSystem vision;
+  private double shotSpeed = 0;
 
   ShooterMain shooter;
+
   public SpinShooter(ShooterMain shooter, VisionSystem vision) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
@@ -30,26 +32,36 @@ public class SpinShooter extends CommandBase {
     addRequirements(shooter);
   }
 
-  //gets ball velocity required to reach target point (targetX, targetY) with robot at a specified angle (radians)
-  //  x = horizontal distance from shooter end to target
-  //  y = vertical distance from shooter end and target
-  //assumptions:
-  //  no air resistance (would increase required vel)
-  //  no magnus effect (would change required vel, depending on ball spin)
-  public double getBallVel(double targetX, double targetY, double angle) {
-    return (Math.sqrt(ShooterConstants.earthGravity) * targetX * (1/Math.cos(angle))) 
-            / (Math.sqrt(2) * Math.sqrt(targetX * Math.tan(angle) - targetY));
+  public SpinShooter(ShooterMain shooter, VisionSystem vision, double shotSpeed) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.shooter = shooter;
+    this.vision = vision;
+    this.shotSpeed = shotSpeed;
+    addRequirements(shooter);
   }
-  //it will probably return NaN if impossible
-  //vel approaches infinity as the shooter gets closer to pointing directly at target
 
-  //some rough estimates for required velocities
-  //from init line (tx ~= 3.05m, ty ~= 1.6m, a = 54 deg)
-  //  vel = 7.130 m/s
-  //from trench run (tx ~= 5.68m, ty ~= 1.6m, a = 54 deg)
-  //  vel = 8.858 m/s
-  //from middle of field (tx ~= 7.79m, ty ~= 1.6m, a = 54 deg)
-  //  vel = 9.718 m/s
+  // gets ball velocity required to reach target point (targetX, targetY) with
+  // robot at a specified angle (radians)
+  // x = horizontal distance from shooter end to target
+  // y = vertical distance from shooter end and target
+  // assumptions:
+  // no air resistance (would increase required vel)
+  // no magnus effect (would change required vel, depending on ball spin)
+  public double getBallVel(double targetX, double targetY, double angle) {
+    return (Math.sqrt(ShooterConstants.earthGravity) * targetX * (1 / Math.cos(angle)))
+        / (Math.sqrt(2) * Math.sqrt(targetX * Math.tan(angle) - targetY));
+  }
+  // it will probably return NaN if impossible
+  // vel approaches infinity as the shooter gets closer to pointing directly at
+  // target
+
+  // some rough estimates for required velocities
+  // from init line (tx ~= 3.05m, ty ~= 1.6m, a = 54 deg)
+  // vel = 7.130 m/s
+  // from trench run (tx ~= 5.68m, ty ~= 1.6m, a = 54 deg)
+  // vel = 8.858 m/s
+  // from middle of field (tx ~= 7.79m, ty ~= 1.6m, a = 54 deg)
+  // vel = 9.718 m/s
 
   // Called when the command is initially scheduled.
   @Override
@@ -59,12 +71,16 @@ public class SpinShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double distance = vision.getRawValues().getDistance();
+    if (shotSpeed != 0) {
+      double distance = vision.getRawValues().getDistance();
 
-    if(distance > 48 && distance < 480){
-      shooter.setPoint =  distance * ShooterConstants.distanceToRPM + ShooterConstants.baseSpeed;
-    }else{
-      shooter.setPoint = ShooterConstants.baseSpeed;
+      if (distance > 48 && distance < 480) {
+        shooter.setPoint = distance * ShooterConstants.distanceToRPM + ShooterConstants.baseSpeed;
+      } else {
+        shooter.setPoint = ShooterConstants.baseSpeed;
+      }
+    } else {
+      shooter.setPoint = shotSpeed;
     }
   }
 
