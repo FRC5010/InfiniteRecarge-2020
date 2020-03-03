@@ -48,6 +48,7 @@ public class ShaftSubsystem extends SubsystemBase {
   private Solenoid ledRing;
   private ShuffleboardLayout barrelLayout;
   private NetworkTableEntry sbState, sbHeight;
+  private boolean isLedOn;
 
   public enum ShaftState {
     fullStop, runningClear, indexing, shooting, shootIndex, shootWait, manual
@@ -190,5 +191,11 @@ public class ShaftSubsystem extends SubsystemBase {
   public int getShotCount(){
     return shotCount;
   }
+  
+ public void toggleLight(){
+   
+   isLedOn = !isLedOn;
+   ledRing.set(isLedOn);  
+ }
   public boolean isExtended() { return isExtended; }
 }

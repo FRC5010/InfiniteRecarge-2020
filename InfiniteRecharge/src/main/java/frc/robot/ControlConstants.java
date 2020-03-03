@@ -12,7 +12,7 @@ package frc.robot;
  */
 public class ControlConstants {
     static enum ButtonNums {
-        NO_BUTTON, A_BUTTON, B_BUTTON, X_BUTTON, Y_BUTTON, LEFT_BUMPER, RIGHT_BUMPER, START_BUTTON, BACK_BUTTON;
+        NO_BUTTON, A_BUTTON, B_BUTTON, X_BUTTON, Y_BUTTON, LEFT_BUMPER, RIGHT_BUMPER, START_BUTTON, BACK_BUTTON,LEFT_STICK_BUTT, RIGHT_STICK_BUTT;
     }
     static enum AxisNums {
         LEFT_X, LEFT_Y, L_TRIGGER, R_TRIGGER, RIGHT_X, RIGHT_Y
@@ -34,6 +34,7 @@ public class ControlConstants {
     public static int spinDeploy = ButtonNums.RIGHT_BUMPER.ordinal();
     public static int calibrate = ButtonNums.START_BUTTON.ordinal(); 
     public static int manualRotation = ButtonNums.BACK_BUTTON.ordinal(); // Implement
+    public static int toggleLed = ButtonNums.LEFT_STICK_BUTT.ordinal();
 
     //Operator
     public static int flyWheelManual = AxisNums.LEFT_Y.ordinal(); // Implement
