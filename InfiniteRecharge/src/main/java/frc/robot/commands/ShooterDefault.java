@@ -29,7 +29,7 @@ public class ShooterDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shooterMain.setPoint > 0) {
+    if (shooterMain.getSetPoint() > 0) {
       shooterMain.spinUpWheel();
     }
   }

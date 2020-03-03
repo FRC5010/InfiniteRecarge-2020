@@ -25,22 +25,22 @@ public class VisionValues {
     // the essential variables, stuff they already give me
     // TODO: If you ever get rid of a networkentry variable in opensight, update
     // vision classes
-    double centerX;
-    double centerY;
-    double area;
+    private double centerX;
+    private double centerY;
+    private double area;
 
     // variables needed to process new variables, plus the new variables
     // angles
-    static double screenSizeX = 160;
-    static double screenSizeY = 120;
-    static double camFovX = 61;
-    static double camFovY = 34.3;
-    double angleX;
-    double angleY;
+    static final double screenSizeX = 160;
+    static final double screenSizeY = 120;
+    static final double camFovX = 61;
+    static final double camFovY = 34.3;
+    private double angleX;
+    private double angleY;
     // distance
-    double camHeight, camAngle, targetHeight;
-    double distance;
-    ShuffleboardLayout visionLayout;
+    private double camHeight, camAngle, targetHeight;
+    private double distance;
+    private ShuffleboardLayout visionLayout;
 
     public VisionValues() {
         
@@ -84,9 +84,6 @@ public class VisionValues {
 
         SmartDashboard.putNumber(path + " centerX", centerX);
         SmartDashboard.putNumber(path + " centerY", centerY);
-        SmartDashboard.putNumber(path + " angleX", angleX);
-        SmartDashboard.putNumber(path + " angleY", angleY);
-        SmartDashboard.putNumber(path + " distance", distance);
     }
     public void calibarateCamAngle(){
        camAngle =  Math.toDegrees(Math.atan(64/120))-  angleY;

@@ -82,19 +82,26 @@ public class ShaftMechanism {
      shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,shaftLifter, ledRing);
      
     toggleLed.whenPressed(new ToggleLedRing(shaftClimber));
+    
     heightButton.whenPressed(new ToggleShaftHeight(shaftClimber, shooterMain));
-    launchButton.whileHeld(new ParallelCommandGroup(new LoadShaftCommand(shaftClimber),new SpinShooter(shooterMain, visionSubsystem)));
+    
+    launchButton.whileHeld(new ParallelCommandGroup(
+      new LoadShaftCommand(shaftClimber, shooterMain),
+      new SpinShooter(shooterMain, visionSubsystem)));
+
     lowGoalButton.whileHeld(new SpinShooter(shooterMain, visionSubsystem, 1000));
+    
     manualUp.whileHeld(new FunctionalCommand(
-      () -> shaftClimber.state = ShaftState.manual, 
+      () -> shaftClimber.setShaftState(ShaftState.manual), 
       () -> shaftClimber.spinUpShaft(.5), 
-      (intr) -> { shaftClimber.spinUpShaft(0); shaftClimber.state = ShaftState.fullStop; }, 
+      (intr) -> { shaftClimber.spinUpShaft(0); shaftClimber.setShaftState(ShaftState.fullStop); }, 
       () -> false, 
       shaftClimber));
+
     manualDown.whileHeld(new FunctionalCommand(
-      () -> shaftClimber.state = ShaftState.manual, 
+      () -> shaftClimber.setShaftState(ShaftState.manual), 
       () -> shaftClimber.spinUpShaft(-.5), 
-      (intr) -> {shaftClimber.spinUpShaft(0); shaftClimber.state = ShaftState.fullStop;}, 
+      (intr) -> {shaftClimber.spinUpShaft(0); shaftClimber.setShaftState(ShaftState.fullStop);}, 
       () -> false, 
       shaftClimber));
   }

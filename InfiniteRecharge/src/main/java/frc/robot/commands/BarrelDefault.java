@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShaftSubsystem;
-import frc.robot.subsystems.ShooterMain;
 import frc.robot.subsystems.ShaftSubsystem.ShaftState;
 
 public class BarrelDefault extends CommandBase {

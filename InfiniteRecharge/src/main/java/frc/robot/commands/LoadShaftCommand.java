@@ -17,12 +17,15 @@ public class LoadShaftCommand extends CommandBase {
    * Creates a new ShaftClimberSubsystem.
    */
   ShaftSubsystem shaftSubsystem;
+  ShooterMain shooter;
   int numShoot = 0;
 
-  public LoadShaftCommand(ShaftSubsystem shaftClimber) {
+  public LoadShaftCommand(ShaftSubsystem shaftClimber, ShooterMain shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shaftSubsystem = shaftClimber;
+    this.shooter = shooter;
     addRequirements(shaftSubsystem);
+    // addRequirements(shooter); NOTE: THIS IS NOT NEEDED, LEAVING HERE TO INFORM ONLY - CLR
   }
   public LoadShaftCommand(ShaftSubsystem shaftClimber, int numShoot){
     this.shaftSubsystem = shaftClimber;
@@ -33,7 +36,7 @@ public class LoadShaftCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shaftSubsystem.state = ShaftState.shootIndex;
+    shaftSubsystem.setShaftState(ShaftState.shootIndex);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,7 +58,7 @@ public class LoadShaftCommand extends CommandBase {
         break;
       }
       case shootWait : {
-        if (ShooterMain.readyToShoot) {
+        if (shooter.getReadyToShoot()) {
           shaftSubsystem.spinUpShaft(.7);
           shaftSubsystem.setShaftState(ShaftState.shooting);
         }
@@ -68,7 +71,7 @@ public class LoadShaftCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shaftSubsystem.spinUpShaft(0);
-    shaftSubsystem.state = ShaftState.fullStop;
+    shaftSubsystem.setShaftState(ShaftState.fullStop);
   }
 
   // Returns true when the command should end.

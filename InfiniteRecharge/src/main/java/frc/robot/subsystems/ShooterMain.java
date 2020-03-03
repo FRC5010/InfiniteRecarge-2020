@@ -27,8 +27,8 @@ public class ShooterMain extends SubsystemBase {
    * Creates a new Shooter.
    */
 
-  public double setPoint = 0;
-  public static boolean readyToShoot = false;
+  private double setPoint = 0;
+  private boolean readyToShoot = false;
   // Change to speed controller later
   private CANSparkMax controller;
   private CANPIDController m_pidController;
@@ -36,37 +36,36 @@ public class ShooterMain extends SubsystemBase {
   public ShooterMain(CANSparkMax controller, CANPIDController pidControl) {
     this.controller = controller;
     this.m_pidController = pidControl;
-    SmartDashboard.putNumber("set point", setPoint);
 
     m_pidController.setP(ShooterConstants.kP);
     m_pidController.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
 
     // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("P Gain", ShooterConstants.kP);
-    SmartDashboard.putNumber("Feed Forward", m_pidController.getFF());
-    SmartDashboard.putNumber("Max Output", ShooterConstants.kMaxOutput);
-    SmartDashboard.putNumber("Min Output", ShooterConstants.kMinOutput);
+    SmartDashboard.putNumber("Shooter P Gain", ShooterConstants.kP);
+    SmartDashboard.putNumber("Shooter Max Output", ShooterConstants.kMaxOutput);
+    SmartDashboard.putNumber("Shooter Min Output", ShooterConstants.kMinOutput);
+
     ShuffleboardLayout layout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
         .getLayout("Shooter", BuiltInLayouts.kList).withPosition(ControlConstants.shooterColumn, 0).withSize(2, 4);
+    
     layout.addNumber("Velocity", controller.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kDial)
         .withProperties(Map.of("Max", 6000));
+    
     layout.addNumber("Set Point", this::getSetPoint).withWidget(BuiltInWidgets.kDial)
         .withProperties(Map.of("Max", 6000));
+    
     layout.addBoolean("Ready To Shoot", this::getReadyToShoot).withWidget(BuiltInWidgets.kBooleanBox).withSize(1, 1);
+    
     layout.addNumber("Distance to RPM", ShooterConstants::getDistanceToRPM);
+    
     layout.addNumber("Base Speed", ShooterConstants::getBaseSpeed);
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("set point", setPoint);
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Shooter motor temp", controller.getMotorTemperature());
-    SmartDashboard.putNumber("current output", controller.getOutputCurrent());
-    SmartDashboard.putNumber("Base speed", ShooterConstants.baseSpeed);
-    if (setPoint > 0) {
-      spinUpWheel();
-    }
+    SmartDashboard.putNumber("Shooter Temp", controller.getMotorTemperature());
+    SmartDashboard.putNumber("Shooter Current", controller.getOutputCurrent());
   }
 
   public void end() {
@@ -81,17 +80,14 @@ public class ShooterMain extends SubsystemBase {
     m_pidController.setFF((ShooterConstants.kS / setPoint + (ShooterConstants.kV)));
 
     m_pidController.setReference(setPoint, ControlType.kVelocity);
-    SmartDashboard.putNumber("applied output", controller.getAppliedOutput());
-    SmartDashboard.putNumber("kf", m_pidController.getFF());
-    SmartDashboard.putNumber("kp", m_pidController.getP());
-    SmartDashboard.putNumber("velocity", controller.getEncoder().getVelocity());
+    SmartDashboard.putNumber("Shooter Applied", controller.getAppliedOutput());
+    SmartDashboard.putNumber("Feed Forward", m_pidController.getFF());
 
     if (Math.abs(controller.getEncoder().getVelocity() - setPoint) < 75) {
       readyToShoot = true;
     } else {
       readyToShoot = false;
     }
-    SmartDashboard.putBoolean("Ready to Shoot", readyToShoot);
   }
 
   public boolean getReadyToShoot() {
@@ -100,5 +96,9 @@ public class ShooterMain extends SubsystemBase {
 
   public double getSetPoint() {
     return setPoint;
+  }
+
+  public void setPoint(double setPoint) {
+    this.setPoint = setPoint;
   }
 }

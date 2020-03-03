@@ -7,7 +7,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Spinner extends SubsystemBase {
   private SpeedController spinner;
   private Solenoid spinDeployment;
-  public boolean isDeployed;
+  private boolean isDeployed;
 
   ShaftSubsystem shaftSubsystem;
   /**

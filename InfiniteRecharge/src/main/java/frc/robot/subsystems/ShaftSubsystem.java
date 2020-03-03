@@ -33,10 +33,8 @@ public class ShaftSubsystem extends SubsystemBase {
 
   // Change to speed controller later
   private CANSparkMax barrelMotor;
-  private CANPIDController m_pidController;
   private DoubleSolenoid solenoid;
   private boolean isExtended;
-  private Joystick controller;
   private DigitalInput bb1;
   private DigitalInput bb2;
   private DigitalInput bb3;
@@ -48,14 +46,13 @@ public class ShaftSubsystem extends SubsystemBase {
   private int shotTimes = 0;
   private Solenoid ledRing;
   private ShuffleboardLayout barrelLayout;
-  private NetworkTableEntry sbState, sbHeight;
   private boolean isLedOn;
+  private ShaftState state = ShaftState.fullStop;
+
 
   public enum ShaftState {
     fullStop, runningClear, indexing, shooting, shootIndex, shootWait, manual
   }
-
-  public ShaftState state = ShaftState.fullStop;
 
   public ShaftSubsystem(DigitalInput bb1, DigitalInput bb2, DigitalInput bb3, CANSparkMax motor, Joystick operator,
       DoubleSolenoid solenoid, Solenoid ledRing
@@ -66,7 +63,6 @@ public class ShaftSubsystem extends SubsystemBase {
     this.bb3 = bb3;
     this.barrelMotor = motor;
     this.solenoid = solenoid;
-    this.controller = operator;
     timer = new Timer();
     setDefaultCommand(new BarrelDefault(this));
 
@@ -82,12 +78,6 @@ public class ShaftSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("bb1", bb1.get());
-    SmartDashboard.putBoolean("bb2", bb2.get());
-    SmartDashboard.putBoolean("bb3", bb3.get());
-    SmartDashboard.putString("Beam break", state.toString());
-    SmartDashboard.putNumber(" shotcount", shotCount);
   }
 
   public void spinUpShaft(double speed) {
@@ -101,11 +91,17 @@ public class ShaftSubsystem extends SubsystemBase {
   public ShaftState getShaftState() {
     return state;
   }
+
   public boolean getBB1() { return bb1.get(); }  
+  
   public boolean getBB2() { return bb2.get(); }  
+  
   public boolean getBB3() { return bb3.get(); }
+  
   public void incShotCount() { shotCount++; }
+  
   public void setShaftState(ShaftState newState) { state = newState; }  
+  
   public void toggleShaftHeight() {
     if (isExtended) {
       lowerShaft();
@@ -133,12 +129,12 @@ public class ShaftSubsystem extends SubsystemBase {
   public void setSpinner(Spinner spinner){
     this.spinner = spinner;
   }
+  
   public int getShotCount(){
     return shotCount;
   }
   
  public void toggleLight(){
-   
    isLedOn = !isLedOn;
    ledRing.set(isLedOn);  
  }

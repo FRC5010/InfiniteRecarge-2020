@@ -7,9 +7,7 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.mechanisms.ShooterConstants;
 import frc.robot.subsystems.ShooterMain;
 import frc.robot.subsystems.VisionSystem;
@@ -18,8 +16,6 @@ public class SpinShooter extends CommandBase {
   /**
    * Creates a new SpinShoot.
    */
-  private double power = 0.0;
-  private Button cancel;
   private VisionSystem vision;
   private double shotSpeed = 0;
 
@@ -29,6 +25,7 @@ public class SpinShooter extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     this.vision = vision;
+    shotSpeed = 0;
     addRequirements(shooter);
     addRequirements(vision);
   }
@@ -72,17 +69,18 @@ public class SpinShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shotSpeed != 0) {
+    if (shotSpeed == 0) {
       double distance = vision.getRawValues().getDistance();
 
       if (distance > 48 && distance < 480) {
-        shooter.setPoint = distance * ShooterConstants.distanceToRPM + ShooterConstants.baseSpeed;
+        shooter.setPoint(distance * ShooterConstants.distanceToRPM + ShooterConstants.baseSpeed);
       } else {
-        shooter.setPoint = ShooterConstants.baseSpeed;
+        shooter.setPoint(ShooterConstants.baseSpeed);
       }
     } else {
-      shooter.setPoint = shotSpeed;
+      shooter.setPoint(shotSpeed);
     }
+    shooter.spinUpWheel();
   }
 
   // Called once the command ends or is interrupted.
