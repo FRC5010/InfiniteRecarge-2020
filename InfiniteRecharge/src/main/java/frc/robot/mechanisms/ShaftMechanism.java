@@ -21,12 +21,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.ControlConstants;
 import frc.robot.commands.LoadShaftCommand;
 import frc.robot.commands.SpinShooter;
+import frc.robot.commands.ToggleLedRing;
 import frc.robot.commands.ToggleShaftHeight;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.ShaftSubsystem.ShaftState;
 import frc.robot.subsystems.ShooterMain;
-import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.VisionSystem;
 
 /**
@@ -57,6 +57,7 @@ public class ShaftMechanism {
   public Button heightButton;
   public Button manualUp;
   public Button manualDown;
+  public Button toggleLed;
 
   public ShaftMechanism(Joystick driver, Joystick operator, IntakeSubsystem intakeSubsystem, ShooterMain shooterMain, VisionSystem visionSubsystem) {
     this.driver = driver;
@@ -70,6 +71,7 @@ public class ShaftMechanism {
     manualUp = new JoystickButton(operator, ControlConstants.barrelUp);
     manualDown = new JoystickButton(operator, ControlConstants.barrelDown);
     shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
+    this.toggleLed = new JoystickButton(driver, ControlConstants.toggleLed);
 
     ledRing = new Solenoid(5); 
 
@@ -79,7 +81,7 @@ public class ShaftMechanism {
 
      shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,shaftLifter, ledRing);
      
-        
+    toggleLed.whenPressed(new ToggleLedRing(shaftClimber));
     heightButton.whenPressed(new ToggleShaftHeight(shaftClimber, shooterMain));
     launchButton.whileHeld(new ParallelCommandGroup(new LoadShaftCommand(shaftClimber),new SpinShooter(shooterMain, visionSubsystem)));
     lowGoalButton.whileHeld(new SpinShooter(shooterMain, visionSubsystem, 1000));
