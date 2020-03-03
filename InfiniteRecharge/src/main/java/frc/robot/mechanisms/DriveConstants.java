@@ -7,9 +7,15 @@
 
 package frc.robot.mechanisms;
 
+import java.util.List;
+
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 
 /**
@@ -23,21 +29,21 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class DriveConstants {
-    public static final double ksVolts = 0.139;
-    public static final double kvVoltSecondsPerMeter = 1.61;
-    public static final double kaVoltSecondsSquaredPerMeter = .321;
+    public static final double ksVolts = 0.179;
+    public static final double kvVoltSecondsPerMeter = 2.25;
+    public static final double kaVoltSecondsSquaredPerMeter = .482;
     //2.5 original
     public static final double kPDriveVel = 2.64;
 
     public static final double kTrackwidthMeters = 0.616;
     public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
-    public static final double kMaxSpeedMetersPerSecond = 4;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 6;
+    public static final double kMaxSpeedMetersPerSecond = 2;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2;
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
 
     public static final double wheelDiameter = 0.5 * 0.3048; // 12 * 0.0254 - feet to meters
-    public static final double motorRotationsPerWheelRotation = 6; // i.e. gear ratio
+    public static final double motorRotationsPerWheelRotation = 8.45; // i.e. gear ratio
     public static final double pulsesPerMotorRotation = 1.0; // Encoder PPR
     public static final double pulsesPerWheelRotation = pulsesPerMotorRotation * motorRotationsPerWheelRotation;
 
@@ -70,5 +76,11 @@ public final class DriveConstants {
      public static final TrajectoryConfig backwardsConfig = new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared)
     //set reversed allows robot to go backwards
     .setReversed(true);
+
+    public static final Trajectory test = TrajectoryGenerator.generateTrajectory(
+        List.of(
+            new Pose2d(0,0,new Rotation2d(0)),
+            new Pose2d(2, 0, new Rotation2d(0))
+        ), config);
 
 }

@@ -10,12 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.VisionSystem;
 
-public class CalibrateShooterCam extends CommandBase {
+public class CameraCalibrateShooter extends CommandBase {
   /**
    * Creates a new calibrateShooterCam.
    */
   VisionSystem system;
-  public CalibrateShooterCam(VisionSystem system) {
+  public CameraCalibrateShooter(VisionSystem system) {
     // Use addRequirements() here to declare subsystem dependencies.
     
     this.system = system;

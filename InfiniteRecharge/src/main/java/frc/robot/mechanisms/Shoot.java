@@ -12,16 +12,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.ControlConstants;
-import frc.robot.commands.CalibrateShooterCam;
+import frc.robot.commands.CameraCalibrateShooter;
 import frc.robot.subsystems.ShooterMain;
 import frc.robot.subsystems.VisionSystem;
 
@@ -52,7 +48,7 @@ public class Shoot {
 
         m_pidController = shootMotor.getPIDController();
         shooterMain = new ShooterMain(shootMotor, m_pidController);
-         calButton.whileHeld(new CalibrateShooterCam(shooterVision));
+         calButton.whileHeld(new CameraCalibrateShooter(shooterVision));
         spinUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed+=10));
         spinDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed-=10));
         baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.distanceToRPM+=.1));

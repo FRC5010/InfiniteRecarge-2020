@@ -47,7 +47,7 @@ public class RobotContainer {
   private TelescopClimb climb;
   private VisionSystem shooterVision;
   private VisionSystem intakeVision;
-  private Pose robotPose;
+  public Pose robotPose;
   private DriveTrainMain driveTrain;
 
   /**
@@ -70,13 +70,13 @@ public class RobotContainer {
     shooter = new Shoot(operator, driver, shooterVision);
     intake = new IntakeMech(operator);
     shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
-    //driveMechanism = new Drive(driver, shooterVision, intakeVision, intake.intakeMain);
+    driveMechanism = new Drive(driver, shooterVision, intakeVision, intake.intakeMain);
     spinControl = new SpinControl(driver, operator, shaftMechanism.getSubsystem());
     climb = new TelescopClimb(driver, operator);
 
 
     robotPose = Drive.robotPose;
-    //driveTrain = driveMechanism.driveTrain;
+    driveTrain = driveMechanism.driveTrain;
 
     //buttons driver
     //x = spin spinner(rotation controller)
@@ -174,6 +174,16 @@ public class RobotContainer {
   //   Command result = ramseteCommand.andThen(()->backCommand.schedule());
     
     // Run path following command, then stop at the end.
-    return new ShootAndMove(shaftMechanism.shaftClimber, shooter.shooterMain, driveTrain, shooterVision, robotPose);
+    RamseteCommand ramseteCommand = new RamseteFollower(DriveConstants.test, robotPose::getPose,
+          new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
+          new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
+              DriveConstants.kaVoltSecondsSquaredPerMeter),
+          DriveConstants.kDriveKinematics, robotPose::getWheelSpeeds, new PIDController(DriveConstants.kPDriveVel, 0, 0),
+          new PIDController(DriveConstants.kPDriveVel, 0, 0),
+          // RamseteCommand passes volts to the callback
+          driveTrain::tankDriveVolts, driveTrain 
+  
+      );
+      return new ShootAndMove(shaftMechanism.shaftClimber, shooter.shooterMain, driveTrain, shooterVision, robotPose);
   }
 }

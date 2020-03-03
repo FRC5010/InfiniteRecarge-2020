@@ -46,7 +46,7 @@ public class Pose extends SubsystemBase {
     public final CANEncoder rightEncoder;
 
     // The gyro sensor
-    private final AHRS gyro = new AHRS(Port.kUSB1);
+    public final AHRS gyro = new AHRS(Port.kUSB1);
 
     // Odometry class for tracking robot pose
 
@@ -58,6 +58,7 @@ public class Pose extends SubsystemBase {
     public Pose(CANEncoder leftEncoder, CANEncoder rightEncoder) {
         this.leftEncoder = leftEncoder;
         this.rightEncoder = rightEncoder;
+        
         resetEncoders();
         odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     }

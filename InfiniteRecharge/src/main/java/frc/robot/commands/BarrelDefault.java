@@ -32,27 +32,6 @@ public class BarrelDefault extends CommandBase {
   @Override
   public void execute() {
     switch (shaftSubsystem.getShaftState()) {
-      case shooting : {
-        if(shaftSubsystem.getBB3())
-          shaftSubsystem.incShotCount();
-          shaftSubsystem.setShaftState(ShaftState.shootIndex);
-        break;
-      }
-      case shootIndex : {
-        shaftSubsystem.spinUpShaft(.5);
-        if(!shaftSubsystem.getBB3()) {
-          shaftSubsystem.spinUpShaft(0);
-          shaftSubsystem.setShaftState(ShaftState.shootWait);
-        }
-        break;
-      }
-      case shootWait : {
-        if (ShooterMain.readyToShoot) {
-          shaftSubsystem.spinUpShaft(.7);
-          shaftSubsystem.setShaftState(ShaftState.shooting);
-        }
-        break;
-      }
       case fullStop : {
         shaftSubsystem.spinUpShaft(0);
         if (!shaftSubsystem.getBB1() && shaftSubsystem.getBB3()) {
