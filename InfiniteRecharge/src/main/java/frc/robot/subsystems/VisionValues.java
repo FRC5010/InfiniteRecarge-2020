@@ -86,7 +86,7 @@ public class VisionValues {
         SmartDashboard.putNumber(path + " centerY", centerY);
     }
     public void calibarateCamAngle(){
-       camAngle =  Math.toDegrees(Math.atan(64/120))-  angleY;
+       camAngle =  Math.toDegrees(Math.atan(64/120)) -  angleY;
        
     }
     public void setCamAngle(double a ){

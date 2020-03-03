@@ -44,18 +44,18 @@ public class ShootAndMove extends SequentialCommandGroup {
         // Pass through these two interior waypoints, making an 's' curve path
         List.of(
           new Pose2d(0, 0, new Rotation2d(0)), 
-          new Pose2d(2, 0, new Rotation2d(0))),
+          new Pose2d(-.5, 0, new Rotation2d(0))),
         // End 3 meters straight ahead of where we started, facing forward
 
         // Pass config
-        DriveConstants.config);
+        DriveConstants.backwardsConfig);
   }
 
   public ShootAndMove(ShaftSubsystem shaftClimber, ShooterMain shooterMain, DriveTrainMain driveTrain,
       VisionSystem visionSubsystem, Pose pose) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new ParallelRaceGroup(new LoadShaftCommand(shaftClimber, 3), new SpinShooter(shooterMain, visionSubsystem)));
+    super(new ParallelRaceGroup(new LoadShaftCommand(shaftClimber, 3,shooterMain), new SpinShooter(shooterMain, visionSubsystem)),
         new RamseteCommand(trajectory, pose::getPose,
             new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
             new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
@@ -63,6 +63,6 @@ public class ShootAndMove extends SequentialCommandGroup {
             DriveConstants.kDriveKinematics, pose::getWheelSpeeds, new PIDController(DriveConstants.kPDriveVel, 0, 0),
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
             // RamseteCommand passes volts to the callback
-            driveTrain::tankDriveVolts, driveTrain);
+            driveTrain::tankDriveVolts, driveTrain));
   }
 }

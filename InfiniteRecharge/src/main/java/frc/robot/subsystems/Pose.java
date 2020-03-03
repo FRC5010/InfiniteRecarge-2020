@@ -55,7 +55,7 @@ public class Pose extends SubsystemBase {
     public Pose(CANEncoder leftEncoder, CANEncoder rightEncoder) {
         this.leftEncoder = leftEncoder;
         this.rightEncoder = rightEncoder;
-        
+        gyro.reset();
         resetEncoders();
         odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     }
@@ -116,6 +116,7 @@ public class Pose extends SubsystemBase {
      */
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
+        gyro.reset();
         odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
     }
 

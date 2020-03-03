@@ -27,8 +27,9 @@ public class LoadShaftCommand extends CommandBase {
     addRequirements(shaftSubsystem);
     // addRequirements(shooter); NOTE: THIS IS NOT NEEDED, LEAVING HERE TO INFORM ONLY - CLR
   }
-  public LoadShaftCommand(ShaftSubsystem shaftClimber, int numShoot){
+  public LoadShaftCommand(ShaftSubsystem shaftClimber, int numShoot,ShooterMain shooter){
     this.shaftSubsystem = shaftClimber;
+    this.shooter = shooter;
     this.numShoot = numShoot;
     addRequirements(shaftSubsystem);
   }
@@ -59,8 +60,9 @@ public class LoadShaftCommand extends CommandBase {
       }
       case shootWait : {
         if (shooter.getReadyToShoot()) {
-          shaftSubsystem.spinUpShaft(.7);
+          
           shaftSubsystem.setShaftState(ShaftState.shooting);
+          shaftSubsystem.spinUpShaft(.7);
         }
         break;
       }

@@ -1,21 +1,16 @@
 
 package frc.robot;
 
-import java.util.List;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import frc.robot.commands.IntakeBalls;
 import frc.robot.commands.RamseteFollower;
+import frc.robot.commands.auto.PickUp2Shoot;
 import frc.robot.commands.auto.ShootAndMove;
 import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.DriveConstants;
@@ -103,6 +98,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    robotPose.zeroHeading();
   //  // Create a voltage constraint to ensure we don't accelerate too fast
    
 
@@ -184,6 +180,11 @@ public class RobotContainer {
           driveTrain::tankDriveVolts, driveTrain 
   
       );
-      return new ShootAndMove(shaftMechanism.shaftClimber, shooter.shooterMain, driveTrain, shooterVision, robotPose);
+      robotPose.zeroHeading();
+      return 
+       new IntakeBalls(intake.intakeMain, .7);
+      //new SequentialCommandGroup(new ParallelCommandGroup(new LowerIntake(intake.intakeMain),new LowerShaft(shaftMechanism.getSubsystem())), new ParallelCommandGroup(ramseteCommand, new IntakeBalls(intake.intakeMain, .75)));
+     // new ShootAndMove(shaftMechanism.shaftClimber, shooter.shooterMain, driveTrain, shooterVision, robotPose);
+      //new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose);
   }
 }
