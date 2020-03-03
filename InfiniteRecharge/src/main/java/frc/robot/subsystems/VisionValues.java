@@ -7,7 +7,10 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.cscore.HttpCamera;
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.VideoSink;
+import edu.wpi.cscore.HttpCamera.HttpCameraKind;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -59,10 +62,11 @@ public class VisionValues {
         this.camAngle = camAngle;
         this.targetHeight = targetHeight;
         ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
-        visionLayout = driverTab.getLayout(path + " Vision", BuiltInLayouts.kList).withPosition(columnIndex, 0).withSize(2, 4);
-        // CameraServer camera = CameraServer.getInstance();
-        // VideoSink vs = camera.getVideo();
-        // visionLayout.add(path + " cam", vs).withWidget(BuiltInWidgets.kCameraStream);
+        visionLayout = driverTab.getLayout(path + " Vision", BuiltInLayouts.kGrid).withPosition(columnIndex, 0).withSize(4, 5);
+
+        HttpCamera camera = new HttpCamera(path + " Cam", "AddOpenSightURL", HttpCameraKind.kMJPGStreamer);
+        visionLayout.add(camera).withWidget(BuiltInWidgets.kCameraStream).withSize(3, 2);
+
         visionLayout.addNumber(path + " Distance", this::getDistance).withSize(1, 1);
         visionLayout.addNumber(path + " Cam Angle", this::getCamAngle).withSize(1, 1);
         visionLayout.addNumber(path + " X Angle", this::getAngleX).withSize(1, 1);
