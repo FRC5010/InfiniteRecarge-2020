@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShaftSubsystem;
+import frc.robot.subsystems.ShooterMain;
 import frc.robot.subsystems.ShaftSubsystem.ShaftState;
 
 public class BarrelDefault extends CommandBase {
@@ -19,6 +20,7 @@ public class BarrelDefault extends CommandBase {
   public BarrelDefault(ShaftSubsystem shaftSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shaftSubsystem = shaftSubsystem;
+    addRequirements(shaftSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -30,57 +32,54 @@ public class BarrelDefault extends CommandBase {
   @Override
   public void execute() {
     switch (shaftSubsystem.getShaftState()) {
-      case ShaftState.shooting : {
-        if(bb3.get())
-          shaftSubsystem.shotCount++;
-          state = ShaftState.shootIndex;
+      case shooting : {
+        if(shaftSubsystem.getBB3())
+          shaftSubsystem.incShotCount();
+          shaftSubsystem.setShaftState(ShaftState.shootIndex);
         break;
       }
       case shootIndex : {
-        spinUpShaft(.5);
-        if(!bb3.get()) {
-          spinUpShaft(0);
-          state = ShaftState.shootWait;
+        shaftSubsystem.spinUpShaft(.5);
+        if(!shaftSubsystem.getBB3()) {
+          shaftSubsystem.spinUpShaft(0);
+          shaftSubsystem.setShaftState(ShaftState.shootWait);
         }
         break;
       }
       case shootWait : {
         if (ShooterMain.readyToShoot) {
-          spinUpShaft(.9);
-          state = ShaftState.shooting;
+          shaftSubsystem.spinUpShaft(.7);
+          shaftSubsystem.setShaftState(ShaftState.shooting);
         }
         break;
       }
       case fullStop : {
-        spinUpShaft(0);
-        if (!bb1.get() && bb3.get()) {
-          if (bb2.get()) {
-            state = ShaftState.runningClear;
+        shaftSubsystem.spinUpShaft(0);
+        if (!shaftSubsystem.getBB1() && shaftSubsystem.getBB3()) {
+          if (shaftSubsystem.getBB2()) {
+            shaftSubsystem.setShaftState(ShaftState.runningClear);
           } else {
-            state = ShaftState.indexing;
+            shaftSubsystem.setShaftState(ShaftState.indexing);
           }
         }
         break;
       }
       case indexing : {
-        spinUpShaft(.75);
-        if (bb2.get()) {
-          state = ShaftState.runningClear;
+        shaftSubsystem.spinUpShaft(.75);
+        if (shaftSubsystem.getBB2()) {
+          shaftSubsystem.setShaftState(ShaftState.runningClear);
         }
-        if (!bb3.get() ) {
-          state = ShaftState.fullStop;
-          spinUpShaft(0);
-         
-
+        if (!shaftSubsystem.getBB3() ) {
+          shaftSubsystem.setShaftState(ShaftState.fullStop);
+          shaftSubsystem.spinUpShaft(0);
         }
         break;
       }
       case runningClear : {
-        spinUpShaft(.75);
-        if (!bb2.get() || !bb3.get() ) {
-          spinUpShaft(0);
-          state = ShaftState.fullStop;
-          
+        shaftSubsystem.spinUpShaft(.75);
+        if (!shaftSubsystem.getBB2() || !shaftSubsystem.getBB3() ) {
+          shaftSubsystem.spinUpShaft(0);
+          shaftSubsystem.setShaftState(ShaftState.fullStop);
         }  
         break;  
       }

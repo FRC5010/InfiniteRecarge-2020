@@ -22,6 +22,7 @@ public class ToggleShaftHeight extends CommandBase {
     this.shaftSubsystem = shaftSubsystem;
     this.shooterMain = shooterMain;
     addRequirements(shaftSubsystem);
+    addRequirements(shooterMain);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

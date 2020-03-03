@@ -30,6 +30,7 @@ public class SpinShooter extends CommandBase {
     this.shooter = shooter;
     this.vision = vision;
     addRequirements(shooter);
+    addRequirements(vision);
   }
 
   public SpinShooter(ShooterMain shooter, VisionSystem vision, double shotSpeed) {

@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ControlConstants;
+import frc.robot.commands.BarrelDefault;
 
 public class ShaftSubsystem extends SubsystemBase {
   /**
@@ -55,12 +56,6 @@ public class ShaftSubsystem extends SubsystemBase {
 
   public ShaftState state = ShaftState.fullStop;
 
-  public ShaftSubsystem(CANSparkMax motor, DoubleSolenoid solenoid, DigitalInput beamBreak) {
-    this.barrelMotor = motor;
-    // this.beamBreak = beamBreak;
-    this.solenoid = solenoid;
-  }
-
   public ShaftSubsystem(DigitalInput bb1, DigitalInput bb2, DigitalInput bb3, CANSparkMax motor, Joystick operator,
       DoubleSolenoid solenoid, Solenoid ledRing
       ) {
@@ -72,6 +67,7 @@ public class ShaftSubsystem extends SubsystemBase {
     this.solenoid = solenoid;
     this.controller = operator;
     timer = new Timer();
+    setDefaultCommand(new BarrelDefault(this));
 
     ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
     barrelLayout = driverTab.getLayout("Barrel", BuiltInLayouts.kList).withPosition(ControlConstants.barrelColumn, 0).withSize(1, 4);
@@ -91,65 +87,6 @@ public class ShaftSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("bb3", bb3.get());
     SmartDashboard.putString("Beam break", state.toString());
     SmartDashboard.putNumber(" shotcount", shotCount);
-
-    switch (state) {
-      case shooting : {
-        if(bb3.get())
-          shotCount++;
-          state = ShaftState.shootIndex;
-        break;
-      }
-      case shootIndex : {
-        spinUpShaft(.5);
-        if(!bb3.get()) {
-          spinUpShaft(0);
-          state = ShaftState.shootWait;
-        }
-        break;
-      }
-      case shootWait : {
-        if (ShooterMain.readyToShoot) {
-          spinUpShaft(.9);
-          state = ShaftState.shooting;
-        }
-        break;
-      }
-      case fullStop : {
-        spinUpShaft(0);
-        if (!bb1.get() && bb3.get()) {
-          if (bb2.get()) {
-            state = ShaftState.runningClear;
-          } else {
-            state = ShaftState.indexing;
-          }
-        }
-        break;
-      }
-      case indexing : {
-        spinUpShaft(.75);
-        if (bb2.get()) {
-          state = ShaftState.runningClear;
-        }
-        if (!bb3.get() ) {
-          state = ShaftState.fullStop;
-          spinUpShaft(0);
-         
-
-        }
-        break;
-      }
-      case runningClear : {
-        spinUpShaft(.75);
-        if (!bb2.get() || !bb3.get() ) {
-          spinUpShaft(0);
-          state = ShaftState.fullStop;
-          
-        }  
-        break;  
-      }
-      case manual : break;
-    }
-
   }
 
   public void spinUpShaft(double speed) {
@@ -163,7 +100,11 @@ public class ShaftSubsystem extends SubsystemBase {
   public ShaftState getShaftState() {
     return state;
   }
-  
+  public boolean getBB1() { return bb1.get(); }  
+  public boolean getBB2() { return bb2.get(); }  
+  public boolean getBB3() { return bb3.get(); }
+  public void incShotCount() { shotCount++; }
+  public void setShaftState(ShaftState newState) { state = newState; }  
   public void toggleShaftHeight() {
     if (isExtended) {
       lowerShaft();
