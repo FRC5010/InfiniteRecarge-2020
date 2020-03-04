@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.IntakeBalls;
@@ -181,11 +182,15 @@ public class RobotContainer {
           driveTrain::tankDriveVolts, driveTrain 
   
       );
-    
-      return 
+    SendableChooser<Command> command = new SendableChooser<>();
+    command.setDefaultOption("Shoot and Move", new ShootAndMove(shaftMechanism.shaftClimber, shooter.shooterMain, driveTrain, shooterVision, robotPose));
+    command.addOption("pick up 2 ",new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
+    command.addOption("Shoot and pick up 3 ",new Shoot3PickUp3(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
+  
+      return command.getSelected();
        //new IntakeBalls(intake.intakeMain, .7);
       //new SequentialCommandGroup(new ParallelCommandGroup(new LowerIntake(intake.intakeMain),new LowerShaft(shaftMechanism.getSubsystem())), new ParallelCommandGroup(ramseteCommand, new IntakeBalls(intake.intakeMain, .75)));
      // new ShootAndMove(shaftMechanism.shaftClimber, shooter.shooterMain, driveTrain, shooterVision, robotPose);
-      new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose);
+    //  new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose);
   }
 }
