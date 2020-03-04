@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.ShaftSubsystem.ShaftState;
@@ -19,6 +20,8 @@ public class LoadShaftCommand extends CommandBase {
   ShaftSubsystem shaftSubsystem;
   ShooterMain shooter;
   int numShoot = 0;
+  double timeout;
+  Timer timer;
 
   public LoadShaftCommand(ShaftSubsystem shaftClimber, ShooterMain shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -27,16 +30,20 @@ public class LoadShaftCommand extends CommandBase {
     addRequirements(shaftSubsystem);
     // addRequirements(shooter); NOTE: THIS IS NOT NEEDED, LEAVING HERE TO INFORM ONLY - CLR
   }
-  public LoadShaftCommand(ShaftSubsystem shaftClimber, int numShoot,ShooterMain shooter){
+  public LoadShaftCommand(ShaftSubsystem shaftClimber, int numShoot,ShooterMain shooter,double timeout){
     this.shaftSubsystem = shaftClimber;
     this.shooter = shooter;
     this.numShoot = numShoot;
+    this.timeout = timeout;
+    this.timer = new Timer();
     addRequirements(shaftSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timer.reset();
+    timer.start();
     shaftSubsystem.setShaftState(ShaftState.shootIndex);
   }
 
@@ -79,6 +86,6 @@ public class LoadShaftCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shaftSubsystem.getShotCount() == numShoot && numShoot !=0;
+    return (shaftSubsystem.getShotCount() == numShoot && numShoot !=0)|| (timer!= null &&timer.get() >timeout);
   }
 }

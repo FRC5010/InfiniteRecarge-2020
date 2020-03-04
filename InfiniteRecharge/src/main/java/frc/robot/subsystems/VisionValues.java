@@ -64,8 +64,8 @@ public class VisionValues {
         ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
         visionLayout = driverTab.getLayout(path + " Vision", BuiltInLayouts.kGrid).withPosition(columnIndex, 0).withSize(4, 5);
 
-        HttpCamera camera = new HttpCamera(path + " Cam", "AddOpenSightURL", HttpCameraKind.kMJPGStreamer);
-        visionLayout.add(camera).withWidget(BuiltInWidgets.kCameraStream).withSize(3, 2);
+        // HttpCamera camera = new HttpCamera(path + " Cam", "AddOpenSightURL", HttpCameraKind.kMJPGStreamer);
+        // visionLayout.add(camera).withWidget(BuiltInWidgets.kCameraStream).withSize(3, 2);
 
         visionLayout.addNumber(path + " Distance", this::getDistance).withSize(1, 1);
         visionLayout.addNumber(path + " Cam Angle", this::getCamAngle).withSize(1, 1);

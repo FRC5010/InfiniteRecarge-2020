@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.IntakeBalls;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.auto.PickUp2Shoot;
+import frc.robot.commands.auto.Shoot3PickUp3;
 import frc.robot.commands.auto.ShootAndMove;
 import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.DriveConstants;
@@ -58,7 +59,7 @@ public class RobotContainer {
     driver = new Joystick(0);
     operator = new Joystick(1);
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
-    shooterVision = new VisionSystem("shooter", 26, 0, 90, ControlConstants.shooterVisionColumn);
+    shooterVision = new VisionSystem("shooter", 26, -6, 90, ControlConstants.shooterVisionColumn);
     //shooterVision.getRawValues().calibarateCamAngle();
     intakeVision = new VisionSystem("intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
     
@@ -98,7 +99,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    robotPose.zeroHeading();
+    robotPose.gyro.zeroYaw();
   //  // Create a voltage constraint to ensure we don't accelerate too fast
    
 
@@ -170,7 +171,7 @@ public class RobotContainer {
   //   Command result = ramseteCommand.andThen(()->backCommand.schedule());
     
     // Run path following command, then stop at the end.
-    RamseteCommand ramseteCommand = new RamseteFollower(DriveConstants.test, robotPose::getPose,
+    RamseteCommand ramseteCommand = new RamseteFollower(DriveConstants.moveToTrench, robotPose::getPose,
           new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
           new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
               DriveConstants.kaVoltSecondsSquaredPerMeter),
@@ -180,11 +181,11 @@ public class RobotContainer {
           driveTrain::tankDriveVolts, driveTrain 
   
       );
-      robotPose.zeroHeading();
+    
       return 
-       new IntakeBalls(intake.intakeMain, .7);
+       //new IntakeBalls(intake.intakeMain, .7);
       //new SequentialCommandGroup(new ParallelCommandGroup(new LowerIntake(intake.intakeMain),new LowerShaft(shaftMechanism.getSubsystem())), new ParallelCommandGroup(ramseteCommand, new IntakeBalls(intake.intakeMain, .75)));
      // new ShootAndMove(shaftMechanism.shaftClimber, shooter.shooterMain, driveTrain, shooterVision, robotPose);
-      //new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose);
+      new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose);
   }
 }

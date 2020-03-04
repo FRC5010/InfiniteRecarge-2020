@@ -25,7 +25,7 @@ public class AimWithVision extends CommandBase {
   double targetAngle, driveSpeed;
 
   double angleTolerance = 2;
-
+double error;
   public AimWithVision(DriveTrainMain drive, VisionSystem vision, Joystick driver, double targetAngle) {
     this.drive = drive;
     this.vision = vision;
@@ -48,13 +48,14 @@ public class AimWithVision extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+  
     
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double error = vision.getRawValues().getAngleX() - targetAngle;
+     error = vision.getRawValues().getAngleX() - targetAngle;
     double correction = error * DriveConstants.kTurnP;
     drive.arcadeDrive(drive.scaleInputs(-driver.getRawAxis(ControlConstants.throttle)), correction + Math.signum(correction) * DriveConstants.minTurn);
     SmartDashboard.putNumber("shooterVisionError", error);
@@ -70,6 +71,6 @@ public class AimWithVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return error==0;
   }
 }
