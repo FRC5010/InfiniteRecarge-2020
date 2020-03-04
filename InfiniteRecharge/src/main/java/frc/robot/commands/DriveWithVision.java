@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.mechanisms.DriveConstants;
 import frc.robot.subsystems.DriveTrainMain;
+import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.VisionSystem;
 
 public class DriveWithVision extends CommandBase {
@@ -19,16 +20,19 @@ public class DriveWithVision extends CommandBase {
 
   DriveTrainMain drive;
   VisionSystem vision;
-  
+  ShaftSubsystem shaftSubsystem; 
+
   double targetAngle, targetDistance, driveSpeed;
   double angleError, distanceError;
-  double angleTolerance = 5;
+  double angleTolerance = 2;
   double distanceTolerance = 5;
 
-  public DriveWithVision(DriveTrainMain drive, VisionSystem vision, double targetAngle, double targetDistance, double driveSpeed) {
+  public DriveWithVision(DriveTrainMain drive, VisionSystem vision, ShaftSubsystem shaftSubsystem, double targetAngle, double targetDistance, double driveSpeed) {
     this.drive = drive;
     this.vision = vision;
     this.targetDistance = targetDistance;
+    this.driveSpeed = driveSpeed;
+    this.shaftSubsystem = shaftSubsystem;
     addRequirements(drive);
     addRequirements(vision);
   }
@@ -47,8 +51,9 @@ public class DriveWithVision extends CommandBase {
     SmartDashboard.putNumber("intakeVisionDistanceError", distanceError);
 
     double turnCorrection = angleError * DriveConstants.kTurnP;
-    double driveCorrection = distanceError * DriveConstants.kPDriveVel;
-    drive.arcadeDrive(driveCorrection + Math.signum(driveCorrection) * DriveConstants.minTurn, turnCorrection + Math.signum(turnCorrection) *  DriveConstants.minTurn);
+    double driveCorrection = distanceError * 0.0254 * DriveConstants.kPDriveVel / 12;
+    drive.arcadeDrive(driveCorrection + Math.signum(driveCorrection) * driveSpeed, 
+      turnCorrection + Math.signum(turnCorrection) *  DriveConstants.minTurn);
   }
 
   // Called once the command ends or is interrupted.
@@ -60,6 +65,6 @@ public class DriveWithVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return angleError < angleTolerance && distanceError < distanceTolerance;
+    return !shaftSubsystem.getBB1();
   }
 }
