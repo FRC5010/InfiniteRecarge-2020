@@ -23,11 +23,12 @@ public class LoadShaftCommand extends CommandBase {
   double timeout;
   Timer timer;
 
-  public LoadShaftCommand(ShaftSubsystem shaftClimber, ShooterMain shooter) {
+  public LoadShaftCommand(ShaftSubsystem shaftClimber, ShooterMain shooter) { 
     // Use addRequirements() here to declare subsystem dependencies.
     this.shaftSubsystem = shaftClimber;
     this.shooter = shooter;
     addRequirements(shaftSubsystem);
+    this.timer = new Timer();
     // addRequirements(shooter); NOTE: THIS IS NOT NEEDED, LEAVING HERE TO INFORM ONLY - CLR
   }
   public LoadShaftCommand(ShaftSubsystem shaftClimber, int numShoot,ShooterMain shooter,double timeout){

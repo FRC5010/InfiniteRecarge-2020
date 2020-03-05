@@ -18,11 +18,13 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.ControlConstants;
 import frc.robot.commands.LoadShaftCommand;
 import frc.robot.commands.SpinShooter;
 import frc.robot.commands.ToggleLedRing;
 import frc.robot.commands.ToggleShaftHeight;
+import frc.robot.commands.ShooterOverride;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.ShaftSubsystem.ShaftState;
@@ -58,6 +60,8 @@ public class ShaftMechanism {
   public Button manualUp;
   public Button manualDown;
   public Button toggleLed;
+  public Button spinnerOverrideLow;
+  public Button spinnerOverrideHigh;
 
   public ShaftMechanism(Joystick driver, Joystick operator, IntakeSubsystem intakeSubsystem, ShooterMain shooterMain, VisionSystem visionSubsystem) {
     this.driver = driver;
@@ -72,6 +76,8 @@ public class ShaftMechanism {
     manualDown = new JoystickButton(operator, ControlConstants.barrelDown);
     shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
     this.toggleLed = new JoystickButton(driver, ControlConstants.toggleLed);
+    this.spinnerOverrideLow = new POVButton(operator, ControlConstants.spinnerOverrideButtonLow);
+    this.spinnerOverrideHigh = new POVButton(operator, ControlConstants.spinnerOverrideButtonHigh);
 
     ledRing = new Solenoid(5); 
 
@@ -89,7 +95,13 @@ public class ShaftMechanism {
       new LoadShaftCommand(shaftClimber, shooterMain),
       new SpinShooter(shooterMain, visionSubsystem)));
 
-    lowGoalButton.whileHeld(new SpinShooter(shooterMain, visionSubsystem, 1000));
+    spinnerOverrideLow.whileHeld( new ParallelCommandGroup(
+    new ShooterOverride(shooterMain, 1000),
+    new LoadShaftCommand(shaftClimber, shooterMain)));
+
+    spinnerOverrideHigh.whileHeld( new ParallelCommandGroup(
+    new ShooterOverride(shooterMain, 3500),
+    new LoadShaftCommand(shaftClimber, shooterMain)));
     
     manualUp.whileHeld(new FunctionalCommand(
       () -> shaftClimber.setShaftState(ShaftState.manual), 

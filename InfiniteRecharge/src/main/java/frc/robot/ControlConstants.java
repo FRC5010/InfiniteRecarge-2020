@@ -53,6 +53,8 @@ public class ControlConstants {
     
     public static int incShooter = POVDirs.UP.ordinal() * 90;
     public static int decShooter = POVDirs.DOWN.ordinal() * 90;
+    public static int spinnerOverrideButtonLow = POVDirs.RIGHT.ordinal() * 90;
+    public static int spinnerOverrideButtonHigh = POVDirs.LEFT.ordinal() * 90;
 
     // Shuffleboard constants
     public static String SBTabDriverDisplay = "Driver Display";
