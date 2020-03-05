@@ -32,7 +32,7 @@ public class TelescopSubsystem extends SubsystemBase {
   public CANEncoder winchEncoder2;
   public CANEncoder armEncoder1;
   public CANEncoder armEncoder2;
-  public Timer winchTimer = new Timer();
+  public Timer climbTimer = new Timer();
   private ShuffleboardTab climberTab;
   private boolean limitApplied = false;
 
@@ -48,19 +48,29 @@ public class TelescopSubsystem extends SubsystemBase {
     winchEncoder2 = winch2.getEncoder();
     armEncoder1 = arm1.getEncoder();
     armEncoder2 = arm2.getEncoder();
-    winchTimer.reset();
+    climbTimer.reset();
     climberTab = Shuffleboard.getTab("Climber");
     ShuffleboardLayout climberLayout = climberTab.getLayout("Climber", BuiltInLayouts.kList);
+    ShuffleboardLayout arm1Layout = climberTab.getLayout("Deploy 1", BuiltInLayouts.kList);
+    ShuffleboardLayout arm2Layout = climberTab.getLayout("Deploy 2", BuiltInLayouts.kList);
     ShuffleboardLayout winch1Layout = climberTab.getLayout("Winch 1", BuiltInLayouts.kList);
     ShuffleboardLayout winch2Layout = climberTab.getLayout("Winch 2", BuiltInLayouts.kList);
-    climberLayout.addNumber("Climb Timer", winchTimer::get);
+    climberLayout.addNumber("Climb Timer", climbTimer::get);
+
+    arm1Layout.addNumber("Encoder", armEncoder1::getPosition);
+    arm1Layout.addNumber("Current", arm1::getOutputCurrent);
+    arm1Layout.addNumber("Output", arm1::getAppliedOutput);
+
+    arm2Layout.addNumber("Encoder", armEncoder2::getPosition);
+    arm2Layout.addNumber("Current", arm2::getOutputCurrent);
+    arm2Layout.addNumber("Output", arm2::getAppliedOutput);
+
     winch1Layout.addNumber("Encoder", winchEncoder1::getPosition);
-    winch2Layout.addNumber("Encoder", winchEncoder2::getPosition);
-    climberLayout.addNumber("Arm 1 Encoder", armEncoder1::getPosition);
-    climberLayout.addNumber("Arm 2 Encoder", armEncoder2::getPosition);
     winch1Layout.addNumber("Current", winch1::getOutputCurrent);
-    winch2Layout.addNumber("Current", winch2::getOutputCurrent);
     winch1Layout.addNumber("Output", winch1::getAppliedOutput);
+
+    winch2Layout.addNumber("Encoder", winchEncoder2::getPosition);
+    winch2Layout.addNumber("Current", winch2::getOutputCurrent);
     winch2Layout.addNumber("Output", winch2::getAppliedOutput);
   }
 
@@ -73,6 +83,18 @@ public class TelescopSubsystem extends SubsystemBase {
     double speed = Math.abs(operator.getRawAxis(ControlConstants.climbDeployAxis));
     arm1.set(speed);
     arm2.set(speed);
+    if (speed > 0) {
+      climbTimer.start();
+    } else {
+      climbTimer.stop();
+    }
+    if (climbTimer.get() > TelescopConstants.raisedTimeLimit) {
+      if (!limitApplied) {
+        limitApplied = true;
+        arm1.setSmartCurrentLimit(TelescopConstants.raisedCurrentLimit);
+        arm2.setSmartCurrentLimit(TelescopConstants.raisedCurrentLimit);
+      }
+    }
   }
 
   public void stopArmMotors() {
@@ -84,24 +106,12 @@ public class TelescopSubsystem extends SubsystemBase {
     double speed = Math.abs(driver.getRawAxis(ControlConstants.winch1Axis));
     winch1.set(speed);
     winch2.set(speed);
-    if (speed > 0) {
-      winchTimer.start();
-    } else {
-      winchTimer.stop();
-    }
-    if (winchTimer.get() > TelescopConstants.raisedTimeLimit) {
-      if (!limitApplied) {
-        limitApplied = true;
-        winch1.setSmartCurrentLimit(TelescopConstants.raisedCurrentLimit);
-        winch2.setSmartCurrentLimit(TelescopConstants.raisedCurrentLimit);
-      }
-    }
   }
 
   public void stopWinchMotors() {
     winch1.set(0);
     winch2.set(0);
-    winchTimer.stop();
+    climbTimer.stop();
   }
 
   public boolean checkEncoderValue(double finalValue) {
