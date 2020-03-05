@@ -60,5 +60,6 @@ public class ControlConstants {
     public static int barrelColumn = 3;
     public static int shooterColumn = 4;
     public static int spinnerColumn = 5;
-    public static int shooterVisionColumn = 6;
+    public static int autoColumn = 6;
+    public static int shooterVisionColumn = 7;
 }

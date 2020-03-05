@@ -36,27 +36,13 @@ public class ShootAndMove extends SequentialCommandGroup {
   /**
    * Creates a new ShootAndMove.
    */
-  static Trajectory trajectory;
-  static {
-    trajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(
-          new Pose2d(0, 0, new Rotation2d(0)), 
-          new Pose2d(-.5, 0, new Rotation2d(0))),
-        // End 3 meters straight ahead of where we started, facing forward
-
-        // Pass config
-        DriveConstants.backwardsConfig);
-  }
 
   public ShootAndMove(ShaftSubsystem shaftClimber, ShooterMain shooterMain, DriveTrainMain driveTrain,
       VisionSystem visionSubsystem, Pose pose) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(new ParallelRaceGroup(new LoadShaftCommand(shaftClimber, 3,shooterMain,3), new SpinShooter(shooterMain, visionSubsystem)),
-        new RamseteCommand(trajectory, pose::getPose,
+        new RamseteCommand(DriveConstants.driveOffInitLine, pose::getPose,
             new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
             new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
                 DriveConstants.kaVoltSecondsSquaredPerMeter),

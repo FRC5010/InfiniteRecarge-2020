@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.LayoutType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,6 +49,7 @@ public class RobotContainer {
   private VisionSystem intakeVision;
   public Pose robotPose;
   private DriveTrainMain driveTrain;
+  private SendableChooser<Command> command = new SendableChooser<>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -61,9 +65,9 @@ public class RobotContainer {
     operator = new Joystick(1);
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
     shooterVision = new VisionSystem("shooter", 26, -6, 90, ControlConstants.shooterVisionColumn);
-    //shooterVision.getRawValues().calibarateCamAngle();
+    // shooterVision.getRawValues().calibarateCamAngle();
     intakeVision = new VisionSystem("intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
-    
+
     shooter = new Shoot(operator, driver, shooterVision);
     intake = new IntakeMech(operator);
     shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
@@ -71,27 +75,15 @@ public class RobotContainer {
     spinControl = new SpinControl(driver, operator, shaftMechanism.getSubsystem());
     climb = new TelescopClimb(driver, operator);
 
-
     robotPose = Drive.robotPose;
     driveTrain = driveMechanism.driveTrain;
 
-    //buttons driver
-    //x = spin spinner(rotation controller)
-    //joysticks move robot
-    //left bumper = toggle barrel height
-    //b = angle towards target
-    //right bumper = toggle spinner height
-    //y = spin spinner(position controller)
-    //
-
-
-    //buttons co-driver(operator cause jackson)
-    //y = spin shaft/conveyer belt
-    //a = spins shooter to the correct speed
-    //right trigger = spin intake in
-    //left trigger = spin intake out
-    //right bumper = toggle intake height
-
+    command.setDefaultOption("Shoot and Move", new ShootAndMove(shaftMechanism.shaftClimber, shooter.shooterMain, driveTrain, shooterVision, robotPose));
+    command.addOption("Pickup 2",new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
+    command.addOption("Shoot and Pickup 3",new Shoot3PickUp3(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
+    Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
+      .getLayout("Auto", BuiltInLayouts.kList).withPosition(ControlConstants.autoColumn, 0).withSize(1, 4)
+      .add("Choose an Auto Mode", command).withWidget(BuiltInWidgets.kSplitButtonChooser);
   }
 
   /**
@@ -101,96 +93,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     robotPose.gyro.zeroYaw();
-  //  // Create a voltage constraint to ensure we don't accelerate too fast
-   
 
-  //   // Create config for trajectory
-    
-  //   // An example trajectory to follow. All units in meters.
-  //   Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-  //       // Start at the origin facing the +X direction
-  //       new Pose2d(0, 0, new Rotation2d(0)),
-  //       // Pass through these two interior waypoints, making an 's' curve path
-  //       List.of(
-  //         new Translation2d(1, 1),
-  //         new Translation2d(2, -1)
-  //       ),
-  //       // End 3 meters straight ahead of where we started, facing forward
-  //       new Pose2d(3, 0, new Rotation2d(0)),
-  //       // Pass config
-  //       DriveConstants.config);
-
-  //   Trajectory anotherExample = TrajectoryGenerator.generateTrajectory(
-  //     List.of(
-  //       new Pose2d(0, 0, new Rotation2d(0)),
-  //       new Pose2d(1, 1, new Rotation2d(0)),
-  //       new Pose2d(2, -1, new Rotation2d(0)),
-  //       new Pose2d(3, 0, new Rotation2d(0)),
-  //       new Pose2d(3.5, 0, new Rotation2d(0))
-  //       ), DriveConstants.config);
-
-  //       Trajectory driveStraight = TrajectoryGenerator.generateTrajectory(
-  //         List.of(
-  //         new Pose2d(0,0,new Rotation2d(0)), 
-  //         new Pose2d(2.5, 0,new Rotation2d(0)), 
-  //         new Pose2d(5,0,new Rotation2d(0))
-         
-  //         ),  DriveConstants.config);
-  //         Pose2d endPoint = new Pose2d(9, 0, new Rotation2d(0));
-  //         Trajectory comeBack = TrajectoryGenerator.generateTrajectory(
-  //           // Start at the origin facing the +X direction
-  //          List.of(
-  //            new Pose2d(5,0,new Rotation2d(0)), 
-  //          new Pose2d(2.5, 0,new Rotation2d(0)), 
-  //           new Pose2d(0,0,new Rotation2d(0))
-  //          )
-  //          ,
-  //           // Pass config
-  //           DriveConstants.backwardsConfig);
-  //           Trajectory revTrajectory = comeBack;
-  //   RamseteCommand ramseteCommand = new RamseteFollower(driveStraight, robotPose::getPose,
-  //       new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-  //       new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
-  //           DriveConstants.kaVoltSecondsSquaredPerMeter),
-  //       DriveConstants.kDriveKinematics, robotPose::getWheelSpeeds, new PIDController(DriveConstants.kPDriveVel, 0, 0),
-  //       new PIDController(DriveConstants.kPDriveVel, 0, 0),
-  //       // RamseteCommand passes volts to the callback
-  //       driveTrain::tankDriveVolts, driveTrain 
-
-  //   );
-
-  //   RamseteCommand backCommand = new RamseteFollower(revTrajectory, robotPose::getPose,
-  //       new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-  //       new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
-  //           DriveConstants.kaVoltSecondsSquaredPerMeter),
-  //       DriveConstants.kDriveKinematics, robotPose::getWheelSpeeds, new PIDController(DriveConstants.kPDriveVel, 0, 0),
-  //       new PIDController(DriveConstants.kPDriveVel, 0, 0),
-  //       // RamseteCommand passes volts to the callback
-  //       driveTrain::tankDriveVolts, driveTrain
-
-  //   );
-  //   Command result = ramseteCommand.andThen(()->backCommand.schedule());
-    
-    // Run path following command, then stop at the end.
-    RamseteCommand ramseteCommand = new RamseteFollower(DriveConstants.moveToTrench, robotPose::getPose,
-          new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-          new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
-              DriveConstants.kaVoltSecondsSquaredPerMeter),
-          DriveConstants.kDriveKinematics, robotPose::getWheelSpeeds, new PIDController(DriveConstants.kPDriveVel, 0, 0),
-          new PIDController(DriveConstants.kPDriveVel, 0, 0),
-          // RamseteCommand passes volts to the callback
-          driveTrain::tankDriveVolts, driveTrain 
-  
-      );
-    SendableChooser<Command> command = new SendableChooser<>();
-    command.setDefaultOption("Shoot and Move", new ShootAndMove(shaftMechanism.shaftClimber, shooter.shooterMain, driveTrain, shooterVision, robotPose));
-    command.addOption("pick up 2 ",new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
-    command.addOption("Shoot and pick up 3 ",new Shoot3PickUp3(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
-  
-      return command.getSelected();
-       //new IntakeBalls(intake.intakeMain, .7);
-      //new SequentialCommandGroup(new ParallelCommandGroup(new LowerIntake(intake.intakeMain),new LowerShaft(shaftMechanism.getSubsystem())), new ParallelCommandGroup(ramseteCommand, new IntakeBalls(intake.intakeMain, .75)));
-     // new ShootAndMove(shaftMechanism.shaftClimber, shooter.shooterMain, driveTrain, shooterVision, robotPose);
-    //  new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose);
+    return command.getSelected();
   }
 }

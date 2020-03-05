@@ -41,7 +41,8 @@ public class PickUp2Shoot extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
-        new ParallelRaceGroup(new BarrelDefault(shaftClimber),
+        new ParallelRaceGroup(
+            new BarrelDefault(shaftClimber),
             new RamseteCommand(DriveConstants.pickUp2, pose::getPose,
                 new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
                 new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,

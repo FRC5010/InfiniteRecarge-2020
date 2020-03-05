@@ -32,11 +32,12 @@ public final class DriveConstants {
     public static final double ksVolts = 0.179;
     public static final double kvVoltSecondsPerMeter = 2.25;
     public static final double kaVoltSecondsSquaredPerMeter = .482;
-    //2.5 original
+    // 2.5 original
     public static final double kPDriveVel = 2.64;
 
     public static final double kTrackwidthMeters = 0.616;
-    public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
+    public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
+            kTrackwidthMeters);
     public static final double kMaxSpeedMetersPerSecond = 2;
     public static final double kMaxAccelerationMetersPerSecondSquared = 2;
     public static final double kRamseteB = 2;
@@ -63,32 +64,52 @@ public final class DriveConstants {
     public static final double leftVelocityConv = rpmToMetersPerSec * (leftReversed ? -1.0 : 1.0) * leftFudgeFactor;
     public static final double rightVelocityConv = rpmToMetersPerSec * (rightReversed ? -1.0 : 1.0) * rightFudgeFactor;
 
-    public static final double kTurnP = .4 /180;
+    public static final double kTurnP = .4 / 180;
     public static final double minTurn = .05;
-    public static final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(DriveConstants.ksVolts,
-    DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter), DriveConstants.kDriveKinematics, 10);
+
+    public static final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+            new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter),
+            DriveConstants.kDriveKinematics, 10);
+
     public static final TrajectoryConfig config = new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
-        DriveConstants.kMaxAccelerationMetersPerSecondSquared)
+            DriveConstants.kMaxAccelerationMetersPerSecondSquared)
+                    // Add kinematics to ensure max speed is actually obeyed
+                    .setKinematics(DriveConstants.kDriveKinematics)
+                    // Apply the voltage constraint
+                    .addConstraint(autoVoltageConstraint);
+
+    // set reversed allows robot to go backwards
+    public static final TrajectoryConfig backwardsConfig = new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
+            DriveConstants.kMaxAccelerationMetersPerSecondSquared)
+                    // Add kinematics to ensure max speed is actually obeyed
+                    .setKinematics(DriveConstants.kDriveKinematics)
+                    // Apply the voltage constraint
+                    .addConstraint(autoVoltageConstraint)
+                    .setReversed(true);
+
+    public static final TrajectoryConfig pickUpBallConfig = new TrajectoryConfig(1, 1)
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(DriveConstants.kDriveKinematics)
             // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-     public static final TrajectoryConfig backwardsConfig = new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared)
-    //set reversed allows robot to go backwards
-    .setReversed(true);
-    public static final TrajectoryConfig pickUpBallConfig = new TrajectoryConfig(1, 1).setReversed(true);
+            .addConstraint(autoVoltageConstraint)
+            .setReversed(true);
 
-    public static final Trajectory moveToTrench = TrajectoryGenerator.generateTrajectory(
-        List.of(
-            new Pose2d(0,0,new Rotation2d(0)),
-            new Pose2d(-2.5, -1.75, new Rotation2d(0)),
-            new Pose2d(-6.5,-1.75,new Rotation2d(0))
-        
-        ), backwardsConfig);
-    public static final Trajectory pickUp2 = TrajectoryGenerator.generateTrajectory(List.of(
-        new Pose2d(0,0,new Rotation2d(0)),
-        new Pose2d(-4 , 0, new Rotation2d(0))
-       
-    
-    ), pickUpBallConfig);
+    public static Trajectory driveOffInitLine = TrajectoryGenerator
+        .generateTrajectory(List.of(
+                new Pose2d(0, 0, new Rotation2d(0)), 
+                new Pose2d(-.5, 0, new Rotation2d(0))
+            ), backwardsConfig);
+
+    public static final Trajectory moveToTrench = TrajectoryGenerator
+            .generateTrajectory(List.of(
+                new Pose2d(0, 0, new Rotation2d(0)), 
+                new Pose2d(-2.5, -1.75, new Rotation2d(0)),
+                new Pose2d(-6.5, -1.75, new Rotation2d(0))
+            ), backwardsConfig);
+
+    public static final Trajectory pickUp2 = TrajectoryGenerator
+            .generateTrajectory(List.of(
+                new Pose2d(0, 0, new Rotation2d(0)), 
+                new Pose2d(-4, 0, new Rotation2d(0))
+            ), pickUpBallConfig);
 }

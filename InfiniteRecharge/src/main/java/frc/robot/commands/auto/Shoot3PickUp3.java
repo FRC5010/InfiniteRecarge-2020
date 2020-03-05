@@ -46,21 +46,26 @@ public class Shoot3PickUp3 extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
 
-    super(new ParallelRaceGroup(new LoadShaftCommand(shaftClimber, 3,shooterMain,7), new SpinShooter(shooterMain, visionSubsystem)),
-      new ParallelCommandGroup(new LowerIntake(intake), 
-    new LowerShaft(shaftClimber)),
-    new ParallelRaceGroup(
-    new RamseteCommand(DriveConstants.moveToTrench, pose::getPose,
+    super(
+      new ParallelRaceGroup(
+        new LoadShaftCommand(shaftClimber, 3, shooterMain, 7), 
+        new SpinShooter(shooterMain, visionSubsystem)),
+      new ParallelCommandGroup(
+        new LowerIntake(intake), 
+        new LowerShaft(shaftClimber)),
+      new ParallelRaceGroup(
+        new RamseteCommand(DriveConstants.moveToTrench, pose::getPose,
           new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
               new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
               DriveConstants.kaVoltSecondsSquaredPerMeter),
               DriveConstants.kDriveKinematics, pose::getWheelSpeeds,
               new PIDController(DriveConstants.kPDriveVel, 0, 0),
               new PIDController(DriveConstants.kPDriveVel, 0, 0),
-// RamseteCommand passes volts to the callback
+          // RamseteCommand passes volts to the callback
               driveTrain::tankDriveVolts, driveTrain),
     
-     
-        new IntakeBalls(intake,.8)));
+        new IntakeBalls(intake,.8)
+      )
+    );
   }
 } 
