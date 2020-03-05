@@ -7,6 +7,7 @@
 
 package frc.robot.mechanisms;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -27,8 +28,6 @@ public class TelescopClimb {
     public CANSparkMax armMotor2;
     public CANSparkMax winchMotor1;
     public CANSparkMax winchMotor2;
-    public Encoder winchEncoder1;
-    public Encoder winchEncoder2;
     public Joystick driver;
     public Joystick operator;
     public JoystickButton armBtn;
@@ -45,8 +44,6 @@ public class TelescopClimb {
         winchMotor2 = new CANSparkMax(TelescopConstants.winch2Port, MotorType.kBrushless);
         this.driver = driver;
         this.operator = operator;
-        // winchEncoder1 = new Encoder(TelescopConstants.encoderPort1, TelescopConstants.encoderPort2);
-        // winchEncoder2 = new Encoder(TelescopConstants.encoderPort3, TelescopConstants.encoderPort4);
 
         subsystem = new TelescopSubsystem(winchMotor1, winchMotor2, armMotor1, armMotor2, driver, operator);
         armMotor1.setSmartCurrentLimit(20);

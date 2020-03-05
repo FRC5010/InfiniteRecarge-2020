@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TelescopSubsystem;
 
@@ -15,6 +16,7 @@ public class ClimbWinch extends CommandBase {
    * Creates a new climbArm1.
    */
   private TelescopSubsystem subsystem;
+
   public ClimbWinch(TelescopSubsystem subsystem) {
     this.subsystem = subsystem;
     addRequirements(subsystem);
@@ -24,6 +26,8 @@ public class ClimbWinch extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    subsystem.winchEncoder1.setPosition(0);
+    subsystem.winchEncoder2.setPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

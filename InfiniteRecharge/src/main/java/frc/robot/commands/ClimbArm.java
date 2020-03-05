@@ -15,7 +15,8 @@ public class ClimbArm extends CommandBase {
    * Creates a new climbArm1.
    */
   private TelescopSubsystem subsystem;
-  public ClimbArm(TelescopSubsystem subsystem){
+
+  public ClimbArm(TelescopSubsystem subsystem) {
     this.subsystem = subsystem;
     addRequirements(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,14 +25,14 @@ public class ClimbArm extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    subsystem.armEncoder1.setPosition(0);
+    subsystem.armEncoder2.setPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     subsystem.spinArmMotors();
-
-    
   }
 
   // Called once the command ends or is interrupted.
