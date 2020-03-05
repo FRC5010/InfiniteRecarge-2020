@@ -46,10 +46,10 @@ public class TelescopClimb {
         this.operator = operator;
 
         subsystem = new TelescopSubsystem(winchMotor1, winchMotor2, armMotor1, armMotor2, driver, operator);
-        armMotor1.setSmartCurrentLimit(20);
-        armMotor2.setSmartCurrentLimit(20);
-        winchMotor1.setSmartCurrentLimit(20);
-        winchMotor2.setSmartCurrentLimit(20);
+        armMotor1.setSmartCurrentLimit(TelescopConstants.armCurrentLimit);
+        armMotor2.setSmartCurrentLimit(TelescopConstants.armCurrentLimit);
+        winchMotor1.setSmartCurrentLimit(TelescopConstants.winchCurrentLimit);
+        winchMotor2.setSmartCurrentLimit(TelescopConstants.winchCurrentLimit);
         
         armMotor1.setInverted(false);
         armMotor2.setInverted(true);
