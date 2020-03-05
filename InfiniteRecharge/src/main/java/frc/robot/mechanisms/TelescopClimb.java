@@ -59,12 +59,12 @@ public class TelescopClimb {
         winchMotor2.setInverted(true);
         
         armBtn = new JoystickButton(operator, ControlConstants.startClimb );
-        armOvrd = new JoystickButton(operator, ControlConstants.toggleBarrelHeight);
+        armOvrd = new JoystickButton(operator, ControlConstants.overrideArmDeployment);
         winchBtn = new JoystickButton(operator, ControlConstants.retractClimb);
         
 
         armBtn.whileHeld(new ClimbArm(subsystem));
-       armOvrd.whenPressed(new InstantCommand(()->subsystem.overrideArms = true));
+        armOvrd.whenPressed(new InstantCommand(()->subsystem.overrideArms = true));
         winchBtn.whileHeld(new ClimbWinch(subsystem));
         
     }

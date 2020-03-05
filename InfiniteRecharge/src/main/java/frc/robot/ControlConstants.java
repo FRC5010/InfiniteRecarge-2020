@@ -37,8 +37,8 @@ public class ControlConstants {
     public static int toggleLed = ButtonNums.LEFT_STICK_BUTT.ordinal();
 
     //Operator
-    public static int flyWheelManual = AxisNums.LEFT_Y.ordinal(); // Implement
-    public static int climbDeployAxis = AxisNums.RIGHT_Y.ordinal(); // Implement
+    public static int leftArmDeploy = AxisNums.LEFT_Y.ordinal(); // Implement
+    public static int combinedArmDeploy = AxisNums.RIGHT_Y.ordinal(); // Implement
     public static int outtakeAxis = AxisNums.L_TRIGGER.ordinal() ;
     public static int intakeAxis = AxisNums.R_TRIGGER.ordinal();
 
@@ -46,7 +46,7 @@ public class ControlConstants {
     public static int barrelDown = ButtonNums.B_BUTTON.ordinal(); 
     public static int lowGoalShoot = ButtonNums.X_BUTTON.ordinal(); // implement
     public static int barrelUp = ButtonNums.Y_BUTTON.ordinal(); 
-    public static int toggleBarrelHeight = ButtonNums.LEFT_BUMPER.ordinal();
+    public static int overrideArmDeployment = ButtonNums.LEFT_BUMPER.ordinal();
     public static int toggleIntakeButton = ButtonNums.RIGHT_BUMPER.ordinal();
     public static int startClimb = ButtonNums.START_BUTTON.ordinal(); // Implement
     public static int retractClimb = ButtonNums.BACK_BUTTON.ordinal(); // Implement

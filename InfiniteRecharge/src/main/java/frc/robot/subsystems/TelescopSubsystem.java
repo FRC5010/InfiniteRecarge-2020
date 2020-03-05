@@ -46,7 +46,7 @@ public class TelescopSubsystem extends SubsystemBase {
     this.driver = driver;
     this.operator = operator;
     winchEncoder1 = winch1.getEncoder();
-  
+
     winchEncoder2 = winch2.getEncoder();
     armEncoder1 = arm1.getEncoder();
     armEncoder2 = arm2.getEncoder();
@@ -58,11 +58,11 @@ public class TelescopSubsystem extends SubsystemBase {
     ShuffleboardLayout winch1Layout = climberTab.getLayout("Winch 1", BuiltInLayouts.kList);
     ShuffleboardLayout winch2Layout = climberTab.getLayout("Winch 2", BuiltInLayouts.kList);
     climberLayout.addNumber("Climb Timer", climbTimer::get);
+    climberLayout.addBoolean("Override",()-> overrideArms);
 
     arm1Layout.addNumber("Encoder", armEncoder1::getPosition);
     arm1Layout.addNumber("Current", arm1::getOutputCurrent);
     arm1Layout.addNumber("Output", arm1::getAppliedOutput);
-    //arm1Layout.addBoolean("Override",()->  overrideArms);
 
     arm2Layout.addNumber("Encoder", armEncoder2::getPosition);
     arm2Layout.addNumber("Current", arm2::getOutputCurrent);
@@ -83,17 +83,17 @@ public class TelescopSubsystem extends SubsystemBase {
   }
 
   public void spinArmMotors() {
-    double speed = TelescopConstants.armSpeed * operator.getRawAxis(ControlConstants.climbDeployAxis);
-    if(overrideArms){
-      arm1.set(TelescopConstants.armSpeed * operator.getRawAxis(ControlConstants.flyWheelManual));
-      arm2.set(TelescopConstants.armSpeed * operator.getRawAxis(ControlConstants.climbDeployAxis));
-      }else if(armEncoder1.getPosition()>(-230.) && armEncoder2.getPosition()>(-230.)){
-        arm1.set(speed);
-        arm2.set(speed);
-      }else{
-        arm1.set(0);
-        arm2.set(0);
-      }
+    double speed = TelescopConstants.armSpeed * operator.getRawAxis(ControlConstants.combinedArmDeploy);
+    if (overrideArms) {
+      arm1.set(TelescopConstants.armSpeed * operator.getRawAxis(ControlConstants.leftArmDeploy));
+      arm2.set(TelescopConstants.armSpeed * operator.getRawAxis(ControlConstants.combinedArmDeploy));
+    } else if (armEncoder1.getPosition() > (-230.) && armEncoder2.getPosition() > (-230.)) {
+      arm1.set(speed);
+      arm2.set(speed);
+    } else {
+      arm1.set(0);
+      arm2.set(0);
+    }
     if (speed > 0) {
       climbTimer.start();
     } else {
@@ -115,11 +115,9 @@ public class TelescopSubsystem extends SubsystemBase {
 
   public void spinWinchMotors() {
     double speed = TelescopConstants.winchSpeed * Math.abs(driver.getRawAxis(ControlConstants.winch1Axis));
-   winch1.set(speed);
+    winch1.set(speed);
     winch2.set(speed);
   }
-    
-  
 
   public void stopWinchMotors() {
     winch1.set(0);
