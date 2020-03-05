@@ -17,8 +17,8 @@ public class TelescopConstants {
     public static int winch1Port = 6;
     public static int winch2Port = 7;
 
-    public static double winchSpeed = 0.5;
-    public static double armSpeed = 0.5;
+    public static double winchSpeed = 0.25;
+    public static double armSpeed = 0.25;
     public static double raisedTimeLimit = 2.0;
     public static int raisedCurrentLimit = 5;
 }

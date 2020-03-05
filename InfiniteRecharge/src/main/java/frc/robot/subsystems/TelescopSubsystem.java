@@ -80,7 +80,7 @@ public class TelescopSubsystem extends SubsystemBase {
   }
 
   public void spinArmMotors() {
-    double speed = Math.abs(operator.getRawAxis(ControlConstants.climbDeployAxis));
+    double speed = TelescopConstants.armSpeed * Math.abs(operator.getRawAxis(ControlConstants.climbDeployAxis));
     arm1.set(speed);
     arm2.set(speed);
     if (speed > 0) {
@@ -103,7 +103,7 @@ public class TelescopSubsystem extends SubsystemBase {
   }
 
   public void spinWinchMotors() {
-    double speed = Math.abs(driver.getRawAxis(ControlConstants.winch1Axis));
+    double speed = TelescopConstants.winchSpeed * Math.abs(driver.getRawAxis(ControlConstants.winch1Axis));
     winch1.set(speed);
     winch2.set(speed);
   }
