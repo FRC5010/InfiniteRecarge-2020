@@ -34,6 +34,7 @@ public class TelescopSubsystem extends SubsystemBase {
   public CANEncoder armEncoder2;
   public Timer winchTimer = new Timer();
   private ShuffleboardTab climberTab;
+  private boolean limitApplied = false;
 
   public TelescopSubsystem(CANSparkMax winch1, CANSparkMax winch2, CANSparkMax arm1, CANSparkMax arm2, Joystick driver,
       Joystick operator) {
@@ -89,8 +90,11 @@ public class TelescopSubsystem extends SubsystemBase {
       winchTimer.stop();
     }
     if (winchTimer.get() > TelescopConstants.raisedTimeLimit) {
-      winch1.setSmartCurrentLimit(TelescopConstants.raisedCurrentLimit);
-      winch2.setSmartCurrentLimit(TelescopConstants.raisedCurrentLimit);
+      if (!limitApplied) {
+        limitApplied = true;
+        winch1.setSmartCurrentLimit(TelescopConstants.raisedCurrentLimit);
+        winch2.setSmartCurrentLimit(TelescopConstants.raisedCurrentLimit);
+      }
     }
   }
 
