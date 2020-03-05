@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.ControlConstants;
 import frc.robot.commands.ClimbArm;
@@ -33,6 +34,7 @@ public class TelescopClimb {
     public JoystickButton armBtn;
    
     public JoystickButton winchBtn;
+    public JoystickButton armOvrd;
     
     private TelescopSubsystem subsystem;
 
@@ -57,12 +59,12 @@ public class TelescopClimb {
         winchMotor2.setInverted(true);
         
         armBtn = new JoystickButton(operator, ControlConstants.startClimb );
-        
+        armOvrd = new JoystickButton(operator, ControlConstants.toggleBarrelHeight);
         winchBtn = new JoystickButton(operator, ControlConstants.retractClimb);
         
 
         armBtn.whileHeld(new ClimbArm(subsystem));
-       
+       armOvrd.whenPressed(new InstantCommand(()->subsystem.overrideArms = true));
         winchBtn.whileHeld(new ClimbWinch(subsystem));
         
     }
