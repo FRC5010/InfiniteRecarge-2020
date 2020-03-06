@@ -23,15 +23,19 @@ public class LoadShaftCommand extends CommandBase {
   double timeout;
   Timer timer;
 
-  public LoadShaftCommand(ShaftSubsystem shaftClimber, ShooterMain shooter) { 
+  public LoadShaftCommand(ShaftSubsystem shaftClimber, ShooterMain shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shaftSubsystem = shaftClimber;
     this.shooter = shooter;
     addRequirements(shaftSubsystem);
     this.timer = new Timer();
-    // addRequirements(shooter); NOTE: THIS IS NOT NEEDED, LEAVING HERE TO INFORM ONLY - CLR
+    numShoot = 0;
+    timeout = 0;
+    // addRequirements(shooter); NOTE: THIS IS NOT NEEDED, LEAVING HERE TO INFORM
+    // ONLY - CLR
   }
-  public LoadShaftCommand(ShaftSubsystem shaftClimber, int numShoot,ShooterMain shooter,double timeout){
+
+  public LoadShaftCommand(ShaftSubsystem shaftClimber, int numShoot, ShooterMain shooter, double timeout) {
     this.shaftSubsystem = shaftClimber;
     this.shooter = shooter;
     this.numShoot = numShoot;
@@ -43,8 +47,10 @@ public class LoadShaftCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.reset();
-    timer.start();
+    if (numShoot != 0) {
+      timer.reset();
+      timer.start();
+    }
     shaftSubsystem.setShaftState(ShaftState.shootIndex);
   }
 
@@ -52,28 +58,28 @@ public class LoadShaftCommand extends CommandBase {
   @Override
   public void execute() {
     switch (shaftSubsystem.getShaftState()) {
-      case shooting : {
-        if(shaftSubsystem.getBB3())
-          shaftSubsystem.incShotCount();
-          shaftSubsystem.setShaftState(ShaftState.shootIndex);
-        break;
-      }
-      case shootIndex : {
+    case shooting: {
+      if (shaftSubsystem.getBB3()) {
+        shaftSubsystem.incShotCount();
         shaftSubsystem.spinUpShaft(.5);
-        if(!shaftSubsystem.getBB3()) {
-          shaftSubsystem.spinUpShaft(0);
-          shaftSubsystem.setShaftState(ShaftState.shootWait);
-        }
-        break;
+        shaftSubsystem.setShaftState(ShaftState.shootIndex);
       }
-      case shootWait : {
-        if (shooter.getReadyToShoot()) {
-          
-          shaftSubsystem.setShaftState(ShaftState.shooting);
-          shaftSubsystem.spinUpShaft(.7);
-        }
-        break;
+      break;
+    }
+    case shootIndex: {
+      if (!shaftSubsystem.getBB3()) {
+        shaftSubsystem.spinUpShaft(0);
+        shaftSubsystem.setShaftState(ShaftState.shootWait);
       }
+      break;
+    }
+    case shootWait: {
+      if (shooter.getReadyToShoot()) {
+        shaftSubsystem.setShaftState(ShaftState.shooting);
+        shaftSubsystem.spinUpShaft(.7);
+      }
+      break;
+    }
     }
   }
 
@@ -87,6 +93,10 @@ public class LoadShaftCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (shaftSubsystem.getShotCount() == numShoot && numShoot !=0)|| (timer!= null &&timer.get() >timeout);
+    if (numShoot != 0) {
+      return (shaftSubsystem.getShotCount() == numShoot) || (timer.get() > timeout);
+    } else {
+      return false;
+    }
   }
 }
