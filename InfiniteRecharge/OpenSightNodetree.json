@@ -1,1 +1,465 @@
-{"nodes":[{"type":"opsi.videoio/CameraInput","id":"a043a4cc-43bd-440b-8e18-8a4d4985f611","settings":{"mode":"Cam 0: 160x120 @ 30 fps","brightness":50,"contrast":50,"saturation":50,"exposure":50},"inputs":{},"pos":[21,128]},{"type":"opsi.videoio/CameraInput","id":"76015e4f-66e7-4714-a189-37dce2b035d6","settings":{"mode":"Cam 2: 160x120 @ 30 fps","brightness":50,"contrast":50,"saturation":50,"exposure":50},"inputs":{},"pos":[21,859]},{"type":"opsi.videoio/CameraServer","id":"1aa19092-1d6c-4141-abcd-751f757c6ac6","settings":{"name":"OriginalShooter","backend":"MJPEG"},"inputs":{"img":{"id":"857ec1d8-2012-4a85-a23c-b98ac414cbfc","name":"img"}},"pos":[448,676]},{"type":"opsi.videoio/CameraServer","id":"42a044a6-224e-4fc7-b74d-bfd9b9fbae2a","settings":{"name":"OriginalIntake","backend":"MJPEG"},"inputs":{"img":{"id":"20bab21b-de04-4030-9c19-52994a755e6c","name":"img"}},"pos":[440.9812316894531,16.987499237060547]},{"type":"opsi.draw/DrawFPS","id":"20bab21b-de04-4030-9c19-52994a755e6c","settings":{},"inputs":{"img":{"id":"a043a4cc-43bd-440b-8e18-8a4d4985f611","name":"img"}},"pos":[245.98123168945312,63.99374771118164]},{"type":"opsi.draw/DrawFPS","id":"857ec1d8-2012-4a85-a23c-b98ac414cbfc","settings":{},"inputs":{"img":{"id":"76015e4f-66e7-4714-a189-37dce2b035d6","name":"img"}},"pos":[265,743]},{"type":"opsi.colorops/HSVRange","id":"53001835-a6ab-4675-8627-041fc564cbbc","settings":{"hue":{"min":15,"max":58},"sat":{"min":47,"max":255},"val":{"min":81,"max":255}},"inputs":{"img":{"id":"a043a4cc-43bd-440b-8e18-8a4d4985f611","name":"img"}},"pos":[348,212]},{"type":"opsi.mask/Erode","id":"d5962d93-d0f7-446c-b1d7-059658bfd6ea","settings":{"size":3},"inputs":{"imgBW":{"id":"53001835-a6ab-4675-8627-041fc564cbbc","name":"imgBW"}},"pos":[592,216]},{"type":"opsi.mask/Dilate","id":"45efa59c-96e9-4002-ad1e-41e3532cdd1d","settings":{"size":4},"inputs":{"imgBW":{"id":"d5962d93-d0f7-446c-b1d7-059658bfd6ea","name":"imgBW"}},"pos":[756,217]},{"type":"opsi.contours/FindContours","id":"256f1053-e93c-4b2e-8c0b-432bf37457f6","settings":{},"inputs":{"imgBW":{"id":"45efa59c-96e9-4002-ad1e-41e3532cdd1d","name":"imgBW"}},"pos":[1000,32]},{"type":"opsi.contour-filter-ops/SpeckleFilter","id":"2403c75c-903d-494b-ba12-26cd84f1653c","settings":{"min_relative_area":24},"inputs":{"contours":{"id":"256f1053-e93c-4b2e-8c0b-432bf37457f6","name":"contours"}},"pos":[1189,32]},{"type":"opsi.contour-filter-ops/Sort","id":"ddc11835-8179-4cef-8e4c-46a2523b338c","settings":{"by":"Largest","keep":"One","keep_amount":0},"inputs":{"contours":{"id":"2403c75c-903d-494b-ba12-26cd84f1653c","name":"contours"}},"pos":[1437,18]},{"type":"opsi.draw/DrawContours","id":"61c41e8d-dc40-4aec-b15c-90f32626a6cb","settings":{"bounding_rect":true,"min_area_rect":true},"inputs":{"contours":{"id":"ddc11835-8179-4cef-8e4c-46a2523b338c","name":"contours"},"img":{"id":"45efa59c-96e9-4002-ad1e-41e3532cdd1d","name":"imgBW"}},"pos":[1144,270]},{"type":"opsi.contours/FindCenter","id":"3f821726-ed0a-4958-8133-380fbfd62e13","settings":{"draw":true},"inputs":{"img":{"id":"61c41e8d-dc40-4aec-b15c-90f32626a6cb","name":"img"},"contours":{"id":"ddc11835-8179-4cef-8e4c-46a2523b338c","name":"contours"}},"pos":[1446,299]},{"type":"opsi.nt/PutNT","id":"9b3d1425-4d7e-4ca8-ae56-ac4438b4e2d5","settings":{"path":"/OpenSight/intake","key":"center"},"inputs":{"val":{"id":"3f821726-ed0a-4958-8133-380fbfd62e13","name":"center"}},"pos":[1635,28]},{"type":"opsi.colorops/HSVRange","id":"03bd111e-cddd-4cb8-af5b-35950e39c9d0","settings":{"hue":{"min":57,"max":142},"sat":{"min":94,"max":255},"val":{"min":81,"max":255}},"inputs":{"img":{"id":"76015e4f-66e7-4714-a189-37dce2b035d6","name":"img"}},"pos":[366,918]},{"type":"opsi.contours/FindContours","id":"3b8cfd1f-3889-43fa-8c42-e24c04d2118f","settings":{},"inputs":{"imgBW":{"id":"03bd111e-cddd-4cb8-af5b-35950e39c9d0","name":"imgBW"}},"pos":[730,758]},{"type":"opsi.contour-filter-ops/Sort","id":"084540e1-9d80-4eef-ba0d-fce2e4471c87","settings":{"by":"Largest","keep":"One","keep_amount":0},"inputs":{"contours":{"id":"3b8cfd1f-3889-43fa-8c42-e24c04d2118f","name":"contours"}},"pos":[942,768]},{"type":"opsi.draw/DrawFPS","id":"f76e7fe4-db9b-4834-bdcc-302f1cebfd23","settings":{},"inputs":{"img":{"id":"3f821726-ed0a-4958-8133-380fbfd62e13","name":"visual"}},"pos":[1668,330]},{"type":"opsi.videoio/CameraServer","id":"d36e7cb4-41f2-41ae-85b4-f962b75af332","settings":{"name":"ProcessedIntake","backend":"MJPEG"},"inputs":{"img":{"id":"f76e7fe4-db9b-4834-bdcc-302f1cebfd23","name":"img"}},"pos":[1955,300]},{"type":"opsi.draw/DrawContours","id":"6775c38d-ffbe-458b-8417-9a999d4de4ae","settings":{"bounding_rect":true,"min_area_rect":true},"inputs":{"contours":{"id":"084540e1-9d80-4eef-ba0d-fce2e4471c87","name":"contours"},"img":{"id":"03bd111e-cddd-4cb8-af5b-35950e39c9d0","name":"imgBW"}},"pos":[1116,972]},{"type":"opsi.contours/FindCenter","id":"f75ec8e7-8161-4953-8c2f-556737aa38ef","settings":{"draw":true},"inputs":{"img":{"id":"6775c38d-ffbe-458b-8417-9a999d4de4ae","name":"img"},"contours":{"id":"084540e1-9d80-4eef-ba0d-fce2e4471c87","name":"contours"}},"pos":[1382,866]},{"type":"opsi.nt/PutNT","id":"00895ced-b6a1-414f-b81d-8fbd60619e8b","settings":{"path":"/OpenSight/shooter","key":"center"},"inputs":{"val":{"id":"f75ec8e7-8161-4953-8c2f-556737aa38ef","name":"center"}},"pos":[1651,740]},{"type":"opsi.draw/DrawFPS","id":"bb5b9544-c7d2-4570-8914-796aa3e6f596","settings":{},"inputs":{"img":{"id":"f75ec8e7-8161-4953-8c2f-556737aa38ef","name":"visual"}},"pos":[1652,989]},{"type":"opsi.videoio/CameraServer","id":"644687ba-e423-48dc-9756-ae83f6c508ff","settings":{"name":"ProcessedShooter","backend":"MJPEG"},"inputs":{"img":{"id":"bb5b9544-c7d2-4570-8914-796aa3e6f596","name":"img"}},"pos":[1886,923]}]}
+{
+    "nodes": [
+        {
+            "type": "opsi.videoio/CameraInput",
+            "id": "a043a4cc-43bd-440b-8e18-8a4d4985f611",
+            "settings": {
+                "mode": "Cam 0: 160x120 @ 30 fps",
+                "brightness": 50,
+                "contrast": 50,
+                "saturation": 50,
+                "exposure": 50
+            },
+            "inputs": {},
+            "pos": [
+                21,
+                128
+            ]
+        },
+        {
+            "type": "opsi.videoio/CameraInput",
+            "id": "76015e4f-66e7-4714-a189-37dce2b035d6",
+            "settings": {
+                "mode": "Cam 2: 160x120 @ 30 fps",
+                "brightness": 50,
+                "contrast": 50,
+                "saturation": 50,
+                "exposure": 50
+            },
+            "inputs": {},
+            "pos": [
+                21,
+                859
+            ]
+        },
+        {
+            "type": "opsi.videoio/CameraServer",
+            "id": "1aa19092-1d6c-4141-abcd-751f757c6ac6",
+            "settings": {
+                "name": "OriginalShooter",
+                "backend": "MJPEG"
+            },
+            "inputs": {
+                "img": {
+                    "id": "857ec1d8-2012-4a85-a23c-b98ac414cbfc",
+                    "name": "img"
+                }
+            },
+            "pos": [
+                448,
+                676
+            ]
+        },
+        {
+            "type": "opsi.videoio/CameraServer",
+            "id": "42a044a6-224e-4fc7-b74d-bfd9b9fbae2a",
+            "settings": {
+                "name": "OriginalIntake",
+                "backend": "MJPEG"
+            },
+            "inputs": {
+                "img": {
+                    "id": "20bab21b-de04-4030-9c19-52994a755e6c",
+                    "name": "img"
+                }
+            },
+            "pos": [
+                440.9812316894531,
+                16.987499237060547
+            ]
+        },
+        {
+            "type": "opsi.draw/DrawFPS",
+            "id": "20bab21b-de04-4030-9c19-52994a755e6c",
+            "settings": {},
+            "inputs": {
+                "img": {
+                    "id": "a043a4cc-43bd-440b-8e18-8a4d4985f611",
+                    "name": "img"
+                }
+            },
+            "pos": [
+                245.98123168945312,
+                63.99374771118164
+            ]
+        },
+        {
+            "type": "opsi.draw/DrawFPS",
+            "id": "857ec1d8-2012-4a85-a23c-b98ac414cbfc",
+            "settings": {},
+            "inputs": {
+                "img": {
+                    "id": "76015e4f-66e7-4714-a189-37dce2b035d6",
+                    "name": "img"
+                }
+            },
+            "pos": [
+                265,
+                743
+            ]
+        },
+        {
+            "type": "opsi.colorops/HSVRange",
+            "id": "53001835-a6ab-4675-8627-041fc564cbbc",
+            "settings": {
+                "hue": {
+                    "min": 15,
+                    "max": 58
+                },
+                "sat": {
+                    "min": 47,
+                    "max": 255
+                },
+                "val": {
+                    "min": 81,
+                    "max": 255
+                }
+            },
+            "inputs": {
+                "img": {
+                    "id": "a043a4cc-43bd-440b-8e18-8a4d4985f611",
+                    "name": "img"
+                }
+            },
+            "pos": [
+                348,
+                212
+            ]
+        },
+        {
+            "type": "opsi.mask/Erode",
+            "id": "d5962d93-d0f7-446c-b1d7-059658bfd6ea",
+            "settings": {
+                "size": 3
+            },
+            "inputs": {
+                "imgBW": {
+                    "id": "53001835-a6ab-4675-8627-041fc564cbbc",
+                    "name": "imgBW"
+                }
+            },
+            "pos": [
+                592,
+                216
+            ]
+        },
+        {
+            "type": "opsi.mask/Dilate",
+            "id": "45efa59c-96e9-4002-ad1e-41e3532cdd1d",
+            "settings": {
+                "size": 4
+            },
+            "inputs": {
+                "imgBW": {
+                    "id": "d5962d93-d0f7-446c-b1d7-059658bfd6ea",
+                    "name": "imgBW"
+                }
+            },
+            "pos": [
+                756,
+                217
+            ]
+        },
+        {
+            "type": "opsi.contours/FindContours",
+            "id": "256f1053-e93c-4b2e-8c0b-432bf37457f6",
+            "settings": {},
+            "inputs": {
+                "imgBW": {
+                    "id": "45efa59c-96e9-4002-ad1e-41e3532cdd1d",
+                    "name": "imgBW"
+                }
+            },
+            "pos": [
+                1000,
+                32
+            ]
+        },
+        {
+            "type": "opsi.contour-filter-ops/SpeckleFilter",
+            "id": "2403c75c-903d-494b-ba12-26cd84f1653c",
+            "settings": {
+                "min_relative_area": 24
+            },
+            "inputs": {
+                "contours": {
+                    "id": "256f1053-e93c-4b2e-8c0b-432bf37457f6",
+                    "name": "contours"
+                }
+            },
+            "pos": [
+                1189,
+                32
+            ]
+        },
+        {
+            "type": "opsi.contour-filter-ops/Sort",
+            "id": "ddc11835-8179-4cef-8e4c-46a2523b338c",
+            "settings": {
+                "by": "Largest",
+                "keep": "One",
+                "keep_amount": 0
+            },
+            "inputs": {
+                "contours": {
+                    "id": "2403c75c-903d-494b-ba12-26cd84f1653c",
+                    "name": "contours"
+                }
+            },
+            "pos": [
+                1437,
+                18
+            ]
+        },
+        {
+            "type": "opsi.draw/DrawContours",
+            "id": "61c41e8d-dc40-4aec-b15c-90f32626a6cb",
+            "settings": {
+                "bounding_rect": true,
+                "min_area_rect": true
+            },
+            "inputs": {
+                "contours": {
+                    "id": "ddc11835-8179-4cef-8e4c-46a2523b338c",
+                    "name": "contours"
+                },
+                "img": {
+                    "id": "45efa59c-96e9-4002-ad1e-41e3532cdd1d",
+                    "name": "imgBW"
+                }
+            },
+            "pos": [
+                1144,
+                270
+            ]
+        },
+        {
+            "type": "opsi.contours/FindCenter",
+            "id": "3f821726-ed0a-4958-8133-380fbfd62e13",
+            "settings": {
+                "draw": true
+            },
+            "inputs": {
+                "img": {
+                    "id": "61c41e8d-dc40-4aec-b15c-90f32626a6cb",
+                    "name": "img"
+                },
+                "contours": {
+                    "id": "ddc11835-8179-4cef-8e4c-46a2523b338c",
+                    "name": "contours"
+                }
+            },
+            "pos": [
+                1446,
+                299
+            ]
+        },
+        {
+            "type": "opsi.nt/PutNT",
+            "id": "9b3d1425-4d7e-4ca8-ae56-ac4438b4e2d5",
+            "settings": {
+                "path": "/OpenSight/intake",
+                "key": "center"
+            },
+            "inputs": {
+                "val": {
+                    "id": "3f821726-ed0a-4958-8133-380fbfd62e13",
+                    "name": "center"
+                }
+            },
+            "pos": [
+                1635,
+                28
+            ]
+        },
+        {
+            "type": "opsi.colorops/HSVRange",
+            "id": "03bd111e-cddd-4cb8-af5b-35950e39c9d0",
+            "settings": {
+                "hue": {
+                    "min": 57,
+                    "max": 142
+                },
+                "sat": {
+                    "min": 94,
+                    "max": 255
+                },
+                "val": {
+                    "min": 81,
+                    "max": 255
+                }
+            },
+            "inputs": {
+                "img": {
+                    "id": "76015e4f-66e7-4714-a189-37dce2b035d6",
+                    "name": "img"
+                }
+            },
+            "pos": [
+                366,
+                918
+            ]
+        },
+        {
+            "type": "opsi.contours/FindContours",
+            "id": "3b8cfd1f-3889-43fa-8c42-e24c04d2118f",
+            "settings": {},
+            "inputs": {
+                "imgBW": {
+                    "id": "03bd111e-cddd-4cb8-af5b-35950e39c9d0",
+                    "name": "imgBW"
+                }
+            },
+            "pos": [
+                730,
+                758
+            ]
+        },
+        {
+            "type": "opsi.contour-filter-ops/Sort",
+            "id": "084540e1-9d80-4eef-ba0d-fce2e4471c87",
+            "settings": {
+                "by": "Largest",
+                "keep": "One",
+                "keep_amount": 0
+            },
+            "inputs": {
+                "contours": {
+                    "id": "3b8cfd1f-3889-43fa-8c42-e24c04d2118f",
+                    "name": "contours"
+                }
+            },
+            "pos": [
+                942,
+                768
+            ]
+        },
+        {
+            "type": "opsi.draw/DrawFPS",
+            "id": "f76e7fe4-db9b-4834-bdcc-302f1cebfd23",
+            "settings": {},
+            "inputs": {
+                "img": {
+                    "id": "3f821726-ed0a-4958-8133-380fbfd62e13",
+                    "name": "visual"
+                }
+            },
+            "pos": [
+                1668,
+                330
+            ]
+        },
+        {
+            "type": "opsi.videoio/CameraServer",
+            "id": "d36e7cb4-41f2-41ae-85b4-f962b75af332",
+            "settings": {
+                "name": "ProcessedIntake",
+                "backend": "MJPEG"
+            },
+            "inputs": {
+                "img": {
+                    "id": "f76e7fe4-db9b-4834-bdcc-302f1cebfd23",
+                    "name": "img"
+                }
+            },
+            "pos": [
+                1955,
+                300
+            ]
+        },
+        {
+            "type": "opsi.draw/DrawContours",
+            "id": "6775c38d-ffbe-458b-8417-9a999d4de4ae",
+            "settings": {
+                "bounding_rect": true,
+                "min_area_rect": true
+            },
+            "inputs": {
+                "contours": {
+                    "id": "084540e1-9d80-4eef-ba0d-fce2e4471c87",
+                    "name": "contours"
+                },
+                "img": {
+                    "id": "03bd111e-cddd-4cb8-af5b-35950e39c9d0",
+                    "name": "imgBW"
+                }
+            },
+            "pos": [
+                1116,
+                972
+            ]
+        },
+        {
+            "type": "opsi.contours/FindCenter",
+            "id": "f75ec8e7-8161-4953-8c2f-556737aa38ef",
+            "settings": {
+                "draw": true
+            },
+            "inputs": {
+                "img": {
+                    "id": "6775c38d-ffbe-458b-8417-9a999d4de4ae",
+                    "name": "img"
+                },
+                "contours": {
+                    "id": "084540e1-9d80-4eef-ba0d-fce2e4471c87",
+                    "name": "contours"
+                }
+            },
+            "pos": [
+                1382,
+                866
+            ]
+        },
+        {
+            "type": "opsi.nt/PutNT",
+            "id": "00895ced-b6a1-414f-b81d-8fbd60619e8b",
+            "settings": {
+                "path": "/OpenSight/shooter",
+                "key": "center"
+            },
+            "inputs": {
+                "val": {
+                    "id": "f75ec8e7-8161-4953-8c2f-556737aa38ef",
+                    "name": "center"
+                }
+            },
+            "pos": [
+                1651,
+                740
+            ]
+        },
+        {
+            "type": "opsi.draw/DrawFPS",
+            "id": "bb5b9544-c7d2-4570-8914-796aa3e6f596",
+            "settings": {},
+            "inputs": {
+                "img": {
+                    "id": "f75ec8e7-8161-4953-8c2f-556737aa38ef",
+                    "name": "visual"
+                }
+            },
+            "pos": [
+                1652,
+                989
+            ]
+        },
+        {
+            "type": "opsi.videoio/CameraServer",
+            "id": "644687ba-e423-48dc-9756-ae83f6c508ff",
+            "settings": {
+                "name": "ProcessedShooter",
+                "backend": "MJPEG"
+            },
+            "inputs": {
+                "img": {
+                    "id": "bb5b9544-c7d2-4570-8914-796aa3e6f596",
+                    "name": "img"
+                }
+            },
+            "pos": [
+                1886,
+                923
+            ]
+        }
+    ]
+}

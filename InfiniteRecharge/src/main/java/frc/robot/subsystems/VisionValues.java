@@ -62,15 +62,16 @@ public class VisionValues {
         this.camAngle = camAngle;
         this.targetHeight = targetHeight;
         ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
-        visionLayout = driverTab.getLayout(path + " Vision", BuiltInLayouts.kGrid).withPosition(columnIndex, 0).withSize(4, 5);
+        visionLayout = driverTab.getLayout(path + " Vision", BuiltInLayouts.kGrid).withPosition(columnIndex, 0)
+        .withSize(3, 5);
 
-         HttpCamera camera = new HttpCamera(path + " Cam", "rtsp://opensight.local:1181/" + path, HttpCameraKind.kMJPGStreamer);
-         visionLayout.add(camera).withWidget(BuiltInWidgets.kCameraStream).withSize(3, 2);
+        //  HttpCamera camera = new HttpCamera(path + " Cam", "http://opensight.local:1181/hooks/opsi.videoio/" + path + "cam.mjpeg", HttpCameraKind.kMJPGStreamer);
+        //  visionLayout.add(camera).withWidget(BuiltInWidgets.kCameraStream).withSize(3, 2);
 
         visionLayout.addNumber(path + " Distance", this::getDistance).withSize(1, 1);
-        visionLayout.addNumber(path + " Cam Angle", this::getCamAngle).withSize(1, 1);
-        visionLayout.addNumber(path + " X Angle", this::getAngleX).withSize(1, 1);
-        visionLayout.addNumber(path + " Y Angle", this::getAngleY).withSize(1, 1);
+        // visionLayout.addNumber(path + " Cam Angle", this::getCamAngle).withSize(1, 1);
+        // visionLayout.addNumber(path + " X Angle", this::getAngleX).withSize(1, 1);
+        // visionLayout.addNumber(path + " Y Angle", this::getAngleY).withSize(1, 1);
     }
 
     public void updateViaNetworkTable(String path) {

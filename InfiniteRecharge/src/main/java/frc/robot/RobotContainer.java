@@ -82,7 +82,7 @@ public class RobotContainer {
     command.addOption("Pickup 2",new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
     command.addOption("Shoot and Pickup 3",new Shoot3PickUp3(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
-      .getLayout("Auto", BuiltInLayouts.kList).withPosition(ControlConstants.autoColumn, 0).withSize(1, 4)
+      .getLayout("Auto", BuiltInLayouts.kList).withPosition(ControlConstants.autoColumn, 0).withSize(3, 1)
       .add("Choose an Auto Mode", command).withWidget(BuiltInWidgets.kSplitButtonChooser);
   }
 

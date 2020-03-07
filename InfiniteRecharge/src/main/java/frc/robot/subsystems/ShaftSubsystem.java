@@ -67,7 +67,7 @@ public class ShaftSubsystem extends SubsystemBase {
     setDefaultCommand(new BarrelDefault(this));
 
     ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
-    barrelLayout = driverTab.getLayout("Barrel", BuiltInLayouts.kList).withPosition(ControlConstants.barrelColumn, 0).withSize(1, 4);
+    barrelLayout = driverTab.getLayout("Barrel", BuiltInLayouts.kList).withPosition(ControlConstants.barrelColumn, 1).withSize(1, 4);
     barrelLayout.addBoolean("BB1", bb1::get).withWidget(BuiltInWidgets.kBooleanBox).withSize(1, 1);
     barrelLayout.addBoolean("BB2", bb2::get).withWidget(BuiltInWidgets.kBooleanBox).withSize(1, 1);
     barrelLayout.addBoolean("BB3", bb3::get).withWidget(BuiltInWidgets.kBooleanBox).withSize(1, 1);

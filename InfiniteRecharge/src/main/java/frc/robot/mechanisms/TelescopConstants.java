@@ -19,7 +19,7 @@ public class TelescopConstants {
 
     public static int armCurrentLimit = 10;
     public static int winchCurrentLimit = 20;
-    public static double winchSpeed = 0.25;
+    public static double winchSpeed = 1;
     public static double armSpeed = 0.25;
     public static double raisedTimeLimit = 2.0;
     public static int raisedCurrentLimit = 5;

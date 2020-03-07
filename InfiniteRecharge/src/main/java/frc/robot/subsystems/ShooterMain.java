@@ -46,7 +46,7 @@ public class ShooterMain extends SubsystemBase {
     SmartDashboard.putNumber("Shooter Min Output", ShooterConstants.kMinOutput);
 
     ShuffleboardLayout layout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
-        .getLayout("Shooter", BuiltInLayouts.kList).withPosition(ControlConstants.shooterColumn, 0).withSize(2, 4);
+        .getLayout("Shooter", BuiltInLayouts.kList).withPosition(ControlConstants.shooterColumn, 1).withSize(2, 4);
     
     layout.addNumber("Velocity", controller.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kDial)
         .withProperties(Map.of("Max", 6000));
