@@ -97,19 +97,27 @@ public final class DriveConstants {
     public static Trajectory driveOffInitLine = TrajectoryGenerator
         .generateTrajectory(List.of(
                 new Pose2d(0, 0, new Rotation2d(0)), 
-                new Pose2d(-.5, 0, new Rotation2d(0))
+                new Pose2d(-2, 0, new Rotation2d(0))
             ), backwardsConfig);
 
     public static final Trajectory moveToTrench = TrajectoryGenerator
             .generateTrajectory(List.of(
                 new Pose2d(0, 0, new Rotation2d(0)), 
-                new Pose2d(-2.5, -1.75, new Rotation2d(0)),
-                new Pose2d(-6.5, -1.75, new Rotation2d(0))
+                new Pose2d(-1, -1, new Rotation2d(Math.toRadians(90))),
+                 new Pose2d(-2,-2, new Rotation2d(0)),
+                new Pose2d(-6.5, -2, new Rotation2d(0))
             ), backwardsConfig);
 
     public static final Trajectory pickUp2 = TrajectoryGenerator
             .generateTrajectory(List.of(
                 new Pose2d(0, 0, new Rotation2d(0)), 
-                new Pose2d(-4, 0, new Rotation2d(0))
+                new Pose2d(-4.5, 0, new Rotation2d(0))
             ), pickUpBallConfig);
+
+        public static final Trajectory moveForward = TrajectoryGenerator
+        .generateTrajectory(List.of(
+                new Pose2d(-4.5, 0, new Rotation2d(0)), 
+                new Pose2d(-2,.5, new Rotation2d(0)),
+                new Pose2d(0, .5, new Rotation2d(Math.toRadians(0)))
+            ), config);
 }

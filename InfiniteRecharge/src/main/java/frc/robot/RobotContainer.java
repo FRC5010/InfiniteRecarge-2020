@@ -64,7 +64,7 @@ public class RobotContainer {
     driver = new Joystick(0);
     operator = new Joystick(1);
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
-    shooterVision = new VisionSystem("shooter", 26, -6, 90, ControlConstants.shooterVisionColumn);
+    shooterVision = new VisionSystem("shooter", 26, 3, 90, ControlConstants.shooterVisionColumn);
     // shooterVision.getRawValues().calibarateCamAngle();
     intakeVision = new VisionSystem("intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
 
@@ -78,7 +78,7 @@ public class RobotContainer {
     robotPose = Drive.robotPose;
     driveTrain = driveMechanism.driveTrain;
 
-    command.setDefaultOption("Shoot and Move", new ShootAndMove(shaftMechanism.shaftClimber, shooter.shooterMain, driveTrain, shooterVision, robotPose));
+    command.setDefaultOption("Shoot and Move", new ShootAndMove(shaftMechanism.shaftClimber,intake.intakeMain, shooter.shooterMain, driveTrain, shooterVision, robotPose));
     command.addOption("Pickup 2",new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
     command.addOption("Shoot and Pickup 3",new Shoot3PickUp3(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)

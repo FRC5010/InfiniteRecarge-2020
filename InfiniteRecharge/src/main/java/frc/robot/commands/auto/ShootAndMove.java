@@ -7,23 +7,19 @@
 
 package frc.robot.commands.auto;
 
-import java.util.List;
-
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.LoadShaftCommand;
+import frc.robot.commands.LowerIntake;
+import frc.robot.commands.LowerShaft;
 import frc.robot.commands.SpinShooter;
 import frc.robot.mechanisms.DriveConstants;
 import frc.robot.subsystems.DriveTrainMain;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Pose;
 import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.ShooterMain;
@@ -37,11 +33,11 @@ public class ShootAndMove extends SequentialCommandGroup {
    * Creates a new ShootAndMove.
    */
 
-  public ShootAndMove(ShaftSubsystem shaftClimber, ShooterMain shooterMain, DriveTrainMain driveTrain,
+  public ShootAndMove(ShaftSubsystem shaftClimber, IntakeSubsystem intake, ShooterMain shooterMain, DriveTrainMain driveTrain,
       VisionSystem visionSubsystem, Pose pose) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new ParallelRaceGroup(new LoadShaftCommand(shaftClimber, 3,shooterMain,3), new SpinShooter(shooterMain, visionSubsystem)),
+    super(new ParallelRaceGroup(new LoadShaftCommand(shaftClimber, 3,shooterMain,7), new SpinShooter(shooterMain, visionSubsystem)),
         new RamseteCommand(DriveConstants.driveOffInitLine, pose::getPose,
             new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
             new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
@@ -49,6 +45,9 @@ public class ShootAndMove extends SequentialCommandGroup {
             DriveConstants.kDriveKinematics, pose::getWheelSpeeds, new PIDController(DriveConstants.kPDriveVel, 0, 0),
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
             // RamseteCommand passes volts to the callback
-            driveTrain::tankDriveVolts, driveTrain));
+            driveTrain::tankDriveVolts, driveTrain),
+            new ParallelRaceGroup(new LowerIntake(intake), 
+    new LowerShaft(shaftClimber))
+            );
   }
 }

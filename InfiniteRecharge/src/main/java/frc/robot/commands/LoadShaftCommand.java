@@ -76,7 +76,7 @@ public class LoadShaftCommand extends CommandBase {
     case shootWait: {
       if (shooter.getReadyToShoot()) {
         shaftSubsystem.setShaftState(ShaftState.shooting);
-        shaftSubsystem.spinUpShaft(.7);
+        shaftSubsystem.spinUpShaft(.9);
       }
       break;
     }

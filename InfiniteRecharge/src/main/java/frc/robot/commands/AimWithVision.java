@@ -57,7 +57,7 @@ double error;
   public void execute() {
      error = vision.getRawValues().getAngleX() - targetAngle;
     double correction = error * DriveConstants.kTurnP;
-    drive.arcadeDrive(drive.scaleInputs(-driver.getRawAxis(ControlConstants.throttle)), correction + Math.signum(correction) * DriveConstants.minTurn);
+    drive.arcadeDrive(drive.scaleInputs((driver!=null)?-driver.getRawAxis(ControlConstants.throttle): driveSpeed), correction + Math.signum(correction) * DriveConstants.minTurn);
     SmartDashboard.putNumber("shooterVisionError", error);
     SmartDashboard.putNumber("shooterVisionCorrection", correction);
   }
@@ -71,6 +71,6 @@ double error;
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return error==0;
+    return Math.abs(error)<5;
   }
 }
