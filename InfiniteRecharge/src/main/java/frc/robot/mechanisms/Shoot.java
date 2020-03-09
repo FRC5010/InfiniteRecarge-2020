@@ -48,7 +48,7 @@ public class Shoot {
 
         m_pidController = shootMotor.getPIDController();
         shooterMain = new ShooterMain(shootMotor, m_pidController);
-        calButton.whileHeld(new CameraCalibrateShooter(shooterVision));
+        //calButton.whileHeld(new CameraCalibrateShooter(shooterVision));
         spinUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed+=10));
         spinDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed-=10));
         baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.distanceToRPM+=.1));

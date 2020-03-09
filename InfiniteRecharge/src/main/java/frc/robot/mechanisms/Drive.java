@@ -22,19 +22,16 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.ControlConstants;
 import frc.robot.Robot;
 import frc.robot.commands.AimWithVision;
-import frc.robot.commands.DriveWithVision;
-import frc.robot.commands.IntakeBalls;
 import frc.robot.commands.RamseteFollower;
+import frc.robot.commands.TurnToAngleVision;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Pose;
@@ -44,40 +41,41 @@ import frc.robot.subsystems.VisionSystem;
  * Add your docs here.
  */
 public class Drive {
-    public  DriveTrainMain driveTrain;
-    private static VisionSystem intakeCam;
-    private static VisionSystem shooterCam;
-    private static IntakeSubsystem intakeSystem;
+  public DriveTrainMain driveTrain;
+  private static VisionSystem intakeCam;
+  private static VisionSystem shooterCam;
+  private static IntakeSubsystem intakeSystem;
 
-    public Joystick driver;
-    public static CANSparkMax lDrive1;
-    public static CANSparkMax lDrive2;
-  
-    public static CANSparkMax rDrive1;
-    public static CANSparkMax rDrive2;
-  
-    public static CANEncoder lEncoder;
-    public static CANEncoder rEncoder;
-  
-    public static Pose robotPose;
-  
-    public JoystickButton intakeAimButton;
-    public JoystickButton shooterAimButton;
+  public Joystick driver;
+  public static CANSparkMax lDrive1;
+  public static CANSparkMax lDrive2;
 
-    public JoystickButton intakeDriveButton;
+  public static CANSparkMax rDrive1;
+  public static CANSparkMax rDrive2;
 
-    
+  public static CANEncoder lEncoder;
+  public static CANEncoder rEncoder;
 
-    public Drive(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSystem) {
-        init(driver, shooterVision, intakeVision, intakeSystem); 
-        configureButtonBindings();
-    }
-  
+  public static Pose robotPose;
+
+  public JoystickButton intakeAimButton;
+  public JoystickButton shooterAimButton;
+  public POVButton turnToAngleButton;
+
+  public JoystickButton intakeDriveButton;
+
+  public Drive(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSystem) {
+    init(driver, shooterVision, intakeVision, intakeSystem);
+    configureButtonBindings();
+  }
+
   private void configureButtonBindings() {
     intakeAimButton = new JoystickButton(driver, ControlConstants.intakeAimButton);
     intakeAimButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver, 0));
     shooterAimButton = new JoystickButton(driver, ControlConstants.shooterAimButton);
     shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
+    turnToAngleButton = new POVButton(driver, ControlConstants.turnToAngleButton);
+    turnToAngleButton.whenPressed(new TurnToAngleVision(driveTrain, robotPose, shooterCam));
 
     // intakeDriveButton = new JoystickButton(driver, ControlConstants.startClimb);
     // intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.7)));

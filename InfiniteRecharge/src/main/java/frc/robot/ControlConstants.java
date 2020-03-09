@@ -38,6 +38,7 @@ public class ControlConstants {
     public static int calibrate = ButtonNums.START_BUTTON.ordinal(); 
     public static int manualRotation = ButtonNums.BACK_BUTTON.ordinal(); // Implement
     public static int toggleLed = ButtonNums.LEFT_STICK_BUTT.ordinal();
+    public static int turnToAngleButton = POVDirs.DOWN.ordinal() * 90;
 
     //Operator
     public static int leftArmDeploy = AxisNums.LEFT_Y.ordinal(); // Implement

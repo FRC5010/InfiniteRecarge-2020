@@ -43,7 +43,7 @@ public abstract class VisionSystem extends SubsystemBase {
     updateValues = true;
     ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
     visionLayout = driverTab.getLayout(name + " Vision", BuiltInLayouts.kGrid).withPosition(colIndex, 0).withSize(3, 5);
-
+    table = NetworkTableInstance.getDefault();
     // HttpCamera camera = new HttpCamera(path + " Cam",
     // "http://opensight.local:1181/hooks/opsi.videoio/" + path + "cam.mjpeg",
     // HttpCameraKind.kMJPGStreamer);

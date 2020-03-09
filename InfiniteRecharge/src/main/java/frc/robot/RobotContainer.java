@@ -68,24 +68,24 @@ public class RobotContainer {
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
 
     // TODO: FIX THESE
-    shooterVision = new VisionOpenSight("limelight", 26, 3, 90, ControlConstants.shooterVisionColumn);
-    climbVision = new VisionOpenSight("climb", ControlConstants.shooterVisionColumn);
+     shooterVision = new VisionOpenSight("shooter", 26, 3, 90, ControlConstants.shooterVisionColumn);
+    // climbVision = new VisionOpenSight("climb", ControlConstants.shooterVisionColumn);
     
-    intakeVision = new VisionOpenSight("intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
+     intakeVision = new VisionOpenSight("intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
 
-    shooter = new Shoot(operator, driver, climbVision);
+    shooter = new Shoot(operator, driver,shooterVision );
     intake = new IntakeMech(operator);
-    shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, climbVision);
-    driveMechanism = new Drive(driver, climbVision, intakeVision, intake.intakeMain);
+    shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
+    driveMechanism = new Drive(driver,shooterVision , intakeVision, intake.intakeMain);
     spinControl = new SpinControl(driver, operator, shaftMechanism.getSubsystem());
     climb = new TelescopClimb(driver, operator);
 
     robotPose = Drive.robotPose;
     driveTrain = driveMechanism.driveTrain;
 
-    command.setDefaultOption("Shoot and Move", new ShootAndMove(shaftMechanism.shaftClimber,intake.intakeMain, shooter.shooterMain, driveTrain, climbVision, robotPose));
-    command.addOption("Pickup 2",new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, climbVision, robotPose) );
-    command.addOption("Shoot and Pickup 3",new Shoot3PickUp3(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, climbVision, robotPose) );
+    command.setDefaultOption("Shoot and Move", new ShootAndMove(shaftMechanism.shaftClimber,intake.intakeMain, shooter.shooterMain, driveTrain, shooterVision, robotPose));
+    command.addOption("Pickup 2",new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
+    command.addOption("Shoot and Pickup 3",new Shoot3PickUp3(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
       .getLayout("Auto", BuiltInLayouts.kList).withPosition(ControlConstants.autoColumn, 0).withSize(3, 1)
       .add("Choose an Auto Mode", command).withWidget(BuiltInWidgets.kSplitButtonChooser);

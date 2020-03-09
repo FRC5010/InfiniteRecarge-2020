@@ -65,6 +65,7 @@ public final class DriveConstants {
     public static final double rightVelocityConv = rpmToMetersPerSec * (rightReversed ? -1.0 : 1.0) * rightFudgeFactor;
 
     public static final double kTurnP = .4 / 180;
+    public static final double kTurnD = .1;
     public static final double minTurn = .05;
 
     public static final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
@@ -111,12 +112,12 @@ public final class DriveConstants {
     public static final Trajectory pickUp2 = TrajectoryGenerator
             .generateTrajectory(List.of(
                 new Pose2d(0, 0, new Rotation2d(0)), 
-                new Pose2d(-4.5, 0, new Rotation2d(0))
+                new Pose2d(-3.5, 0, new Rotation2d(0))
             ), pickUpBallConfig);
 
         public static final Trajectory moveForward = TrajectoryGenerator
         .generateTrajectory(List.of(
-                new Pose2d(-4.5, 0, new Rotation2d(0)), 
+                new Pose2d(-3.5, 0, new Rotation2d(0)), 
                 new Pose2d(-2,.5, new Rotation2d(0)),
                 new Pose2d(0, .5, new Rotation2d(Math.toRadians(0)))
             ), config);

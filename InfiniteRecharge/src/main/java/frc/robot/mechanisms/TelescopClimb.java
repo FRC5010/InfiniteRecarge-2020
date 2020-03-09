@@ -7,6 +7,7 @@
 
 package frc.robot.mechanisms;
 
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -36,6 +37,8 @@ public class TelescopClimb {
     public JoystickButton armOvrd;
     
     private TelescopSubsystem subsystem;
+    private CANPIDController arm1PID;
+    private CANPIDController arm2PID;
 
     public TelescopClimb(Joystick driver, Joystick operator){
         armMotor1 = new CANSparkMax(TelescopConstants.arm1Port, MotorType.kBrushless);
@@ -45,8 +48,16 @@ public class TelescopClimb {
         winchMotor2 = new CANSparkMax(TelescopConstants.winch2Port, MotorType.kBrushless);
         this.driver = driver;
         this.operator = operator;
+        arm1PID = armMotor1.getPIDController();
+        arm2PID = armMotor2.getPIDController();
+        arm1PID.setP(0);
+        arm2PID.setP(0);
 
-        subsystem = new TelescopSubsystem(winchMotor1, winchMotor2, armMotor1, armMotor2, driver, operator);
+        arm1PID.setD(0);
+        arm2PID.setD(0);
+        
+
+        subsystem = new TelescopSubsystem(winchMotor1, winchMotor2, armMotor1, armMotor2, driver, operator, arm1PID, arm2PID);
         armMotor1.setSmartCurrentLimit(TelescopConstants.armCurrentLimit);
         armMotor2.setSmartCurrentLimit(TelescopConstants.armCurrentLimit);
         winchMotor1.setSmartCurrentLimit(TelescopConstants.winchCurrentLimit);

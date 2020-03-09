@@ -8,7 +8,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
@@ -36,9 +38,12 @@ public class TelescopSubsystem extends SubsystemBase {
   private ShuffleboardTab climberTab;
   private boolean limitApplied = false;
   public boolean overrideArms = false;
+  private CANPIDController arm1PID, arm2PID;
 
   public TelescopSubsystem(CANSparkMax winch1, CANSparkMax winch2, CANSparkMax arm1, CANSparkMax arm2, Joystick driver,
-      Joystick operator) {
+      Joystick operator, CANPIDController arm1PID, CANPIDController arm2PID) {
+    this.arm1PID = arm1PID;
+    this.arm2PID = arm2PID;
     this.winch1 = winch1;
     this.winch2 = winch2;
     this.arm1 = arm1;
@@ -80,6 +85,10 @@ public class TelescopSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+  public void PIDArmMotors(double setPoint){
+    arm1PID.setReference(setPoint, ControlType.kSmartMotion);
+    arm2PID.setReference(setPoint, ControlType.kSmartMotion);
   }
 
   public void spinArmMotors() {
