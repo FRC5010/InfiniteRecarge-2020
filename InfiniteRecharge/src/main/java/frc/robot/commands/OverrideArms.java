@@ -8,38 +8,39 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ShaftSubsystem;
+import frc.robot.subsystems.TelescopSubsystem;
 
-public class ToggleLedRing extends CommandBase {
+public class OverrideArms extends CommandBase {
   /**
-   * Creates a new ToggleLedRing.
+   * Creates a new OverrideArms.
    */
-  ShaftSubsystem shaft;
-  public ToggleLedRing(ShaftSubsystem shaft) {
+  TelescopSubsystem telescop;
+  public OverrideArms(TelescopSubsystem telescop) {
+this.telescop = telescop;
+addRequirements(telescop);
     // Use addRequirements() here to declare subsystem dependencies.
-   this.shaft = shaft;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shaft.toggleLight();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    telescop.armOverride();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    telescop.stopArmMotors();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

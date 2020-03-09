@@ -84,12 +84,11 @@ public class TelescopSubsystem extends SubsystemBase {
 
   public void spinArmMotors() {
     double speed = TelescopConstants.armSpeed * operator.getRawAxis(ControlConstants.combinedArmDeploy);
-    if (overrideArms) {
-      arm1.set(TelescopConstants.armSpeed * operator.getRawAxis(ControlConstants.leftArmDeploy));
-      arm2.set(TelescopConstants.armSpeed * operator.getRawAxis(ControlConstants.combinedArmDeploy));
-    } else if (armEncoder1.getPosition() > (-230.) && armEncoder2.getPosition() > (-230.)) {
+    if ((armEncoder1.getPosition() > (-250.) && armEncoder2.getPosition() > (-250.)) || speed>0) {
+
       arm1.set(speed);
       arm2.set(speed);
+
     } else {
       arm1.set(0);
       arm2.set(0);
@@ -99,6 +98,10 @@ public class TelescopSubsystem extends SubsystemBase {
     } else {
       climbTimer.stop();
     }
+    if(operator.getRawAxis(5)>0){
+      arm1.set(speed);
+      arm2.set(speed);
+    }
     if (climbTimer.get() > TelescopConstants.raisedTimeLimit) {
       if (!limitApplied) {
         limitApplied = true;
@@ -107,6 +110,12 @@ public class TelescopSubsystem extends SubsystemBase {
       }
     }
   }
+public void armOverride(){
+ // System.out.println("override Active");
+  arm1.set(operator.getRawAxis(1));
+  arm2.set(operator.getRawAxis(5));
+  
+}
 
   public void stopArmMotors() {
     arm1.set(0);

@@ -15,7 +15,10 @@ public class ControlConstants {
         NO_BUTTON, A_BUTTON, B_BUTTON, X_BUTTON, Y_BUTTON, LEFT_BUMPER, RIGHT_BUMPER, START_BUTTON, BACK_BUTTON,LEFT_STICK_BUTT, RIGHT_STICK_BUTT;
     }
     static enum AxisNums {
-        LEFT_X, LEFT_Y, L_TRIGGER, R_TRIGGER, RIGHT_X, RIGHT_Y
+    LEFT_X, LEFT_Y, 
+     L_TRIGGER, 
+     R_TRIGGER, 
+    RIGHT_X, RIGHT_Y
     }
     static enum POVDirs {
         UP, RIGHT, DOWN, LEFT 
@@ -23,7 +26,7 @@ public class ControlConstants {
     // Driver
     public static int throttle = AxisNums.LEFT_Y.ordinal();
     public static int steer = AxisNums.RIGHT_X.ordinal();
-    public static int winch1Axis = AxisNums.L_TRIGGER.ordinal();
+   public static int winch1Axis = AxisNums.L_TRIGGER.ordinal();
     public static int winch2Axis = AxisNums.R_TRIGGER.ordinal();
 
     public static int intakeAimButton = ButtonNums.A_BUTTON.ordinal();

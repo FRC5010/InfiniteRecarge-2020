@@ -100,7 +100,7 @@ public class ShaftMechanism {
     new LoadShaftCommand(shaftClimber, shooterMain)));
 
     spinnerOverrideHigh.whileHeld( new ParallelCommandGroup(
-    new ShooterOverride(shooterMain, 3500),
+    new ShooterOverride(shooterMain, 3176),
     new LoadShaftCommand(shaftClimber, shooterMain)));
     
     manualUp.whileHeld(new FunctionalCommand(

@@ -7,17 +7,16 @@
 
 package frc.robot.mechanisms;
 
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.ControlConstants;
+//import frc.robot.commands.ArmOverride;
 import frc.robot.commands.ClimbArm;
 import frc.robot.commands.ClimbWinch;
+import frc.robot.commands.OverrideArms;
 import frc.robot.subsystems.TelescopSubsystem;
 
 
@@ -64,7 +63,7 @@ public class TelescopClimb {
         
 
         armBtn.whileHeld(new ClimbArm(subsystem));
-        armOvrd.whenPressed(new InstantCommand(()->subsystem.overrideArms = true));
+        armOvrd.whenHeld(new OverrideArms(subsystem));
         winchBtn.whileHeld(new ClimbWinch(subsystem));
         
     }

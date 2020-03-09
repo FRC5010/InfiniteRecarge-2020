@@ -59,6 +59,7 @@ public class LoadShaftCommand extends CommandBase {
   public void execute() {
     switch (shaftSubsystem.getShaftState()) {
     case shooting: {
+    shaftSubsystem.spinUpShaft(.9);
       if (shaftSubsystem.getBB3()) {
         shaftSubsystem.incShotCount();
         shaftSubsystem.spinUpShaft(.5);
@@ -67,6 +68,7 @@ public class LoadShaftCommand extends CommandBase {
       break;
     }
     case shootIndex: {
+      shaftSubsystem.spinUpShaft(.5);
       if (!shaftSubsystem.getBB3()) {
         shaftSubsystem.spinUpShaft(0);
         shaftSubsystem.setShaftState(ShaftState.shootWait);

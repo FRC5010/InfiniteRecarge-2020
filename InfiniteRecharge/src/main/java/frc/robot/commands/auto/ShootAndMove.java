@@ -37,7 +37,7 @@ public class ShootAndMove extends SequentialCommandGroup {
       VisionSystem visionSubsystem, Pose pose) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new ParallelRaceGroup(new LoadShaftCommand(shaftClimber, 3,shooterMain,7), new SpinShooter(shooterMain, visionSubsystem)),
+    super(new ParallelRaceGroup(new LoadShaftCommand(shaftClimber, 3,shooterMain,7), new SpinShooter(shooterMain, visionSubsystem,3176)),
         new RamseteCommand(DriveConstants.driveOffInitLine, pose::getPose,
             new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
             new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,

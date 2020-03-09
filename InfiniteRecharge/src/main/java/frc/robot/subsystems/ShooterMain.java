@@ -46,19 +46,22 @@ public class ShooterMain extends SubsystemBase {
     SmartDashboard.putNumber("Shooter Min Output", ShooterConstants.kMinOutput);
 
     ShuffleboardLayout layout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
-        .getLayout("Shooter", BuiltInLayouts.kList).withPosition(ControlConstants.shooterColumn, 1).withSize(2, 4);
+        .getLayout("Shooter", BuiltInLayouts.kList).withPosition(ControlConstants.shooterColumn, 1).withSize(2, 5);
     
     layout.addNumber("Velocity", controller.getEncoder()::getVelocity).withWidget(BuiltInWidgets.kDial)
-        .withProperties(Map.of("Max", 6000));
+        .withProperties(Map.of("Max", 6000)).withPosition(ControlConstants.shooterColumn, 1);
     
-    layout.addNumber("Set Point", this::getSetPoint).withWidget(BuiltInWidgets.kDial)
-        .withProperties(Map.of("Max", 6000));
+    layout.addBoolean("Ready To Shoot", this::getReadyToShoot).withWidget(BuiltInWidgets.kBooleanBox).withSize(2, 1)
+      .withPosition(ControlConstants.shooterColumn, 2);
     
-    layout.addBoolean("Ready To Shoot", this::getReadyToShoot).withWidget(BuiltInWidgets.kBooleanBox).withSize(1, 1);
+      layout.addNumber("Distance to RPM", ShooterConstants::getDistanceToRPM).withSize(1, 1)
+      .withPosition(ControlConstants.shooterColumn, 3);
     
-    layout.addNumber("Distance to RPM", ShooterConstants::getDistanceToRPM);
-    
-    layout.addNumber("Base Speed", ShooterConstants::getBaseSpeed);
+      layout.addNumber("Base Speed", ShooterConstants::getBaseSpeed).withSize(1, 1).withPosition(ControlConstants.shooterColumn, 4);
+
+      layout.addNumber("Set Point", this::getSetPoint).withWidget(BuiltInWidgets.kDial).withPosition(ControlConstants.shooterColumn, 5)
+      .withProperties(Map.of("Max", 6000));
+  
   }
 
   @Override

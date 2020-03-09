@@ -25,8 +25,7 @@ public class ClimbArm extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subsystem.armEncoder1.setPosition(0);
-    subsystem.armEncoder2.setPosition(0);
+   
   }
 
   // Called every time the scheduler runs while the command is scheduled.
