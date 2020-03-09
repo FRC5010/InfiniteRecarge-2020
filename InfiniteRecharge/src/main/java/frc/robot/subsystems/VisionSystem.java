@@ -8,34 +8,80 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ControlConstants;
 
-public class VisionSystem extends SubsystemBase {
-  
-  public static NetworkTableInstance table;
-  String name;
+public abstract class VisionSystem extends SubsystemBase {
 
-  VisionValues rawValues, smoothedValues;
+  protected String name;
+  protected double camHeight, camAngle, targetHeight;
+  protected NetworkTableInstance table;
+  protected VisionValues rawValues, smoothedValues;
+  protected ShuffleboardLayout visionLayout;
+  protected boolean updateValues = false;
+  // variables needed to process new variables, plus the new variables
+  // angles
 
-  public VisionSystem(String name) {
+  public VisionSystem(String name, int colIndex) {
     table = NetworkTableInstance.getDefault();
     this.name = name;
     rawValues = new VisionValues();
+    ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
+    visionLayout = driverTab.getLayout(name + " Vision", BuiltInLayouts.kGrid).withPosition(colIndex, 0).withSize(3, 5);
   }
 
   public VisionSystem(String name, double camHeight, double camAngle, double targetHeight, int colIndex) {
-    table = NetworkTableInstance.getDefault();
     this.name = name;
-    rawValues = new VisionValues(name, camHeight, camAngle, targetHeight, colIndex);
-    
-  }
+    rawValues = new VisionValues();
+    this.camHeight = camHeight;
+    this.camAngle = camAngle;
+    this.targetHeight = targetHeight;
+    updateValues = true;
+    ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
+    visionLayout = driverTab.getLayout(name + " Vision", BuiltInLayouts.kGrid).withPosition(colIndex, 0).withSize(3, 5);
 
-  @Override
-  public void periodic() {
-    rawValues.updateViaNetworkTable("/OpenSight/" + name);
+    // HttpCamera camera = new HttpCamera(path + " Cam",
+    // "http://opensight.local:1181/hooks/opsi.videoio/" + path + "cam.mjpeg",
+    // HttpCameraKind.kMJPGStreamer);
+    // visionLayout.add(camera).withWidget(BuiltInWidgets.kCameraStream).withSize(3,
+    // 2);
+
+    visionLayout.addNumber(name + " Distance", this::getDistance).withSize(1, 1);
+    visionLayout.addNumber(name + " Cam Angle", this::getCamAngle).withSize(1, 1);
+    visionLayout.addNumber(name + " X Angle", this::getAngleX).withSize(1, 1);
+    visionLayout.addNumber(name + " Y Angle", this::getAngleY).withSize(1, 1);
+
   }
 
   public VisionValues getRawValues() {
     return rawValues;
+  }
+
+  public abstract void updateViaNetworkTable(String path);
+
+  public abstract void calibarateCamAngle(double angleY);
+
+  public void setCamAngle(double a) {
+    camAngle = a;
+  }
+
+  public double getCamAngle() {
+    return camAngle;
+  }
+
+  public double getDistance() {
+    return rawValues.getDistance();
+  }
+
+  public double getAngleX() {
+    return rawValues.getAngleX();
+  }
+
+  public double getAngleY() {
+    return rawValues.getAngleY();
   }
 }
