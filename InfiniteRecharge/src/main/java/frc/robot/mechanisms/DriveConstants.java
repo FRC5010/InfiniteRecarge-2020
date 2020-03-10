@@ -64,9 +64,9 @@ public final class DriveConstants {
     public static final double leftVelocityConv = rpmToMetersPerSec * (leftReversed ? -1.0 : 1.0) * leftFudgeFactor;
     public static final double rightVelocityConv = rpmToMetersPerSec * (rightReversed ? -1.0 : 1.0) * rightFudgeFactor;
 
-    public static final double kTurnP = 0.4 / 180; // max power / max error
+    public static final double kTurnP = 0.5 / 180; // max power / max error
     public static final double kTurnD = kTurnP * 0.1; 
-    public static final double minTurn = 0.05;
+    public static final double minTurn = 0.1;
 
     public static final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
             new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter),

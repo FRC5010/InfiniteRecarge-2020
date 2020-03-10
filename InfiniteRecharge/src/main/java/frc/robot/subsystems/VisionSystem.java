@@ -23,7 +23,6 @@ public abstract class VisionSystem extends SubsystemBase {
   protected VisionValues rawValues, smoothedValues;
   protected ShuffleboardLayout visionLayout;
   protected boolean updateValues = false;
-  protected boolean validTarget = false;
   // variables needed to process new variables, plus the new variables
   // angles
 
@@ -86,5 +85,7 @@ public abstract class VisionSystem extends SubsystemBase {
     return rawValues.getAngleY();
   }
 
-  public boolean isValidTarget() { return validTarget; }
+  public boolean isValidTarget() {
+    return rawValues.getValid();
+  }
 }

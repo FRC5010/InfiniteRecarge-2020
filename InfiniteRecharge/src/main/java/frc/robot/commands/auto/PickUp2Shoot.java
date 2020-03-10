@@ -64,7 +64,7 @@ public class PickUp2Shoot extends SequentialCommandGroup {
             new PIDController(DriveConstants.kPDriveVel, 0, 0), new PIDController(DriveConstants.kPDriveVel, 0, 0),
             // RamseteCommand passes volts to the callback
             driveTrain::tankDriveVolts, driveTrain), new RaiseBarrel(shaftClimber)),
-            new AimWithVision(driveTrain, visionSubsystem, -10, 0.0),
+            new AimWithVision(driveTrain, visionSubsystem, 0, 0.0),
 
             new ParallelRaceGroup(new LoadShaftCommand(shaftClimber, 5,shooterMain,15), new SpinShooter(shooterMain, visionSubsystem, 3210), new IntakeBalls(intake, .5) )
 
