@@ -73,7 +73,7 @@ public class Drive {
     intakeAimButton = new JoystickButton(driver, ControlConstants.intakeAimButton);
     intakeAimButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver, 0));
     shooterAimButton = new JoystickButton(driver, ControlConstants.shooterAimButton);
-    shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, null, 0));
+    shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
     turnToAngleButton = new POVButton(driver, ControlConstants.turnToAngleButton);
     turnToAngleButton.whenPressed(new TurnToAngleVision(driveTrain, robotPose, shooterCam));
 

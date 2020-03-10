@@ -61,7 +61,7 @@ public class RobotContainer {
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
 
     // vision system
-    shooterVision = new VisionLimeLight("limelight", 20.25, 3, 90, ControlConstants.shooterVisionColumn);
+    shooterVision = new VisionLimeLight("limelight", 20.25, 27.48, 90, ControlConstants.shooterVisionColumn);
     intakeVision = new VisionOpenSight("intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
 
     shooter = new Shoot(operator, driver,shooterVision );

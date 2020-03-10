@@ -52,4 +52,6 @@ public class VisionOpenSight extends VisionSystem {
     camAngle = 28.7 - angleY;
   }
 
+  public void setLight(boolean on) {}
+
 }

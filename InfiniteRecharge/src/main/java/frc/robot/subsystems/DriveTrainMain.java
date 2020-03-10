@@ -41,6 +41,7 @@ public class DriveTrainMain extends SubsystemBase {
   }
 
   public void arcadeDrive(double fPow, double tPow) {
+    System.out.println("Forward power: "+ fPow);
     leftMaster.set(fPow + tPow);
     rightMaster.set(fPow - tPow);
   }

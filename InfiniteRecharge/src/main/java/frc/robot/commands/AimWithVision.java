@@ -59,6 +59,7 @@ public class AimWithVision extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("Aiming With Vision!");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -79,6 +80,7 @@ public class AimWithVision extends CommandBase {
   // Called once the command ends or is interrupted
   @Override
   public void end(boolean interrupted) {
+    System.out.println("AimWithVision ended!");
     drive.arcadeDrive(0, 0);
   }
 
