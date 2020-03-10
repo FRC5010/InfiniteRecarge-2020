@@ -44,26 +44,32 @@ public class TurnToAngleVision extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.angleToReach = vision.getAngleX() + pose.getHeading();
-    lastError = 0;
+    double targetAngle = vision.getAngleX();
+    double currentHeading = pose.getHeading();
+    this.angleToReach = targetAngle + currentHeading;
+    error = currentHeading - targetAngle;
     currentTime = RobotController.getFPGATime();
 
     SmartDashboard.putNumber("Angle to reach", angleToReach);
-    SmartDashboard.putNumber("Current Heading", pose.getHeading());
-    SmartDashboard.putNumber("Vision get x", vision.getAngleX());
+    SmartDashboard.putNumber("Current Heading", currentHeading);
+    SmartDashboard.putNumber("Vision get x", targetAngle);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    lastError = error;
-    error = -angleToReach + pose.getHeading();
-    SmartDashboard.putNumber("Turn error", error);
-    lastTime = currentTime;
-    currentTime = RobotController.getFPGATime();
-    
-    turnPower = p * error + d * (error - lastError) / (currentTime - lastTime) + DriveConstants.minTurn;
-    driveTrain.arcadeDrive(0, turnPower);
+    if (vision.isValidTarget()) {
+      lastError = error;
+      error = pose.getHeading() - angleToReach;
+      SmartDashboard.putNumber("Turn error", error);
+      lastTime = currentTime;
+      currentTime = RobotController.getFPGATime();
+      
+      turnPower = p * error + d * (error - lastError) / (currentTime - lastTime) + DriveConstants.minTurn;
+      SmartDashboard.putNumber("Turn power", turnPower);
+      driveTrain.arcadeDrive(0, turnPower);
+    }
+    SmartDashboard.putBoolean("Valid Target", vision.isValidTarget());
   }
 
   // Called once the command ends or is interrupted.
@@ -75,6 +81,6 @@ public class TurnToAngleVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(error) < 02;
+    return !vision.isValidTarget() || Math.abs(error) < 2;
   }
 }

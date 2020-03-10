@@ -27,7 +27,10 @@ public class VisionLimeLight extends VisionSystem {
   public void updateViaNetworkTable(String path) {
     // essential variables from NetworkTables
     double valid = table.getTable(path).getEntry("tv").getDouble(0);
+    validTarget = false;
+    
     if (1.0 == valid) {
+      validTarget = true;
       double angleX = table.getTable(path).getEntry("tx").getDouble(0);
       double angleY = table.getTable(path).getEntry("ty").getDouble(0);
       double area = table.getTable(path).getEntry("ta").getDouble(0);

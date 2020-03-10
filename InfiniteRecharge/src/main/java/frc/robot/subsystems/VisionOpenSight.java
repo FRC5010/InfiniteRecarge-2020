@@ -33,6 +33,8 @@ public class VisionOpenSight extends VisionSystem {
 
   public void updateViaNetworkTable(String path) {
     // essential variables from NetworkTables
+    // TODO: check for valid target data
+    validTarget = true;
     double centerX = table.getTable(path).getEntry("center-x").getDouble(0);
     double centerY = table.getTable(path).getEntry("center-y").getDouble(0);
     double area = 0;
