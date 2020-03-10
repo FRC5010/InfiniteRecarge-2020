@@ -21,6 +21,13 @@ public class ShooterDefault extends CommandBase {
     addRequirements(shooterMain);
   }
 
+  public ShooterDefault(ShooterMain shooterMain, double setPoint) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.shooterMain = shooterMain;
+    shooterMain.setPoint(setPoint);
+    addRequirements(shooterMain);
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {

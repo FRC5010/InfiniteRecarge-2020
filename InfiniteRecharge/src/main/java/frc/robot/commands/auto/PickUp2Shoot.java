@@ -7,29 +7,27 @@
 
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.BarrelDefault;
 import frc.robot.commands.IntakeBalls;
 import frc.robot.commands.LoadShaftCommand;
 import frc.robot.commands.LowerIntake;
 import frc.robot.commands.LowerShaft;
 import frc.robot.commands.RaiseBarrel;
+import frc.robot.commands.RamseteFollower;
+import frc.robot.commands.ShooterDefault;
 import frc.robot.commands.SpinShooter;
-import frc.robot.commands.AimWithVision;
-import frc.robot.commands.BarrelDefault;
+import frc.robot.commands.TurnToAngleVision;
+import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.DriveConstants;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.Pose;
 import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.ShooterMain;
 import frc.robot.subsystems.VisionSystem;
-import frc.robot.commands.RaiseBarrel;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -39,37 +37,36 @@ public class PickUp2Shoot extends SequentialCommandGroup {
    * Creates a new PickUp2Shoot.
    */
   public PickUp2Shoot(ShaftSubsystem shaftClimber, ShooterMain shooterMain, IntakeSubsystem intake,
-      DriveTrainMain driveTrain, VisionSystem visionSubsystem, Pose pose) {
+      DriveTrainMain driveTrain, VisionSystem visionSubsystem) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new ParallelRaceGroup(new LowerIntake(intake), 
-    new LowerShaft(shaftClimber)),
+    super (
+        new ParallelCommandGroup(
+            new LowerIntake(intake), 
+            new LowerShaft(shaftClimber)
+        ),
+
         new ParallelRaceGroup(
+            new RamseteFollower(DriveConstants.pickUp2),
             new BarrelDefault(shaftClimber),
-            new RamseteCommand(DriveConstants.pickUp2, pose::getPose,
-                new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-                new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
-                    DriveConstants.kaVoltSecondsSquaredPerMeter),
-                DriveConstants.kDriveKinematics, pose::getWheelSpeeds,
-                new PIDController(DriveConstants.kPDriveVel, 0, 0), new PIDController(DriveConstants.kPDriveVel, 0, 0),
-                // RamseteCommand passes volts to the callback
-                driveTrain::tankDriveVolts, driveTrain),
+            new IntakeBalls(intake, .9)
+        ), 
+            
+        new ParallelCommandGroup( 
+            new RamseteFollower(DriveConstants.moveForward), 
+            new RaiseBarrel(shaftClimber)
+        ),
 
-            new IntakeBalls(intake, .9)), 
-            new ParallelRaceGroup( new RamseteCommand(DriveConstants.moveForward, pose::getPose,
-            new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-            new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
-                DriveConstants.kaVoltSecondsSquaredPerMeter),
-            DriveConstants.kDriveKinematics, pose::getWheelSpeeds,
-            new PIDController(DriveConstants.kPDriveVel, 0, 0), new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            // RamseteCommand passes volts to the callback
-            driveTrain::tankDriveVolts, driveTrain), new RaiseBarrel(shaftClimber)),
-            new AimWithVision(driveTrain, visionSubsystem, 0, 0.0),
-
-            new ParallelRaceGroup(new LoadShaftCommand(shaftClimber, 5,shooterMain,15), new SpinShooter(shooterMain, visionSubsystem, 3210), new IntakeBalls(intake, .5) )
-
-            );
-        //new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0), new ParallelRaceGroup(new LoadShaftCommand(shaftClimber, 3,shooterMain,7), new SpinShooter(shooterMain, visionSubsystem)));
+        new ParallelRaceGroup(
+            new TurnToAngleVision(driveTrain, Drive.robotPose, visionSubsystem),
+            new ShooterDefault(shooterMain, 3000) 
+        ),
+    
+        new ParallelDeadlineGroup(
+            new LoadShaftCommand(shaftClimber, 5,shooterMain,15), 
+            new SpinShooter(shooterMain, visionSubsystem, 3210), 
+            new IntakeBalls(intake, .5) 
+        )
+    );
   }
-
- }
+}

@@ -7,23 +7,19 @@
 
 package frc.robot.commands;
 
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.mechanisms.Drive;
+import frc.robot.mechanisms.DriveConstants;
+import frc.robot.subsystems.Pose;
 
 /**
  * An example command that uses an example subsystem.
@@ -35,17 +31,22 @@ public class RamseteFollower extends RamseteCommand {
   private double accXDiff = 0;
   private double accYDiff = 0;
   private double totalDistance = 0;
+  private Pose pose;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RamseteFollower(Trajectory trajectory, Supplier<Pose2d> pose, RamseteController controller,
-      SimpleMotorFeedforward feedforward, DifferentialDriveKinematics kinematics,
-      Supplier<DifferentialDriveWheelSpeeds> wheelSpeeds, PIDController leftController, PIDController rightController,
-      BiConsumer<Double, Double> outputVolts, Subsystem... requirements) {
-    super(trajectory, pose, controller, feedforward, kinematics, wheelSpeeds, leftController, rightController,
-        outputVolts, requirements);
+  public RamseteFollower(Trajectory trajectory) {
+    super(trajectory, Drive.robotPose::getPose,
+      new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
+      new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
+          DriveConstants.kaVoltSecondsSquaredPerMeter),
+      DriveConstants.kDriveKinematics, Drive.robotPose::getWheelSpeeds,
+      new PIDController(DriveConstants.kPDriveVel, 0, 0), new PIDController(DriveConstants.kPDriveVel, 0, 0),
+      Drive.driveTrain::tankDriveVolts, Drive.driveTrain);
+
+    this.pose = Drive.robotPose;
     timer = new Timer();
     this.trajectory = trajectory;
     State finalState = trajectory.sample(trajectory.getTotalTimeSeconds());
@@ -59,6 +60,7 @@ public class RamseteFollower extends RamseteCommand {
     super.initialize();
     timer.reset();
     timer.start();
+    pose.resetOdometry(trajectory.getInitialPose());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
