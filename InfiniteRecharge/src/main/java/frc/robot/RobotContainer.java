@@ -2,23 +2,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.LayoutType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.commands.IntakeBalls;
-import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.auto.PickUp2Shoot;
 import frc.robot.commands.auto.Shoot3PickUp3;
 import frc.robot.commands.auto.ShootAndMove;
 import frc.robot.mechanisms.Drive;
-import frc.robot.mechanisms.DriveConstants;
 import frc.robot.mechanisms.IntakeMech;
 import frc.robot.mechanisms.ShaftMechanism;
 import frc.robot.mechanisms.Shoot;
@@ -83,9 +75,9 @@ public class RobotContainer {
     robotPose = Drive.robotPose;
     driveTrain = driveMechanism.driveTrain;
 
-    command.setDefaultOption("Shoot and Move", new ShootAndMove(shaftMechanism.shaftClimber,intake.intakeMain, shooter.shooterMain, driveTrain, shooterVision, robotPose));
-    command.addOption("Pickup 2",new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
-    command.addOption("Shoot and Pickup 3",new Shoot3PickUp3(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision, robotPose) );
+    command.setDefaultOption("Shoot and Move", new ShootAndMove(shaftMechanism.shaftClimber,intake.intakeMain, shooter.shooterMain, shooterVision));
+    command.addOption("Pickup 2",new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision) );
+    command.addOption("Shoot and Pickup 3",new Shoot3PickUp3(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision) );
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
       .getLayout("Auto", BuiltInLayouts.kList).withPosition(ControlConstants.autoColumn, 0).withSize(3, 1)
       .add("Choose an Auto Mode", command).withWidget(BuiltInWidgets.kSplitButtonChooser);

@@ -41,7 +41,7 @@ import frc.robot.subsystems.VisionSystem;
  * Add your docs here.
  */
 public class Drive {
-  public DriveTrainMain driveTrain;
+  public static DriveTrainMain driveTrain;
   private static VisionSystem intakeCam;
   private static VisionSystem shooterCam;
   private static IntakeSubsystem intakeSystem;
@@ -175,27 +175,9 @@ public class Drive {
             // Pass config
             DriveConstants.backwardsConfig);
             Trajectory revTrajectory = comeBack;
-    RamseteCommand ramseteCommand = new RamseteFollower(driveStraight, robotPose::getPose,
-        new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-        new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
-            DriveConstants.kaVoltSecondsSquaredPerMeter),
-        DriveConstants.kDriveKinematics, robotPose::getWheelSpeeds, new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        driveTrain::tankDriveVolts, driveTrain
+    RamseteCommand ramseteCommand = new RamseteFollower(driveStraight);
 
-    );
-
-    RamseteCommand backCommand = new RamseteFollower(revTrajectory, robotPose::getPose,
-        new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-        new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
-            DriveConstants.kaVoltSecondsSquaredPerMeter),
-        DriveConstants.kDriveKinematics, robotPose::getWheelSpeeds, new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        driveTrain::tankDriveVolts, driveTrain
-
-    );
+    RamseteCommand backCommand = new RamseteFollower(revTrajectory);
     Command result = ramseteCommand.andThen(()->backCommand.schedule());
     
     // Run path following command, then stop at the end.
