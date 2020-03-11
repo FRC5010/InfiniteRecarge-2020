@@ -36,7 +36,7 @@ public class ShootAndMove extends SequentialCommandGroup {
         new LoadShaftCommand(shaftClimber, 3,shooterMain,7), 
         new SpinShooter(shooterMain, visionSubsystem,3176)
       ),
-      new RamseteFollower(DriveConstants.driveOffInitLine),
+      new RamseteFollower(DriveConstants.driveOffInitLine, true),
       new ParallelRaceGroup(
         new LowerIntake(intake), 
         new LowerShaft(shaftClimber)

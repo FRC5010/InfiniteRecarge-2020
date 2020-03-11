@@ -21,7 +21,6 @@ import frc.robot.commands.RaiseBarrel;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.ShooterDefault;
 import frc.robot.commands.SpinShooter;
-import frc.robot.commands.TurnToAngleVision;
 import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.DriveConstants;
 import frc.robot.subsystems.DriveTrainMain;
@@ -48,24 +47,24 @@ public class PickUp2Shoot extends SequentialCommandGroup {
         ),
 
         new ParallelRaceGroup(
-            new RamseteFollower(DriveConstants.pickUp2),
+            new RamseteFollower(DriveConstants.pickUp2,true),
             new BarrelDefault(shaftClimber),
             new IntakeBalls(intake, .9)
         ), 
             
         new ParallelDeadlineGroup( 
-            new RamseteFollower(DriveConstants.moveForward), 
+            new RamseteFollower(DriveConstants.moveForward,false), 
             new RaiseBarrel(shaftClimber)
         ),
 
         new ParallelRaceGroup(
-            new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0),
-            new ShooterDefault(shooterMain, 3000) 
+            new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0)
+           // new SpinShooter(shooterMain, visionSubsystem)
         ),
     
         new ParallelDeadlineGroup(
             new LoadShaftCommand(shaftClimber, 5,shooterMain,15), 
-            new SpinShooter(shooterMain, visionSubsystem, 3210), 
+            new SpinShooter(shooterMain, visionSubsystem), 
             new IntakeBalls(intake, .5) 
         )
     );

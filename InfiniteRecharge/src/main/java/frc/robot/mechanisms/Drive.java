@@ -175,9 +175,9 @@ public class Drive {
             // Pass config
             DriveConstants.backwardsConfig);
             Trajectory revTrajectory = comeBack;
-    RamseteCommand ramseteCommand = new RamseteFollower(driveStraight);
+    RamseteCommand ramseteCommand = new RamseteFollower(driveStraight,true);
 
-    RamseteCommand backCommand = new RamseteFollower(revTrajectory);
+    RamseteCommand backCommand = new RamseteFollower(revTrajectory,true);
     Command result = ramseteCommand.andThen(()->backCommand.schedule());
     
     // Run path following command, then stop at the end.

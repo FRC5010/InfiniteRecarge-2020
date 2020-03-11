@@ -32,12 +32,13 @@ public class RamseteFollower extends RamseteCommand {
   private double accYDiff = 0;
   private double totalDistance = 0;
   private Pose pose;
+  private boolean reset;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RamseteFollower(Trajectory trajectory) {
+  public RamseteFollower(Trajectory trajectory, boolean reset) {
     super(trajectory, Drive.robotPose::getPose,
       new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
       new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
@@ -48,6 +49,7 @@ public class RamseteFollower extends RamseteCommand {
 
     this.pose = Drive.robotPose;
     timer = new Timer();
+    this.reset = reset;
     this.trajectory = trajectory;
     State finalState = trajectory.sample(trajectory.getTotalTimeSeconds());
     totalDistance = finalState.poseMeters.getTranslation().getX();
@@ -60,7 +62,9 @@ public class RamseteFollower extends RamseteCommand {
     super.initialize();
     timer.reset();
     timer.start();
-    pose.resetOdometry(trajectory.getInitialPose());
+
+    if(reset){pose.resetOdometry(trajectory.getInitialPose());
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.

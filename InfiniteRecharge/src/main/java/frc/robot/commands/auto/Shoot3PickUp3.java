@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.AimWithVision;
+import frc.robot.commands.BarrelDefault;
 import frc.robot.commands.IntakeBalls;
 import frc.robot.commands.LoadShaftCommand;
 import frc.robot.commands.LowerIntake;
@@ -19,7 +21,6 @@ import frc.robot.commands.RaiseBarrel;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.ShooterDefault;
 import frc.robot.commands.SpinShooter;
-import frc.robot.commands.TurnToAngleVision;
 import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.DriveConstants;
 import frc.robot.subsystems.DriveTrainMain;
@@ -41,6 +42,9 @@ public class Shoot3PickUp3 extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
 
     super(
+      new RaiseBarrel(shaftClimber),
+      new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0)
+     ,
       new ParallelRaceGroup(
         new LoadShaftCommand(shaftClimber, 3, shooterMain, 7), 
         new SpinShooter(shooterMain, visionSubsystem)
@@ -52,19 +56,20 @@ public class Shoot3PickUp3 extends SequentialCommandGroup {
       ),
 
       new ParallelRaceGroup(
-        new RamseteFollower(DriveConstants.moveToTrenchPickUp3),
+        new RamseteFollower(DriveConstants.moveToTrenchPickUp3, false),
+        new BarrelDefault(shaftClimber),
         new IntakeBalls(intake,.9)
       ),
 
-      new ParallelCommandGroup(
-        new RamseteFollower(DriveConstants.moveToShoot3),
+      new ParallelDeadlineGroup(
+        new RamseteFollower(DriveConstants.moveForward,false),
         new RaiseBarrel(shaftClimber)
       ),
       
-      new ParallelDeadlineGroup(
-        new TurnToAngleVision(driveTrain, Drive.robotPose, visionSubsystem),
-        new ShooterDefault(shooterMain, 3000) 
-      ),
+      new ParallelRaceGroup(
+            new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0)
+           // new SpinShooter(shooterMain, visionSubsystem)
+        ),
 
       new ParallelDeadlineGroup(
           new LoadShaftCommand(shaftClimber,3,shooterMain,10), 

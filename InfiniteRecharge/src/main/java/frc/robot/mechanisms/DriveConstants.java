@@ -102,12 +102,10 @@ public final class DriveConstants {
             ), backwardsConfig);
 
     public static final Trajectory moveToTrenchPickUp3 = TrajectoryGenerator
-            .generateTrajectory(List.of(
-                new Pose2d(3, -2.4, new Rotation2d(0)), 
-                new Pose2d(4.4, -1.8, new Rotation2d(Math.toRadians(90))),
-                 new Pose2d(5.35,-0.72, new Rotation2d(0)),
-                new Pose2d(7.5, -0.82, new Rotation2d(-60))
-            ), backwardsConfig);
+    .generateTrajectory(List.of(
+        new Pose2d(0, 0, new Rotation2d(0)), 
+        new Pose2d(-5, 0, new Rotation2d(0))
+    ), pickUpBallConfig);
 
     public static final Trajectory moveToShoot3 = TrajectoryGenerator
             .generateTrajectory(List.of(
