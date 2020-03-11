@@ -44,6 +44,9 @@ public class ShaftSubsystem extends SubsystemBase {
 
   private int shotCount = 0;
   private int shotTimes = 0;
+  private int ballCount;
+
+  private Solenoid ledRing;
   private ShuffleboardLayout barrelLayout;
   private VisionSystem visionSystem;
   private boolean isLedOn;
@@ -74,6 +77,7 @@ public class ShaftSubsystem extends SubsystemBase {
     barrelLayout.addString("State", this::getState).withSize(1, 1);
     barrelLayout.addBoolean("Extended", this::isExtended).withSize(1, 1);
     barrelLayout.addNumber("Shot Count", this::getShotCount).withSize(1, 1);
+    barrelLayout.addNumber("Ball Count", this::getBallCount).withSize(1, 1);
   }
 
   @Override
@@ -134,6 +138,17 @@ public class ShaftSubsystem extends SubsystemBase {
   
   public int getShotCount(){
     return shotCount;
+  }
+  
+  public void setBallCount(int newBallCount){
+    this.ballCount = newBallCount;
+  }
+
+  public int incBallCount(){
+    return ballCount++;
+  }
+  public int getBallCount(){
+    return ballCount;
   }
   
  public void toggleLight(){

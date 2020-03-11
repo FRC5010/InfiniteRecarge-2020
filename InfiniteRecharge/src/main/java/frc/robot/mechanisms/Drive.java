@@ -31,7 +31,7 @@ import frc.robot.ControlConstants;
 import frc.robot.Robot;
 import frc.robot.commands.AimWithVision;
 import frc.robot.commands.RamseteFollower;
-import frc.robot.commands.TurnToAngleVision;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Pose;
@@ -75,7 +75,7 @@ public class Drive {
     shooterAimButton = new JoystickButton(driver, ControlConstants.shooterAimButton);
     shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
     turnToAngleButton = new POVButton(driver, ControlConstants.turnToAngleButton);
-    turnToAngleButton.whenPressed(new TurnToAngleVision(driveTrain, robotPose, shooterCam));
+    turnToAngleButton.whenPressed(new TurnToAngle(driveTrain, robotPose, shooterCam.getAngleX()));
 
     // intakeDriveButton = new JoystickButton(driver, ControlConstants.startClimb);
     // intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.7)));
