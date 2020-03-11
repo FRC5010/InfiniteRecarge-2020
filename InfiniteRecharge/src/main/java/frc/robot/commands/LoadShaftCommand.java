@@ -47,7 +47,9 @@ public class LoadShaftCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
     if (numShoot != 0) {
+      shaftSubsystem.setShotCount(0);
       timer.reset();
       timer.start();
     }

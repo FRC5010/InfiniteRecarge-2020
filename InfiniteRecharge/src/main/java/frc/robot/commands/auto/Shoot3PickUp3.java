@@ -67,10 +67,7 @@ public class Shoot3PickUp3 extends SequentialCommandGroup {
         new RaiseBarrel(shaftClimber)
       ),
       
-      new ParallelRaceGroup(
-            new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0)
-           // new SpinShooter(shooterMain, visionSubsystem)
-        ),
+      new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0),
 
       new ParallelDeadlineGroup(
           new LoadShaftCommand(shaftClimber,3,shooterMain,10), 

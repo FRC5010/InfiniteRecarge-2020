@@ -28,6 +28,7 @@ public class AimWithVision extends CommandBase {
   double angleTolerance = 2;
   double error;
   double lastError;
+  double firstTime;
   double currentTime;
   double lastTime;
   double p;
@@ -61,33 +62,36 @@ public class AimWithVision extends CommandBase {
   public void initialize() {
     System.out.println(" aim with vison start");
     vision.setLight(true);
+    firstTime = RobotController.getFPGATime();
+    error = 360;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    currentTime = RobotController.getFPGATime();
     if (vision.isValidTarget()) {
       error = vision.getAngleX() - targetAngle;
-      currentTime = RobotController.getFPGATime();
       double correction = error * p + (error - lastError) / (currentTime - lastTime) * d;
       drive.arcadeDrive(driver != null ? drive.scaleInputs(-driver.getRawAxis(ControlConstants.throttle)) : driveSpeed, correction + Math.signum(correction) * DriveConstants.minTurn);
       lastError = error;
       lastTime = currentTime;
       SmartDashboard.putNumber(vision.getName() + "VisionError", error);
       SmartDashboard.putNumber(vision.getName() + "VisionCorrection", correction);
+      firstTime = currentTime;
     }
   }
 
   // Called once the command ends or is interrupted
   @Override
   public void end(boolean interrupted) {
-
+    System.out.println("aim with visionf ended");
     drive.arcadeDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return driver == null ? (!vision.isValidTarget() || Math.abs(error) < angleTolerance) : false;
+    return driver == null ? ((!vision.isValidTarget() && (currentTime - firstTime > 5000)) || Math.abs(error) < angleTolerance) : false;
   }
 }

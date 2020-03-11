@@ -139,6 +139,9 @@ public class ShaftSubsystem extends SubsystemBase {
   public int getShotCount(){
     return shotCount;
   }
+  public void setShotCount( int shotCount){
+    this.shotCount = shotCount;
+  }
   
   public void setBallCount(int newBallCount){
     this.ballCount = newBallCount;
