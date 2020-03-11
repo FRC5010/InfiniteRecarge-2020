@@ -85,7 +85,7 @@ public class ShaftMechanism {
     beamBreakMiddle = new DigitalInput(1);
     beamBreakShooter = new DigitalInput(2);
 
-     shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,shaftLifter, ledRing);
+     shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,shaftLifter, visionSubsystem);
      
     toggleLed.whenPressed(new ToggleLedRing(shaftClimber));
     

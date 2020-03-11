@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ControlConstants;
@@ -25,12 +26,20 @@ public class AimWithVision extends CommandBase {
   double targetAngle, driveSpeed;
 
   double angleTolerance = 2;
-double error;
+  double error;
+  double lastError;
+  double currentTime;
+  double lastTime;
+  double p;
+  double d;
+
   public AimWithVision(DriveTrainMain drive, VisionSystem vision, Joystick driver, double targetAngle) {
     this.drive = drive;
     this.vision = vision;
     this.driver = driver;
     this.targetAngle = targetAngle;
+    this.p = DriveConstants.kTurnP;
+    this.d = DriveConstants.kTurnD;
     addRequirements(drive);
     addRequirements(vision);
   }
@@ -41,6 +50,8 @@ double error;
     this.driver = null;
     this.targetAngle = targetAngle;
     this.driveSpeed = driveSpeed;
+    this.p = DriveConstants.kTurnP;
+    this.d = DriveConstants.kTurnD;
     addRequirements(drive);
     addRequirements(vision);
   }
@@ -48,29 +59,34 @@ double error;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  
-    
+    System.out.println("Aiming With Vision!");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-     error = vision.getRawValues().getAngleX() - targetAngle;
-    double correction = error * DriveConstants.kTurnP;
-    drive.arcadeDrive(drive.scaleInputs((driver!=null)?-driver.getRawAxis(ControlConstants.throttle): driveSpeed), correction + Math.signum(correction) * DriveConstants.minTurn);
-    SmartDashboard.putNumber("shooterVisionError", error);
-    SmartDashboard.putNumber("shooterVisionCorrection", correction);
+    if (vision.isValidTarget()) {
+      error = vision.getAngleX() - targetAngle;
+      currentTime = RobotController.getFPGATime();
+      double correction = error * p + (error - lastError) / (currentTime - lastTime) * d;
+      drive.arcadeDrive(driver != null ? drive.scaleInputs(-driver.getRawAxis(ControlConstants.throttle)) : driveSpeed, correction + Math.signum(correction) * DriveConstants.minTurn);
+      lastError = error;
+      lastTime = currentTime;
+      SmartDashboard.putNumber(vision.getName() + "VisionError", error);
+      SmartDashboard.putNumber(vision.getName() + "VisionCorrection", correction);
+    }
   }
 
-  // Called once the command ends or is interrupted.
+  // Called once the command ends or is interrupted
   @Override
   public void end(boolean interrupted) {
+    System.out.println("AimWithVision ended!");
     drive.arcadeDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(error)<5;
+    return driver == null ? (!vision.isValidTarget() || Math.abs(error) < angleTolerance) : false;
   }
 }

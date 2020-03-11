@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.AimWithVision;
 import frc.robot.commands.BarrelDefault;
 import frc.robot.commands.IntakeBalls;
 import frc.robot.commands.LoadShaftCommand;
@@ -52,13 +53,13 @@ public class PickUp2Shoot extends SequentialCommandGroup {
             new IntakeBalls(intake, .9)
         ), 
             
-        new ParallelCommandGroup( 
+        new ParallelDeadlineGroup( 
             new RamseteFollower(DriveConstants.moveForward), 
             new RaiseBarrel(shaftClimber)
         ),
 
         new ParallelRaceGroup(
-            new TurnToAngleVision(driveTrain, Drive.robotPose, visionSubsystem),
+            new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0),
             new ShooterDefault(shooterMain, 3000) 
         ),
     

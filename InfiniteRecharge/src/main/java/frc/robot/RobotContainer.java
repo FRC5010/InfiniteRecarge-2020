@@ -18,6 +18,7 @@ import frc.robot.mechanisms.SpinControl;
 import frc.robot.mechanisms.TelescopClimb;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.Pose;
+import frc.robot.subsystems.VisionLimeLight;
 import frc.robot.subsystems.VisionOpenSight;
 import frc.robot.subsystems.VisionSystem;
 
@@ -59,11 +60,9 @@ public class RobotContainer {
     operator = new Joystick(1);
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
 
-    // TODO: FIX THESE
-     shooterVision = new VisionOpenSight("shooter", 26, 3, 90, ControlConstants.shooterVisionColumn);
-    // climbVision = new VisionOpenSight("climb", ControlConstants.shooterVisionColumn);
-    
-     intakeVision = new VisionOpenSight("intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
+    // vision system
+    shooterVision = new VisionLimeLight("limelight", 20.25, 27.48, 90, ControlConstants.shooterVisionColumn);
+    intakeVision = new VisionOpenSight("intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
 
     shooter = new Shoot(operator, driver,shooterVision );
     intake = new IntakeMech(operator);

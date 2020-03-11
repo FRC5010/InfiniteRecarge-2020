@@ -48,6 +48,7 @@ public class ShaftSubsystem extends SubsystemBase {
 
   private Solenoid ledRing;
   private ShuffleboardLayout barrelLayout;
+  private VisionSystem visionSystem;
   private boolean isLedOn;
   private ShaftState state = ShaftState.fullStop;
 
@@ -57,9 +58,8 @@ public class ShaftSubsystem extends SubsystemBase {
   }
 
   public ShaftSubsystem(DigitalInput bb1, DigitalInput bb2, DigitalInput bb3, CANSparkMax motor, Joystick operator,
-      DoubleSolenoid solenoid, Solenoid ledRing
+      DoubleSolenoid solenoid, VisionSystem visionSystem
       ) {
-    this.ledRing = ledRing;
     this.bb1 = bb1;
     this.bb2 = bb2;
     this.bb3 = bb3;
@@ -67,6 +67,7 @@ public class ShaftSubsystem extends SubsystemBase {
     this.solenoid = solenoid;
     timer = new Timer();
     setDefaultCommand(new BarrelDefault(this));
+    this.visionSystem = visionSystem;
 
     ShuffleboardTab driverTab = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
     barrelLayout = driverTab.getLayout("Barrel", BuiltInLayouts.kList).withPosition(ControlConstants.barrelColumn, 1).withSize(1, 4);
@@ -116,14 +117,14 @@ public class ShaftSubsystem extends SubsystemBase {
   public void raiseShaft() {
     isExtended = true;
     solenoid.set(DoubleSolenoid.Value.kForward);
-    ledRing.set(true);
+    visionSystem.setLight(true);
     isLedOn = true;
   }
 
   public void lowerShaft(){
     isExtended = false;
     solenoid.set(DoubleSolenoid.Value.kReverse);
-    ledRing.set(false);
+    visionSystem.setLight(false);
     isLedOn = false;
   }
   public void retractSpinner(){
@@ -152,7 +153,7 @@ public class ShaftSubsystem extends SubsystemBase {
   
  public void toggleLight(){
    isLedOn = !isLedOn;
-   ledRing.set(isLedOn);  
+   visionSystem.setLight(isLedOn);
  }
   public boolean isExtended() { return isExtended; }
 }

@@ -33,8 +33,7 @@ public class VisionOpenSight extends VisionSystem {
 
   public void updateViaNetworkTable(String path) {
     // essential variables from NetworkTables
-    // TODO: check for valid target data
-    validTarget = true;
+    boolean valid = table.getTable(path).getEntry("valid").getBoolean(false);
     double centerX = table.getTable(path).getEntry("center-x").getDouble(0);
     double centerY = table.getTable(path).getEntry("center-y").getDouble(0);
     double area = 0;
@@ -45,12 +44,14 @@ public class VisionOpenSight extends VisionSystem {
     // calculating distance
     double distance = (targetHeight - camHeight) / Math.tan(Math.toRadians(angleY + camAngle));
 
-    rawValues = new VisionValues(centerX, centerY, angleX, angleY, distance);
+    rawValues = new VisionValues(valid, centerX, centerY, angleX, angleY, distance);
   }
 
   // TODO: FIX ME - WRONG DEFAULT ANGLE
   public void calibarateCamAngle(double angleY) {
     camAngle = 28.7 - angleY;
   }
+
+  public void setLight(boolean on) {}
 
 }

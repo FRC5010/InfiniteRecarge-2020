@@ -26,26 +26,27 @@ public class VisionLimeLight extends VisionSystem {
 
   public void updateViaNetworkTable(String path) {
     // essential variables from NetworkTables
-    double valid = table.getTable(path).getEntry("tv").getDouble(0);
-    validTarget = false;
+    boolean valid = table.getTable(path).getEntry("tv").getDouble(0) == 1.0;
     
-    if (1.0 == valid) {
-      validTarget = true;
-      double angleX = table.getTable(path).getEntry("tx").getDouble(0);
-      double angleY = table.getTable(path).getEntry("ty").getDouble(0);
+    if (valid) {
+      // LL is mounted sideways, thus we need to reverse values
+      double angleX = -table.getTable(path).getEntry("ty").getDouble(0);
+      double angleY = table.getTable(path).getEntry("tx").getDouble(0);
       double area = table.getTable(path).getEntry("ta").getDouble(0);
 
       // calculating distance
       double distance = (targetHeight - camHeight) / Math.tan(Math.toRadians(angleY + camAngle));
-
-      rawValues = new VisionValues(0, 0, angleX, angleY, distance);
+      rawValues = new VisionValues(valid, 0, 0, angleX, angleY, distance);
     } else {
       rawValues = new VisionValues();
     }
   }
 
-  // TODO: THIS MAY NEED TO BE ADJUSTED?
   public void calibarateCamAngle(double angleY) {
-    camAngle = 28.7 - angleY;
+    camAngle = 30.345 - angleY;
+  }
+
+  public void setLight(boolean on) {
+    table.getTable("limelight").getEntry("ledMode").setNumber(on ? 3 : 1);
   }
 }

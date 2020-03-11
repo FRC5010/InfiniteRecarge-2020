@@ -92,6 +92,8 @@ public class RamseteFollower extends RamseteCommand {
     timer.stop();
     SmartDashboard.putNumber("Avg X Diff per meter ", accXDiff / totalDistance);
     SmartDashboard.putNumber("Avg Y Diff per meter", accYDiff / totalDistance);
+
+    System.out.println("Ramsete ended!");
   }
 
   // Returns true when the command should end.
