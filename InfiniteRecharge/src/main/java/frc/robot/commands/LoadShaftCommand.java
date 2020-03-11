@@ -60,6 +60,7 @@ public class LoadShaftCommand extends CommandBase {
     switch (shaftSubsystem.getShaftState()) {
     case shooting: {
       shaftSubsystem.spinUpShaft(.9);
+      shaftSubsystem.setBallCount(0);
       if (shaftSubsystem.getBB3()) {
         shaftSubsystem.incShotCount();
         shaftSubsystem.spinUpShaft(.7);

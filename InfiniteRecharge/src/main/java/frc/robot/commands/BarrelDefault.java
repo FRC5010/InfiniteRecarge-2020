@@ -34,6 +34,7 @@ public class BarrelDefault extends CommandBase {
       case fullStop : {
         shaftSubsystem.spinUpShaft(0);
         if (!shaftSubsystem.getBB1() && shaftSubsystem.getBB3()) {
+          shaftSubsystem.incBallCount();
           if (shaftSubsystem.getBB2()) {
             shaftSubsystem.setShaftState(ShaftState.runningClear);
           } else {
@@ -58,6 +59,7 @@ public class BarrelDefault extends CommandBase {
         if (!shaftSubsystem.getBB2() || !shaftSubsystem.getBB3() ) {
           shaftSubsystem.spinUpShaft(0);
           shaftSubsystem.setShaftState(ShaftState.fullStop);
+          
         }  
         break;  
       }
