@@ -73,7 +73,7 @@ public class Pose extends SubsystemBase {
         poseLayout.addNumber("Robot X pos", () -> odometry.getPoseMeters().getTranslation().getX());
         poseLayout.addNumber("Robot Y pos", () -> odometry.getPoseMeters().getTranslation().getY());
         poseLayout.addNumber("Robot Heading", () -> odometry.getPoseMeters().getRotation().getDegrees());
-        poseLayout.addNumber("gyro heading", () -> getHeading());
+        //poseLayout.addNumber("gyro heading", () -> getHeading());
         poseLayout.addNumber("Robot Heading ", () -> odometry.getPoseMeters().getRotation().getDegrees());
     }
 

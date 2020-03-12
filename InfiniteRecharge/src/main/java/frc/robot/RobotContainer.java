@@ -56,6 +56,8 @@ public class RobotContainer {
     // motor 8 is the shaft,
     // motor 9 is the intake
     // motor 10 is the spinner
+    // motor 11 and 12 are arm climbers
+    // motor 13 is the second shooter
     driver = new Joystick(0);
     operator = new Joystick(1);
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
