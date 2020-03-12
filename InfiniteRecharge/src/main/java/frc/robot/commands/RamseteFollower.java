@@ -81,10 +81,10 @@ public class RamseteFollower extends RamseteCommand {
 
     accXDiff += Math.abs(expectedX - actualX);
     accYDiff += Math.abs(expectedY - actualY);
-    SmartDashboard.putNumber("Expected xpos", expectedPose.getTranslation().getX());
-    SmartDashboard.putNumber("Expected Y pos", expectedPose.getTranslation().getY());
-    SmartDashboard.putNumber("Expected heading", expectedPose.getRotation().getDegrees());
-    SmartDashboard.putNumber("Expected vel m/s", expState.velocityMetersPerSecond);
+    // SmartDashboard.putNumber("Expected xpos", expectedPose.getTranslation().getX());
+    // SmartDashboard.putNumber("Expected Y pos", expectedPose.getTranslation().getY());
+    // SmartDashboard.putNumber("Expected heading", expectedPose.getRotation().getDegrees());
+    // SmartDashboard.putNumber("Expected vel m/s", expState.velocityMetersPerSecond);
 
     super.execute();
   }
@@ -94,8 +94,8 @@ public class RamseteFollower extends RamseteCommand {
   public void end(boolean interrupted) {
     super.end(interrupted);
     timer.stop();
-    SmartDashboard.putNumber("Avg X Diff per meter ", accXDiff / totalDistance);
-    SmartDashboard.putNumber("Avg Y Diff per meter", accYDiff / totalDistance);
+    // SmartDashboard.putNumber("Avg X Diff per meter ", accXDiff / totalDistance);
+    // SmartDashboard.putNumber("Avg Y Diff per meter", accYDiff / totalDistance);
 
     System.out.println("Ramsete ended!");
   }

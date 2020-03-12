@@ -47,8 +47,8 @@ public class DriveWithVision extends CommandBase {
   public void execute() {
     angleError = vision.getRawValues().getAngleX() - targetAngle;
     distanceError = vision.getRawValues().getDistance() - targetDistance;
-    SmartDashboard.putNumber("intakeVisionAngleError", angleError);
-    SmartDashboard.putNumber("intakeVisionDistanceError", distanceError);
+    // SmartDashboard.putNumber("intakeVisionAngleError", angleError);
+    // SmartDashboard.putNumber("intakeVisionDistanceError", distanceError);
 
     double turnCorrection = angleError * DriveConstants.kTurnP;
     double driveCorrection = distanceError * 0.0254 * DriveConstants.kPDriveVel / 12;

@@ -16,6 +16,9 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -102,24 +105,22 @@ public class WheelColor extends SubsystemBase {
      */
     // the below code is to add the exact color onto smart dashboard
     // use the below code mostly only for testing not comp
-    SmartDashboard.putNumber("Red", detectedColor.red);
-    SmartDashboard.putNumber("Green", detectedColor.green);
-    SmartDashboard.putNumber("Blue", detectedColor.blue);
-    // end exact code
+    if (RobotState.isTest()) {
+      SmartDashboard.putNumber("Red", detectedColor.red);
+      SmartDashboard.putNumber("Green", detectedColor.green);
+      SmartDashboard.putNumber("Blue", detectedColor.blue);
 
-    SmartDashboard.putNumber("Confidence", match.confidence);
+      SmartDashboard.putNumber("Confidence", match.confidence);
+      SmartDashboard.putNumber("Red Count", redColorCounter);
+      SmartDashboard.putNumber("Blue Count", blueColorCounter);
+      SmartDashboard.putNumber("Green Count", greenColorCounter);
+      SmartDashboard.putNumber("Yellow Count", yellowColorCounter);
+      SmartDashboard.putNumber("distance (wheelcolor)", determineGameData());
+      SmartDashboard.putBoolean("Find Target Color", findTargetColor());
+      SmartDashboard.putNumber("Color has changed", clrCounter);
+    }
     SmartDashboard.putString("Detected Color", colorString);
 
-    SmartDashboard.putNumber("Color has changed", clrCounter);
-
-    SmartDashboard.putNumber("Red Count", redColorCounter);
-    SmartDashboard.putNumber("Blue Count", blueColorCounter);
-    SmartDashboard.putNumber("Green Count", greenColorCounter);
-    SmartDashboard.putNumber("Yellow Count", yellowColorCounter);
-
-    SmartDashboard.putBoolean("Find Target Color", findTargetColor());
-
-    SmartDashboard.putNumber("distance (wheelcolor)", determineGameData());
     // SmartDashboard.putBoolean("Adjust Color", adjustToTargetColor());
     // below code is only for the exact values of the color instead of asking the
     // code to tell what the code is
@@ -144,24 +145,21 @@ public class WheelColor extends SubsystemBase {
         // turn
         // this is just a way for us to store the value from the driverstation
         targetColorMap = colorMapping.get("B");
-        SmartDashboard.putNumber("Target Color Distance", targetColorMap.getPos(colorString));
         break;
       case 'G':
         targetColor = SpinConstants.kGreenTarget;
         targetColorMap = colorMapping.get("G");
-        SmartDashboard.putNumber("Target Color", targetColorMap.getPos(colorString));
         break;
       case 'R':
         targetColor = SpinConstants.kRedTarget;
         targetColorMap = colorMapping.get("R");
-        SmartDashboard.putNumber("Target Color", targetColorMap.getPos(colorString));
         break;
       case 'Y':
         targetColor = SpinConstants.kYellowTarget;
         targetColorMap = colorMapping.get("Y");
-        SmartDashboard.putNumber("Target Color", targetColorMap.getPos(colorString));
         break;
       }
+      SmartDashboard.putNumber("Target Color", targetColorMap.getPos(colorString));
     } else {
       return -1;
       // System.out.println("Wait");

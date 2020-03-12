@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ControlConstants;
 import frc.robot.mechanisms.DriveConstants;
@@ -28,7 +27,7 @@ public class AimWithVision extends CommandBase {
   double angleTolerance = 2;
   double error;
   double lastError;
-  double firstTime;
+  double timeTargetFound;
   double currentTime;
   double lastTime;
   double p;
@@ -62,8 +61,9 @@ public class AimWithVision extends CommandBase {
   public void initialize() {
     System.out.println(" aim with vison start");
     vision.setLight(true);
-    firstTime = RobotController.getFPGATime();
-    error = 360;
+    timeTargetFound = RobotController.getFPGATime();
+    currentTime = RobotController.getFPGATime();
+    error = angleTolerance;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -71,27 +71,42 @@ public class AimWithVision extends CommandBase {
   public void execute() {
     currentTime = RobotController.getFPGATime();
     if (vision.isValidTarget()) {
+      timeTargetFound = currentTime;
+
+      lastError = error;
       error = vision.getAngleX() - targetAngle;
       double correction = error * p + (error - lastError) / (currentTime - lastTime) * d;
-      drive.arcadeDrive(driver != null ? drive.scaleInputs(-driver.getRawAxis(ControlConstants.throttle)) : driveSpeed, correction + Math.signum(correction) * DriveConstants.minTurn);
-      lastError = error;
+      if (driver != null) {
+        driveSpeed = drive.scaleInputs(-driver.getRawAxis(ControlConstants.throttle));
+      }
+      drive.arcadeDrive(driveSpeed, correction + Math.signum(correction) * DriveConstants.minTurn);
       lastTime = currentTime;
-      SmartDashboard.putNumber(vision.getName() + "VisionError", error);
-      SmartDashboard.putNumber(vision.getName() + "VisionCorrection", correction);
-      firstTime = currentTime;
+      // SmartDashboard.putNumber(vision.getName() + "VisionError", error);
+      // SmartDashboard.putNumber(vision.getName() + "VisionCorrection", correction);
     }
   }
 
   // Called once the command ends or is interrupted
   @Override
   public void end(boolean interrupted) {
-    System.out.println("aim with visionf ended");
+    System.out.println("aim with vision ended");
     drive.arcadeDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return driver == null ? ((!vision.isValidTarget() && (currentTime - firstTime > 5000)) || Math.abs(error) < angleTolerance) : false;
+    if (driver == null) {
+      // If vision target not acquired and we've exceeded the acquisition timeout, don't return
+      // Because, that could mean we're shooting in the wrong direction!
+      if (!vision.isValidTarget() && currentTime - timeTargetFound > 500) {
+        vision.flashLight();
+        return false;
+      } else {
+        return Math.abs(error) < angleTolerance;
+      }
+    } else {
+      return false; 
+    }
   }
 }

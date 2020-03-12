@@ -53,5 +53,5 @@ public class VisionOpenSight extends VisionSystem {
   }
 
   public void setLight(boolean on) {}
-
+  public void flashLight() {}
 }

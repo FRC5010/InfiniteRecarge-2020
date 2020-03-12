@@ -59,6 +59,7 @@ public class RobotContainer {
     driver = new Joystick(0);
     operator = new Joystick(1);
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
+    Shuffleboard.getTab(ControlConstants.SBTabDiagnostics);
 
     // vision system
     shooterVision = new VisionLimeLight("limelight", 20.25, 27.48, 90, ControlConstants.shooterVisionColumn);

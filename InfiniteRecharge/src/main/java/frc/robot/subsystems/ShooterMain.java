@@ -41,9 +41,9 @@ public class ShooterMain extends SubsystemBase {
     m_pidController.setOutputRange(ShooterConstants.kMinOutput, ShooterConstants.kMaxOutput);
 
     // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("Shooter P Gain", ShooterConstants.kP);
-    SmartDashboard.putNumber("Shooter Max Output", ShooterConstants.kMaxOutput);
-    SmartDashboard.putNumber("Shooter Min Output", ShooterConstants.kMinOutput);
+    // SmartDashboard.putNumber("Shooter P Gain", ShooterConstants.kP);
+    // SmartDashboard.putNumber("Shooter Max Output", ShooterConstants.kMaxOutput);
+    // SmartDashboard.putNumber("Shooter Min Output", ShooterConstants.kMinOutput);
 
     ShuffleboardLayout layout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
         .getLayout("Shooter", BuiltInLayouts.kList).withPosition(ControlConstants.shooterColumn, 1).withSize(2, 5);
@@ -62,13 +62,14 @@ public class ShooterMain extends SubsystemBase {
       layout.addNumber("Set Point", this::getSetPoint).withWidget(BuiltInWidgets.kDial).withPosition(ControlConstants.shooterColumn, 5)
       .withProperties(Map.of("Max", 6000));
   
+      ShuffleboardLayout layoutDiag = Shuffleboard.getTab(ControlConstants.SBTabDiagnostics).getLayout("Shooter", BuiltInLayouts.kList);
+      layoutDiag.addNumber("Shooter Temp", controller::getMotorTemperature);
+      layoutDiag.addNumber("Shooter Current", controller::getOutputCurrent);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Shooter Temp", controller.getMotorTemperature());
-    SmartDashboard.putNumber("Shooter Current", controller.getOutputCurrent());
   }
 
   public void end() {
@@ -83,8 +84,8 @@ public class ShooterMain extends SubsystemBase {
     m_pidController.setFF((ShooterConstants.kS / setPoint + (ShooterConstants.kV)));
 
     m_pidController.setReference(setPoint, ControlType.kVelocity);
-    SmartDashboard.putNumber("Shooter Applied", controller.getAppliedOutput());
-    SmartDashboard.putNumber("Feed Forward", m_pidController.getFF());
+    // SmartDashboard.putNumber("Shooter Applied", controller.getAppliedOutput());
+    // SmartDashboard.putNumber("Feed Forward", m_pidController.getFF());
 
     if (Math.abs(controller.getEncoder().getVelocity() - setPoint) < 75) {
       readyToShoot = true;

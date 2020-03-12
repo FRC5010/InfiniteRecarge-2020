@@ -35,9 +35,8 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Intake Motor Temp", intakeMotor.getMotorTemperature());
-    SmartDashboard.putNumber("Intake Duty Cycle", intakeMotor.getAppliedOutput());
-    SmartDashboard.putNumber("Intake Output Current", intakeMotor.getOutputCurrent());
+    // SmartDashboard.putNumber("Intake Motor Temp", intakeMotor.getMotorTemperature());
+    // SmartDashboard.putNumber("Intake Output Current", intakeMotor.getOutputCurrent());
   }
 
   public void toggleIntake() {

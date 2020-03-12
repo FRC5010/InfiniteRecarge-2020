@@ -59,11 +59,14 @@ public class BarrelDefault extends CommandBase {
         if (!shaftSubsystem.getBB2() || !shaftSubsystem.getBB3() ) {
           shaftSubsystem.spinUpShaft(0);
           shaftSubsystem.setShaftState(ShaftState.fullStop);
-          
         }  
         break;  
       }
       case manual : break;
+    }
+
+    if (!shaftSubsystem.isExtended() && !shaftSubsystem.getBB3() && shaftSubsystem.getBallCount() > 1) {
+      shaftSubsystem.flashLight();
     }
   }
 

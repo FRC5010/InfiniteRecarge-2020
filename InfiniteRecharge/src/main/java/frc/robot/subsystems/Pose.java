@@ -15,8 +15,12 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ControlConstants;
 import frc.robot.mechanisms.DriveConstants;
 
 /**
@@ -58,6 +62,19 @@ public class Pose extends SubsystemBase {
         gyro.reset();
         resetEncoders();
         odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+        ShuffleboardLayout poseLayout = Shuffleboard.getTab(ControlConstants.SBTabDiagnostics).getLayout("Pose",
+                BuiltInLayouts.kList);
+        poseLayout.addNumber("left encoder distance",
+                () -> getEncoderDistance(leftEncoder, DriveConstants.leftDistanceConv));
+        poseLayout.addNumber("right encoder distance",
+                () -> getEncoderDistance(rightEncoder, DriveConstants.rightDistanceConv));
+        poseLayout.addNumber("gyro heading", () -> getHeading());
+
+        poseLayout.addNumber("Robot X pos", () -> odometry.getPoseMeters().getTranslation().getX());
+        poseLayout.addNumber("Robot Y pos", () -> odometry.getPoseMeters().getTranslation().getY());
+        poseLayout.addNumber("Robot Heading", () -> odometry.getPoseMeters().getRotation().getDegrees());
+        poseLayout.addNumber("gyro heading", () -> getHeading());
+        poseLayout.addNumber("Robot Heading ", () -> odometry.getPoseMeters().getRotation().getDegrees());
     }
 
     /**
@@ -92,21 +109,16 @@ public class Pose extends SubsystemBase {
         odometry.update(Rotation2d.fromDegrees(getHeading()),
                 getEncoderDistance(leftEncoder, DriveConstants.leftDistanceConv),
                 getEncoderDistance(rightEncoder, DriveConstants.rightDistanceConv));
-        SmartDashboard.putNumber("left encoder position", leftEncoder.getPosition());
-        SmartDashboard.putNumber("right encoder position", rightEncoder.getPosition());
+        // SmartDashboard.putNumber("left encoder position", leftEncoder.getPosition());
+        // SmartDashboard.putNumber("right encoder position",
+        // rightEncoder.getPosition());
 
-        SmartDashboard.putNumber("left encoder distance", getEncoderDistance(leftEncoder, DriveConstants.leftDistanceConv));
-        SmartDashboard.putNumber("right encoder distance",
-                getEncoderDistance(rightEncoder, DriveConstants.rightDistanceConv));
-        SmartDashboard.putNumber("left velocity", getEncoderVel(leftEncoder, DriveConstants.leftVelocityConv));
-        SmartDashboard.putNumber("right velocity", getEncoderVel(rightEncoder, DriveConstants.rightVelocityConv));
-        SmartDashboard.putNumber("left raw velocity", leftEncoder.getVelocity());
-        SmartDashboard.putNumber("right raw velocity", rightEncoder.getVelocity());
-        SmartDashboard.putNumber("gyro heading", getHeading());
-
-        SmartDashboard.putNumber("Robot X pos", odometry.getPoseMeters().getTranslation().getX());
-        SmartDashboard.putNumber("Robot Y pos", odometry.getPoseMeters().getTranslation().getY());
-        SmartDashboard.putNumber("Robot Heading ", odometry.getPoseMeters().getRotation().getDegrees());
+        // SmartDashboard.putNumber("left velocity", getEncoderVel(leftEncoder,
+        // DriveConstants.leftVelocityConv));
+        // SmartDashboard.putNumber("right velocity", getEncoderVel(rightEncoder,
+        // DriveConstants.rightVelocityConv));
+        // SmartDashboard.putNumber("left raw velocity", leftEncoder.getVelocity());
+        // SmartDashboard.putNumber("right raw velocity", rightEncoder.getVelocity());
     }
 
     /**
