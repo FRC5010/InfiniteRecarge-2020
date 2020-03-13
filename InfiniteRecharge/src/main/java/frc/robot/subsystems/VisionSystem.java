@@ -66,6 +66,7 @@ public abstract class VisionSystem extends SubsystemBase {
   public abstract void calibarateCamAngle(double angleY);
 
   public abstract void setLight(boolean on);
+  public abstract boolean isLightOn();
   public abstract void flashLight();
 
   public void setCamAngle(double a) {

@@ -40,7 +40,6 @@ public class ShaftSubsystem extends SubsystemBase {
 
   private ShuffleboardLayout barrelLayout;
   private VisionSystem visionSystem;
-  private boolean isLedOn;
   private ShaftState state = ShaftState.fullStop;
 
   public enum ShaftState {
@@ -117,14 +116,12 @@ public class ShaftSubsystem extends SubsystemBase {
     isExtended = true;
     solenoid.set(DoubleSolenoid.Value.kForward);
     visionSystem.setLight(true);
-    isLedOn = true;
   }
 
   public void lowerShaft() {
     isExtended = false;
     solenoid.set(DoubleSolenoid.Value.kReverse);
     visionSystem.setLight(false);
-    isLedOn = false;
   }
 
   public void retractSpinner() {
@@ -157,13 +154,19 @@ public class ShaftSubsystem extends SubsystemBase {
     return ballCount;
   }
 
+  public boolean isLightOn() {
+    return visionSystem.isLightOn();
+  }
+
+  public void setLight(boolean on) {
+    visionSystem.setLight(on);
+  }
+
   public void toggleLight() {
-    isLedOn = !isLedOn;
-    visionSystem.setLight(isLedOn);
+    visionSystem.setLight(!visionSystem.isLightOn());
   }
 
   public void flashLight() {
-    isLedOn = true;
     visionSystem.flashLight();
   }
 

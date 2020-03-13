@@ -7,12 +7,16 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.ShaftSubsystem.ShaftState;
 
 public class BarrelDefault extends CommandBase {
   ShaftSubsystem shaftSubsystem;
+  boolean flashed = false;
   /**
    * Creates a new BarrelDefault.
    */
@@ -66,7 +70,12 @@ public class BarrelDefault extends CommandBase {
     }
 
     if (!shaftSubsystem.isExtended() && !shaftSubsystem.getBB3() && shaftSubsystem.getBallCount() > 1) {
-      shaftSubsystem.flashLight();
+      if (!flashed) {
+        CommandScheduler.getInstance().schedule(new FlashVisionLight(shaftSubsystem));
+        flashed = true;
+      }
+    } else {
+      flashed = false;
     }
   }
 

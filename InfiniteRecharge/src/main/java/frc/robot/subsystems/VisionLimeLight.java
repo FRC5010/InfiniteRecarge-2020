@@ -53,4 +53,8 @@ public class VisionLimeLight extends VisionSystem {
   public void flashLight() {
     table.getTable("limelight").getEntry("ledMode").setNumber(2);
   }
+
+  public boolean isLightOn() {
+    return 1 != table.getTable("limelight").getEntry("ledMode").getNumber(0).intValue();
+  }
 }
