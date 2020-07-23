@@ -40,9 +40,9 @@ public class Shoot {
         this.diver = operator;
         this.shootMotor = new CANSparkMax(5, MotorType.kBrushless); 
         shootMotor2 = new CANSparkMax(13, MotorType.kBrushless);
-        shootMotor.setInverted(true);
-        shootMotor2.follow(shootMotor, false);
-        shootMotor2.setInverted(false);
+        shootMotor.setInverted(false);
+        shootMotor2.follow(shootMotor, true);
+        shootMotor2.setInverted(true);
         shootMotor.setSmartCurrentLimit(40);
         calButton = new JoystickButton(driver, ControlConstants.calibrate);
         spinUp = new POVButton(operator, ControlConstants.incShooter);
