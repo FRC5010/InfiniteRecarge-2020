@@ -25,6 +25,7 @@ public class Spinner extends SubsystemBase {
     this.spinDeployment = spinDeployment;
     this.shaftSubsystem = shaftSubsystem;
     //Set as false since spinner will not be deployed at start.
+    //CHECK WIRES if getting no color values, order from left to right black,red,brown,orange
     isDeployed = false;
 
     //spinDeployment = new DoubleSolenoid(fwdChannel, revChannel);

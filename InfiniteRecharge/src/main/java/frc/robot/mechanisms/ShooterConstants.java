@@ -26,7 +26,7 @@ public class ShooterConstants {
     //4890 scores at 17 ft
     //4950 scores at 18 ft
     //Around 5180 at 19 ft
-    public static double distanceToRPM = 3.46;
+    public static double distanceToRPM = 3.56;
     public static double getBaseSpeed() { return baseSpeed; }
     public static double getDistanceToRPM() { return distanceToRPM; }
     static {

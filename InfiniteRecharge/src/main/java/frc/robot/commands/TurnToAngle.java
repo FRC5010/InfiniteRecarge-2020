@@ -8,6 +8,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.mechanisms.DriveConstants;
@@ -48,7 +50,6 @@ public class TurnToAngle extends CommandBase {
     this.angleToReach = targetAngle + currentHeading;
     error = currentHeading - targetAngle;
     currentTime = RobotController.getFPGATime();
-
     SmartDashboard.putNumber("Angle to reach", angleToReach);
     SmartDashboard.putNumber("Current Heading", currentHeading);
   }

@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.WheelColor;
+import edu.wpi.first.wpilibj.I2C;
+
 
 public class SpinForNDetections extends CommandBase {
   private Spinner spinner;
@@ -20,6 +22,7 @@ public class SpinForNDetections extends CommandBase {
   //Used if the position control constructor is called for.
   private boolean needGameData;
   private boolean isRotationTime;
+  //final ColorMatchResult match = m_colorMatcher.matchClosestColor(m_colorSensor.getColor());
 
   //This is for position control, game requires the color to be moved to the game sensor, which is two positions away from our sensor.
   private final int colorOffset = 2;
@@ -75,7 +78,7 @@ public class SpinForNDetections extends CommandBase {
       detections = wheel.determineGameData();
       if(detections > -1){
         detections += 2;
-        spinner.spin(-0.22);
+        spinner.spin(-0.15);
       }
     }
     else if (isRotationTime){

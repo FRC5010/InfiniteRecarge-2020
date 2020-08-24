@@ -74,6 +74,8 @@ public class WheelColor extends SubsystemBase {
   @Override
   public void periodic() {
     final Color detectedColor = m_colorSensor.getColor();
+    
+    //System.out.println(detectedColor.blue + ", "+detectedColor.green+ ", "+detectedColor.red);
 
     /**
      * Run the color match algorithm on our detected color
@@ -81,7 +83,6 @@ public class WheelColor extends SubsystemBase {
 
     // String colorString;
     final ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
-
     if (match.color == SpinConstants.kBlueTarget && debounce(match.confidence)) {
       colorString = "Blue";
       currColor = match.color;
@@ -105,7 +106,8 @@ public class WheelColor extends SubsystemBase {
      */
     // the below code is to add the exact color onto smart dashboard
     // use the below code mostly only for testing not comp
-    if (RobotState.isTest()) {
+    //if (RobotState.isTest()) {
+      //System.out.println("Red" + detectedColor.red);
       SmartDashboard.putNumber("Red", detectedColor.red);
       SmartDashboard.putNumber("Green", detectedColor.green);
       SmartDashboard.putNumber("Blue", detectedColor.blue);
@@ -118,7 +120,7 @@ public class WheelColor extends SubsystemBase {
       SmartDashboard.putNumber("distance (wheelcolor)", determineGameData());
       SmartDashboard.putBoolean("Find Target Color", findTargetColor());
       SmartDashboard.putNumber("Color has changed", clrCounter);
-    }
+    //}
     SmartDashboard.putString("Detected Color", colorString);
 
     // SmartDashboard.putBoolean("Adjust Color", adjustToTargetColor());
