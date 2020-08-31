@@ -9,12 +9,14 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.AimWithVision;
 import frc.robot.commands.LoadShaftCommand;
 import frc.robot.commands.LowerIntake;
 import frc.robot.commands.LowerShaft;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.SpinShooter;
 import frc.robot.mechanisms.DriveConstants;
+import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.ShooterMain;
@@ -28,13 +30,15 @@ public class ShootAndMove extends SequentialCommandGroup {
    * Creates a new ShootAndMove.
    */
 
-  public ShootAndMove(ShaftSubsystem shaftClimber, IntakeSubsystem intake, ShooterMain shooterMain, VisionSystem visionSubsystem) {
+  public ShootAndMove(DriveTrainMain drive, ShaftSubsystem shaftClimber, IntakeSubsystem intake, ShooterMain shooterMain, VisionSystem visionSubsystem) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
+      new AimWithVision(drive,visionSubsystem, 0, 0),
+      new AimWithVision(drive,visionSubsystem, 0, 0),
       new ParallelRaceGroup(
         new LoadShaftCommand(shaftClimber, 3,shooterMain,7), 
-        new SpinShooter(shooterMain, visionSubsystem,3176)
+        new SpinShooter(shooterMain, visionSubsystem)
       ),
       new RamseteFollower(DriveConstants.driveOffInitLine, true),
       new ParallelRaceGroup(

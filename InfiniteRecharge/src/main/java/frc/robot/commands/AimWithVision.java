@@ -25,7 +25,7 @@ public class AimWithVision extends CommandBase {
   Joystick driver;
   double targetAngle, driveSpeed;
 
-  double angleTolerance = .01;
+  double angleTolerance = 1;
   double error;
   double lastError;
   double timeTargetFound;
@@ -40,9 +40,12 @@ public class AimWithVision extends CommandBase {
     this.driver = driver;
     this.targetAngle = targetAngle;
     this.p = 0.025;
-    this.d = 1;
+    this.d = 2000;
     addRequirements(drive);
     addRequirements(vision);
+
+    SmartDashboard.putNumber("Aim w/ vision p", p);
+    SmartDashboard.putNumber("Aim w/ vision d", d);
   }
 
   public AimWithVision(DriveTrainMain drive, VisionSystem vision, double targetAngle, double driveSpeed) {
@@ -51,8 +54,8 @@ public class AimWithVision extends CommandBase {
     this.driver = null;
     this.targetAngle = targetAngle;
     this.driveSpeed = driveSpeed;
-    this.p = 10000;
-    this.d = 1;
+    this.p = 0.025;
+    this.d = 2000;
     addRequirements(drive);
     addRequirements(vision);
   }
@@ -72,20 +75,24 @@ public class AimWithVision extends CommandBase {
   public void execute() {
     currentTime = RobotController.getFPGATime();
     if (vision.isValidTarget()) {
+      
+      p = SmartDashboard.getNumber("Aim w/ vision p", p);
+      d = SmartDashboard.getNumber("Aim w/ vision d", d);
+      
       timeTargetFound = currentTime;
 
       lastError = error;
       error = vision.getAngleX() - targetAngle;
       SmartDashboard.putNumber("Vision Aim Error", error);
-      //double correction = error * p + (error - lastError) / (currentTime - lastTime) * d;
-      double correction = error * p;
+      double correction = error * p + (error - lastError) / (currentTime - lastTime) * d;
+      //double correction = error * p;
       SmartDashboard.putNumber("Correction", correction);
       if (driver != null) {
         driveSpeed = drive.scaleInputs(-driver.getRawAxis(ControlConstants.throttle));
       }
       drive.arcadeDrive(driveSpeed, correction);
       lastTime = currentTime;
-      // SmartDashboard.putNumber(vision.getName() + "VisionError", error);
+      SmartDashboard.putNumber(vision.getName() + "VisionError", error);
       // SmartDashboard.putNumber(vision.getName() + "VisionCorrection", correction);
     }
   }

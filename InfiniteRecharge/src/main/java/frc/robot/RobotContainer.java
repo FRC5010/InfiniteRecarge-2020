@@ -78,7 +78,7 @@ public class RobotContainer {
     robotPose = Drive.robotPose;
     driveTrain = driveMechanism.driveTrain;
 
-    command.setDefaultOption("Shoot and Move", new ShootAndMove(shaftMechanism.shaftClimber,intake.intakeMain, shooter.shooterMain, shooterVision));
+    command.setDefaultOption("Shoot and Move", new ShootAndMove(driveTrain, shaftMechanism.shaftClimber,intake.intakeMain, shooter.shooterMain, shooterVision));
     command.addOption("Pickup 2",new PickUp2Shoot(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision) );
     command.addOption("Shoot and Pickup 3",new Shoot3PickUp3(shaftMechanism.getSubsystem(), shooter.shooterMain, intake.intakeMain, driveTrain, shooterVision) );
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
