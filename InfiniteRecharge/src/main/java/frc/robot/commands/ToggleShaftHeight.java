@@ -8,6 +8,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.ControlConstants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.ShooterMain;
 
@@ -31,7 +33,9 @@ public class ToggleShaftHeight extends CommandBase {
     shaftSubsystem.toggleShaftHeight();
 
     if (shaftSubsystem.isExtended()) {
-      shaftSubsystem.retractSpinner();
+      if(!RobotContainer.singleDriverMode){
+        shaftSubsystem.retractSpinner();
+      }
       shooterMain.setPoint(1000);
     } else {
       shooterMain.end();

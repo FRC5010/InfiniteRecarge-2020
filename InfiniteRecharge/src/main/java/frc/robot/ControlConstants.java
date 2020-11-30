@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.HIDType;
+
 /**
  * Add your docs here.
  */
@@ -26,7 +29,7 @@ public class ControlConstants {
     // Driver
     public static int throttle = AxisNums.LEFT_Y.ordinal();
     public static int steer = AxisNums.RIGHT_X.ordinal();
-   public static int winch1Axis = AxisNums.L_TRIGGER.ordinal();
+    public static int winch1Axis = AxisNums.L_TRIGGER.ordinal();
     public static int winch2Axis = AxisNums.R_TRIGGER.ordinal();
 
     public static int intakeAimButton = ButtonNums.A_BUTTON.ordinal();
@@ -69,4 +72,28 @@ public class ControlConstants {
     public static int spinnerColumn = 5;
     public static int autoColumn = 3;
     public static int shooterVisionColumn = 7;
+
+    public static boolean setupSingleDriver(Joystick operator){
+        if(operator.getType() == HIDType.kUnknown){
+            throttle = AxisNums.LEFT_Y.ordinal();
+            steer = AxisNums.RIGHT_X.ordinal();
+        
+            shooterAimButton = ButtonNums.RIGHT_STICK_BUTT.ordinal();
+            heightModeToggle = ButtonNums.LEFT_BUMPER.ordinal();
+            calibrate = ButtonNums.START_BUTTON.ordinal(); 
+            toggleLed = ButtonNums.LEFT_STICK_BUTT.ordinal();
+            turnToAngleButton = POVDirs.DOWN.ordinal() * 90;
+        
+            outtakeAxis = AxisNums.L_TRIGGER.ordinal() ;
+            intakeAxis = AxisNums.R_TRIGGER.ordinal();
+        
+            launchButton = ButtonNums.A_BUTTON.ordinal();
+            barrelDown = ButtonNums.B_BUTTON.ordinal(); 
+            barrelUp = ButtonNums.Y_BUTTON.ordinal(); 
+            toggleIntakeButton = ButtonNums.RIGHT_BUMPER.ordinal();
+            
+            return true;
+        }
+        return false;
+    }
 }

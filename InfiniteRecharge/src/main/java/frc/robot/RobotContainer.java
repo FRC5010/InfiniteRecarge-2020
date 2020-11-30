@@ -1,11 +1,14 @@
 
 package frc.robot;
 
+import java.util.ResourceBundle.Control;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.auto.PickUp2Shoot;
 import frc.robot.commands.auto.Shoot3PickUp3;
@@ -45,7 +48,7 @@ public class RobotContainer {
   public Pose robotPose;
   private DriveTrainMain driveTrain;
   private SendableChooser<Command> command = new SendableChooser<>();
-  
+  public static boolean singleDriverMode;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -61,9 +64,10 @@ public class RobotContainer {
     // motor 13 is the second shooter
     driver = new Joystick(0);
     operator = new Joystick(1);
+    singleDriverMode = ControlConstants.setupSingleDriver(operator);
+    operator = singleDriverMode ? driver : operator;
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
     Shuffleboard.getTab(ControlConstants.SBTabDiagnostics);
-
     // vision system
     shooterVision = new VisionLimeLight("limelight", 20.25, 27.48, 90, ControlConstants.shooterVisionColumn);
     intakeVision = new VisionOpenSight("intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
@@ -72,9 +76,11 @@ public class RobotContainer {
     intake = new IntakeMech(operator);
     shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
     driveMechanism = new Drive(driver,shooterVision , intakeVision, intake.intakeMain);
-    spinControl = new SpinControl(driver, operator, shaftMechanism.getSubsystem());
-    climb = new TelescopClimb(driver, operator);
-
+    
+    if(singleDriverMode == false){
+      spinControl = new SpinControl(driver, operator, shaftMechanism.getSubsystem());
+      climb = new TelescopClimb(driver, operator);
+    }
     robotPose = Drive.robotPose;
     driveTrain = driveMechanism.driveTrain;
 
@@ -85,7 +91,9 @@ public class RobotContainer {
       .getLayout("Auto", BuiltInLayouts.kList).withPosition(ControlConstants.autoColumn, 0).withSize(3, 1)
       .add("Choose an Auto Mode", command).withWidget(BuiltInWidgets.kSplitButtonChooser);
   }
-
+public static boolean getDriverMode(){
+  return singleDriverMode;
+}
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

@@ -26,7 +26,7 @@ import frc.robot.subsystems.VisionSystem;
  */
 
 public class Shoot {
-    public Joystick diver;
+    public Joystick driver;
     public Button buttonA;
     public ShooterMain shooterMain;
     public CANSparkMax shootMotor;
@@ -37,7 +37,8 @@ public class Shoot {
     public Button calButton;
 
     public Shoot(Joystick operator, Joystick driver, VisionSystem shooterVision) {
-        this.diver = operator;
+        boolean singleDriverMode = driver == operator;
+        this.driver = operator;
         this.shootMotor = new CANSparkMax(5, MotorType.kBrushless); 
         shootMotor2 = new CANSparkMax(13, MotorType.kBrushless);
         shootMotor.setInverted(false);
@@ -45,17 +46,20 @@ public class Shoot {
         shootMotor2.setInverted(true);
         shootMotor.setSmartCurrentLimit(40);
         calButton = new JoystickButton(driver, ControlConstants.calibrate);
-        spinUp = new POVButton(operator, ControlConstants.incShooter);
-        spinDown = new POVButton(operator, ControlConstants.decShooter);
-        baseUp = new POVButton(driver, ControlConstants.incShooter);
-        baseDown = new POVButton(driver, ControlConstants.decShooter);
+        if(!singleDriverMode){
+            spinUp = new POVButton(operator, ControlConstants.incShooter);
+            spinDown = new POVButton(operator, ControlConstants.decShooter);
+            baseUp = new POVButton(driver, ControlConstants.incShooter);
+            baseDown = new POVButton(driver, ControlConstants.decShooter);
+
+            spinUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed+=10));
+            spinDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed-=10));
+            baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.distanceToRPM+=.1));
+            baseDown.whenPressed(new InstantCommand(() -> ShooterConstants.distanceToRPM-=.1));
+        }
 
         m_pidController = shootMotor.getPIDController();
         shooterMain = new ShooterMain(shootMotor, m_pidController);
         calButton.whenPressed(new CameraCalibrateShooter(shooterVision));
-        spinUp.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed+=10));
-        spinDown.whenPressed(new InstantCommand(() -> ShooterConstants.baseSpeed-=10));
-        baseUp.whenPressed(new InstantCommand(() -> ShooterConstants.distanceToRPM+=.1));
-        baseDown.whenPressed(new InstantCommand(() -> ShooterConstants.distanceToRPM-=.1));
     }
 }

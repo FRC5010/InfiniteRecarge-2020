@@ -65,6 +65,7 @@ public class ShaftMechanism {
 
   public ShaftMechanism(Joystick driver, Joystick operator, IntakeSubsystem intakeSubsystem, ShooterMain shooterMain, VisionSystem visionSubsystem) {
     this.driver = driver;
+    boolean singleDriverMode = driver == operator;
     this.intakeSubsystem = intakeSubsystem;
     this.shaftMotor = new CANSparkMax(8, MotorType.kBrushless);
     shaftMotor.setSmartCurrentLimit(25);
@@ -75,17 +76,29 @@ public class ShaftMechanism {
     manualUp = new JoystickButton(operator, ControlConstants.barrelUp);
     manualDown = new JoystickButton(operator, ControlConstants.barrelDown);
     shaftLifter = new DoubleSolenoid(ShaftConstants.fwdChannel, ShaftConstants.revChannel);
-    this.toggleLed = new JoystickButton(driver, ControlConstants.toggleLed);
-    this.spinnerOverrideLow = new POVButton(operator, ControlConstants.spinnerOverrideButtonLow);
-    this.spinnerOverrideHigh = new POVButton(operator, ControlConstants.spinnerOverrideButtonHigh);
-
+            
     ledRing = new Solenoid(5); 
 
     beamBreakIntake = new DigitalInput(0);
     beamBreakMiddle = new DigitalInput(1);
     beamBreakShooter = new DigitalInput(2);
+    shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,shaftLifter, visionSubsystem);
+    this.toggleLed = new JoystickButton(driver, ControlConstants.toggleLed);
 
-     shaftClimber = new ShaftSubsystem(beamBreakIntake, beamBreakMiddle, beamBreakShooter, shaftMotor, driver,shaftLifter, visionSubsystem);
+
+    if(!singleDriverMode){
+      this.spinnerOverrideLow = new POVButton(operator, ControlConstants.spinnerOverrideButtonLow);
+      this.spinnerOverrideHigh = new POVButton(operator, ControlConstants.spinnerOverrideButtonHigh);
+      spinnerOverrideLow.whileHeld( new ParallelCommandGroup(
+        new ShooterOverride(shooterMain, 1000),
+        new LoadShaftCommand(shaftClimber, shooterMain)));
+    
+        spinnerOverrideHigh.whileHeld( new ParallelCommandGroup(
+        new ShooterOverride(shooterMain, 3176),
+        new LoadShaftCommand(shaftClimber, shooterMain)));
+        
+    }
+
      
     toggleLed.whenPressed(new ToggleLedRing(shaftClimber));
     
@@ -94,14 +107,6 @@ public class ShaftMechanism {
     launchButton.whileHeld(new ParallelCommandGroup(
       new LoadShaftCommand(shaftClimber, shooterMain),
       new SpinShooter(shooterMain, visionSubsystem)));
-
-    spinnerOverrideLow.whileHeld( new ParallelCommandGroup(
-    new ShooterOverride(shooterMain, 1000),
-    new LoadShaftCommand(shaftClimber, shooterMain)));
-
-    spinnerOverrideHigh.whileHeld( new ParallelCommandGroup(
-    new ShooterOverride(shooterMain, 3176),
-    new LoadShaftCommand(shaftClimber, shooterMain)));
     
     manualUp.whileHeld(new FunctionalCommand(
       () -> shaftClimber.setShaftState(ShaftState.manual), 

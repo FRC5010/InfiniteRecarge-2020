@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ControlConstants;
+import frc.robot.RobotContainer;
 
 public abstract class VisionSystem extends SubsystemBase {
 
@@ -55,6 +56,7 @@ public abstract class VisionSystem extends SubsystemBase {
     visionLayout.addNumber(name + " X Angle", this::getAngleX).withSize(1, 1);
     visionLayout.addNumber(name + " Y Angle", this::getAngleY).withSize(1, 1);
 
+    visionLayout.addBoolean(name + " Driver Mode", RobotContainer::getDriverMode).withSize(1, 1);
   }
 
   public VisionValues getRawValues() {
