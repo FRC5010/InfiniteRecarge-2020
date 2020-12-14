@@ -117,7 +117,7 @@ public class Drive {
 
     robotPose = new Pose(lEncoder, rEncoder);
     shooterCam = shooterVision;
-    driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver);
+    driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver, robotPose);
     intakeCam = intakeVision;
     intakeSystem = intakeSubsystem;
 

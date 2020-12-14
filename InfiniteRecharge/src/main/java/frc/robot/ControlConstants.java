@@ -29,6 +29,7 @@ public class ControlConstants {
     // Driver
     public static int throttle = AxisNums.LEFT_Y.ordinal();
     public static int steer = AxisNums.RIGHT_X.ordinal();
+    public static int steerY = AxisNums.RIGHT_Y.ordinal();
     public static int winch1Axis = AxisNums.L_TRIGGER.ordinal();
     public static int winch2Axis = AxisNums.R_TRIGGER.ordinal();
 

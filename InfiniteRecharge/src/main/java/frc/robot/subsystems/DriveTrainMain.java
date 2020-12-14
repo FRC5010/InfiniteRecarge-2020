@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.Driving;
+import frc.robot.commands.FlickStick;
 
 public class DriveTrainMain extends SubsystemBase {
   /**
@@ -22,7 +23,7 @@ public class DriveTrainMain extends SubsystemBase {
   private PowerDistributionPanel pdp;
 
 
-  public DriveTrainMain(SpeedController left, SpeedController right, Joystick driver) {
+  public DriveTrainMain(SpeedController left, SpeedController right, Joystick driver, Pose pose) {
     leftMaster = left;
     rightMaster = right;
 
