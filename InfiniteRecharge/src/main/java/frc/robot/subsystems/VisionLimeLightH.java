@@ -7,15 +7,16 @@
 
 package frc.robot.subsystems;
 
-public class VisionLimeLight extends VisionSystem {
+public class VisionLimeLightH extends VisionSystem {
   /**
    * Creates a new LimeLightVision.
    */
-  public VisionLimeLight(String name, int colIndex) {
+  //class for when the limelight is mounted "normally" or where the leds are mounted horizontally
+  public VisionLimeLightH(String name, int colIndex) {
     super(name, colIndex);
   }
 
-  public VisionLimeLight(String name, double camHeight, double camAngle, double targetHeight, int colIndex) {
+  public VisionLimeLightH(String name, double camHeight, double camAngle, double targetHeight, int colIndex) {
     super(name, camHeight, camAngle, targetHeight, colIndex);
   }
 
@@ -29,9 +30,8 @@ public class VisionLimeLight extends VisionSystem {
     boolean valid = table.getTable(path).getEntry("tv").getDouble(0) == 1.0;
     
     if (valid) {
-      // LL is mounted sideways, thus we need to reverse values
-      double angleX = -table.getTable(path).getEntry("ty").getDouble(0);
-      double angleY = table.getTable(path).getEntry("tx").getDouble(0);
+      double angleX = table.getTable(path).getEntry("tx").getDouble(0);
+      double angleY = table.getTable(path).getEntry("ty").getDouble(0);
       double area = table.getTable(path).getEntry("ta").getDouble(0);
 
       // calculating distance

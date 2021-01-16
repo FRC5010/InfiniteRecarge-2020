@@ -22,6 +22,7 @@ import frc.robot.mechanisms.TelescopClimb;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.Pose;
 import frc.robot.subsystems.VisionLimeLight;
+import frc.robot.subsystems.VisionLimeLightH;
 import frc.robot.subsystems.VisionOpenSight;
 import frc.robot.subsystems.VisionSystem;
 
@@ -70,7 +71,7 @@ public class RobotContainer {
     Shuffleboard.getTab(ControlConstants.SBTabDiagnostics);
     // vision system
     shooterVision = new VisionLimeLight("limelight", 20.25, 27.48, 90, ControlConstants.shooterVisionColumn);
-    intakeVision = new VisionOpenSight("intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
+    intakeVision = new VisionLimeLightH("limelight-intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
 
     shooter = new Shoot(operator, driver,shooterVision );
     intake = new IntakeMech(operator);

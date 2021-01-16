@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
+import frc.robot.commands.AimWithVision;
 import frc.robot.commands.Driving;
 import frc.robot.commands.FlickStick;
 
@@ -29,6 +31,7 @@ public class DriveTrainMain extends SubsystemBase {
 
     pdp = new PowerDistributionPanel();
     setDefaultCommand(new Driving(this, driver));
+   // setDefaultCommand(new FlickStick(this, driver, pose));
   }
 
   @Override
@@ -42,6 +45,7 @@ public class DriveTrainMain extends SubsystemBase {
   }
 
   public void arcadeDrive(double fPow, double tPow) {
+    tPow *= 1.1;
     leftMaster.set(fPow + tPow);
     rightMaster.set(fPow - tPow);
   }

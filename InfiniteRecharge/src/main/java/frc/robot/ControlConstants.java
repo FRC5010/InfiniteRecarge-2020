@@ -74,6 +74,9 @@ public class ControlConstants {
     public static int autoColumn = 3;
     public static int shooterVisionColumn = 7;
 
+    public static int autoNavButton = ButtonNums.X_BUTTON.ordinal();
+
+    
     public static boolean setupSingleDriver(Joystick operator){
         if(operator.getType() == HIDType.kUnknown){
             throttle = AxisNums.LEFT_Y.ordinal();
@@ -92,7 +95,7 @@ public class ControlConstants {
             barrelDown = ButtonNums.B_BUTTON.ordinal(); 
             barrelUp = ButtonNums.Y_BUTTON.ordinal(); 
             toggleIntakeButton = ButtonNums.RIGHT_BUMPER.ordinal();
-            
+            autoNavButton = ButtonNums.X_BUTTON.ordinal();
             return true;
         }
         return false;

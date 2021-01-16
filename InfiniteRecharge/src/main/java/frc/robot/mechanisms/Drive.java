@@ -63,6 +63,7 @@ public class Drive {
   public POVButton turnToAngleButton;
 
   public JoystickButton intakeDriveButton;
+  public JoystickButton autoNavButton;
 
   public Drive(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSystem) {
     init(driver, shooterVision, intakeVision, intakeSystem);
@@ -76,7 +77,8 @@ public class Drive {
     shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
     turnToAngleButton = new POVButton(driver, ControlConstants.turnToAngleButton);
     turnToAngleButton.whenPressed(new TurnToAngle(driveTrain, robotPose, shooterCam.getAngleX()));
-
+    autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
+    autoNavButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver, 0));
     // intakeDriveButton = new JoystickButton(driver, ControlConstants.startClimb);
     // intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.7)));
   }
@@ -100,11 +102,11 @@ public class Drive {
       lEncoder = lDrive1.getEncoder();
       rEncoder = rDrive1.getEncoder();
 
-      lDrive1.setSmartCurrentLimit(38);
-      lDrive2.setSmartCurrentLimit(38);
+      // lDrive1.setSmartCurrentLimit(38);
+      // lDrive2.setSmartCurrentLimit(38);
 
-      rDrive1.setSmartCurrentLimit(38);
-      rDrive2.setSmartCurrentLimit(38);
+      // rDrive1.setSmartCurrentLimit(38);
+      // rDrive2.setSmartCurrentLimit(38);
 
 
       // lEncoder.setPositionConversionFactor(Constants.distancePerPulse);
