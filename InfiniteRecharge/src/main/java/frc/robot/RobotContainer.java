@@ -76,7 +76,7 @@ public class RobotContainer {
     shooter = new Shoot(operator, driver,shooterVision );
     intake = new IntakeMech(operator);
     shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
-    driveMechanism = new Drive(driver,shooterVision , intakeVision, intake.intakeMain);
+    driveMechanism = new Drive(driver,shooterVision , intakeVision, intake.intakeMain, shaftMechanism.getSubsystem());
     
     if(singleDriverMode == false){
       spinControl = new SpinControl(driver, operator, shaftMechanism.getSubsystem());

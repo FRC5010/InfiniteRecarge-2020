@@ -75,7 +75,7 @@ public class ControlConstants {
     public static int shooterVisionColumn = 7;
 
     public static int autoNavButton = ButtonNums.X_BUTTON.ordinal();
-
+    public static int driveTrainCurrentLimit = 38;
     
     public static boolean setupSingleDriver(Joystick operator){
         if(operator.getType() == HIDType.kUnknown){

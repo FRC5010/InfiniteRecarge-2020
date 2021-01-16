@@ -26,6 +26,7 @@ public class DriveWithVision extends CommandBase {
   double angleError, distanceError;
   double angleTolerance = 2;
   double distanceTolerance = 5;
+  boolean BB1, BB2;
 
   public DriveWithVision(DriveTrainMain drive, VisionSystem vision, ShaftSubsystem shaftSubsystem, double targetAngle, double targetDistance, double driveSpeed) {
     this.drive = drive;
@@ -40,6 +41,8 @@ public class DriveWithVision extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    BB1 = false;
+    BB2 = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -52,7 +55,8 @@ public class DriveWithVision extends CommandBase {
 
     double turnCorrection = angleError * DriveConstants.kTurnP;
     double driveCorrection = distanceError * 0.0254 * DriveConstants.kPDriveVel / 12;
-    drive.arcadeDrive(driveCorrection + Math.signum(driveCorrection) * driveSpeed, 
+    //drive.arcadeDrive(driveCorrection + Math.signum(driveCorrection) * driveSpeed,
+    drive.arcadeDrive(driveSpeed, 
       turnCorrection + Math.signum(turnCorrection) *  DriveConstants.minTurn);
   }
 
@@ -65,6 +69,12 @@ public class DriveWithVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !shaftSubsystem.getBB1();
+    if(!shaftSubsystem.getBB1()){
+      BB1 = true;
+    }
+    if(BB1 && !shaftSubsystem.getBB2()){
+      BB2 = true;
+    }
+    return BB2;
   }
 }

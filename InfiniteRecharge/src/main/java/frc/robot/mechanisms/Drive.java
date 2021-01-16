@@ -31,10 +31,13 @@ import frc.robot.ControlConstants;
 import frc.robot.Robot;
 import frc.robot.commands.AimWithVision;
 import frc.robot.commands.RamseteFollower;
+import frc.robot.commands.SeekTarget;
 import frc.robot.commands.TurnToAngle;
+import frc.robot.commands.auto.GalacticSearch;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Pose;
+import frc.robot.subsystems.ShaftSubsystem;
 import frc.robot.subsystems.VisionSystem;
 
 /**
@@ -45,6 +48,7 @@ public class Drive {
   private static VisionSystem intakeCam;
   private static VisionSystem shooterCam;
   private static IntakeSubsystem intakeSystem;
+  private static ShaftSubsystem shaftSubsystem;
 
   public Joystick driver;
   public static CANSparkMax lDrive1;
@@ -65,8 +69,8 @@ public class Drive {
   public JoystickButton intakeDriveButton;
   public JoystickButton autoNavButton;
 
-  public Drive(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSystem) {
-    init(driver, shooterVision, intakeVision, intakeSystem);
+  public Drive(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSystem, ShaftSubsystem shaftSubsystem) {
+    init(driver, shooterVision, intakeVision, intakeSystem, shaftSubsystem);
     configureButtonBindings();
   }
 
@@ -78,12 +82,21 @@ public class Drive {
     turnToAngleButton = new POVButton(driver, ControlConstants.turnToAngleButton);
     turnToAngleButton.whenPressed(new TurnToAngle(driveTrain, robotPose, shooterCam.getAngleX()));
     autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
-    autoNavButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver, 0));
-    // intakeDriveButton = new JoystickButton(driver, ControlConstants.startClimb);
+    autoNavButton.whenPressed(new GalacticSearch(driveTrain, intakeCam, robotPose, intakeSystem, shaftSubsystem));
+    // intakeDriveButton = new JoystickButton(drivgber, ControlConstants.startClimb);
     // intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.7)));
   }
 
-  public void init(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSubsystem) {
+  public static void setCurrentLimits(int currentLimit) {
+    lDrive1.setSmartCurrentLimit(currentLimit);
+    lDrive2.setSmartCurrentLimit(currentLimit);
+    rDrive1.setSmartCurrentLimit(currentLimit);
+    rDrive2.setSmartCurrentLimit(currentLimit);
+}
+
+
+
+  public void init(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSubsystem, ShaftSubsystem shaftSubsystem) {
     if (RobotBase.isReal()) {
       this.driver = driver;
         // Neos HAVE to be in brushless
@@ -102,12 +115,7 @@ public class Drive {
       lEncoder = lDrive1.getEncoder();
       rEncoder = rDrive1.getEncoder();
 
-      // lDrive1.setSmartCurrentLimit(38);
-      // lDrive2.setSmartCurrentLimit(38);
-
-      // rDrive1.setSmartCurrentLimit(38);
-      // rDrive2.setSmartCurrentLimit(38);
-
+      setCurrentLimits(ControlConstants.driveTrainCurrentLimit);
 
       // lEncoder.setPositionConversionFactor(Constants.distancePerPulse);
       // rEncoder.setPositionConversionFactor(-Constants.distancePerPulse);
@@ -122,6 +130,7 @@ public class Drive {
     driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver, robotPose);
     intakeCam = intakeVision;
     intakeSystem = intakeSubsystem;
+    this.shaftSubsystem = shaftSubsystem;
 
   }
   /**
