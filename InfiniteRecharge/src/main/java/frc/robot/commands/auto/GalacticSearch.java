@@ -36,10 +36,21 @@ public class GalacticSearch extends SequentialCommandGroup {
     this.pose = pose;
     this.intakeSubsystem = intakeSubsystem;
     this.shaftSubsystem = shaftSubsystem;
+
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
     new SeekTarget(this.driveTrainMain, this.visionSystem, this.pose), 
+    new ParallelDeadlineGroup(
+      new DriveWithVision(this.driveTrainMain, this.visionSystem, this.shaftSubsystem, 0, 0, -.25),
+      new IntakeBalls(this.intakeSubsystem, .8)
+      ),
+      new SeekTarget(this.driveTrainMain, this.visionSystem, this.pose), 
+    new ParallelDeadlineGroup(
+      new DriveWithVision(this.driveTrainMain, this.visionSystem, this.shaftSubsystem, 0, 0, -.25),
+      new IntakeBalls(this.intakeSubsystem, .8)
+      ),
+      new SeekTarget(this.driveTrainMain, this.visionSystem, this.pose), 
     new ParallelDeadlineGroup(
       new DriveWithVision(this.driveTrainMain, this.visionSystem, this.shaftSubsystem, 0, 0, -.25),
       new IntakeBalls(this.intakeSubsystem, .8)
