@@ -31,6 +31,7 @@ import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.auto.BarrelRace;
 import frc.robot.commands.auto.GalacticSearch;
+import frc.robot.commands.auto.SlalomRun;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Pose;
