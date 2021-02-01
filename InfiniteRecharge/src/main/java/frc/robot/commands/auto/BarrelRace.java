@@ -4,7 +4,10 @@
 
 package frc.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.StartStopTimer;
 import frc.robot.mechanisms.Drive;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -15,7 +18,8 @@ public class BarrelRace extends SequentialCommandGroup {
   public BarrelRace() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    String path = "paths/BarrelRace.wpilib.json";
-    addCommands(Drive.getAutonomousCommand(path));
+    
+    String path = "paths/BarrelRaceFewerPoints.wpilib.json";
+    addCommands(new ParallelDeadlineGroup(Drive.getAutonomousCommand(path), new StartStopTimer()));
   }
 }

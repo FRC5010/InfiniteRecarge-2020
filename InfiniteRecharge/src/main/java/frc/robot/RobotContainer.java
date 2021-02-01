@@ -4,6 +4,7 @@ package frc.robot;
 import java.util.ResourceBundle.Control;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -50,6 +51,7 @@ public class RobotContainer {
   private DriveTrainMain driveTrain;
   private SendableChooser<Command> command = new SendableChooser<>();
   public static boolean singleDriverMode;
+  public static Timer timer = new Timer();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
