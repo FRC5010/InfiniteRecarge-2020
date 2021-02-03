@@ -30,6 +30,7 @@ import frc.robot.commands.AimWithVision;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.auto.BarrelRace;
+import frc.robot.commands.auto.BouncePath;
 import frc.robot.commands.auto.GalacticSearch;
 import frc.robot.commands.auto.SlalomRun;
 import frc.robot.subsystems.DriveTrainMain;
@@ -81,7 +82,7 @@ public class Drive {
     turnToAngleButton.whenPressed(new TurnToAngle(driveTrain, robotPose, shooterCam.getAngleX()));
     autoNavButton = new JoystickButton(driver,  ControlConstants.autoNavButton);
     //autoNavButton.whenPressed(new GalacticSearch(driveTrain, intakeCam, robotPose, intakeSystem, shaftSubsystem));
-    autoNavButton.whenPressed(new SlalomRun());
+    autoNavButton.whenPressed(new BouncePath());
     // intakeDriveButton = new JoystickButton(drivgber, ControlConstants.startClimb);
     // intakeDriveButton.whenPressed(new ParallelCommandGroup(new AimWithVision(driveTrain, intakeCam, 30, 0.2), new IntakeBalls(intakeSystem, 0.7)));
   }
@@ -142,8 +143,14 @@ public class Drive {
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
+   * 
    */
-  public static Command getAutonomousCommand(String path) {
+
+  public static Command getAutonomousCommand(String path){
+    return getAutonomousCommand(path,false);
+  }
+
+  public static Command getAutonomousCommand(String path,boolean reverse) {
     // Create a voltage constraint to ensure we don't accelerate too fast
     String trajectoryJSON = path;
     Trajectory trajectory = new Trajectory();
@@ -153,7 +160,6 @@ public class Drive {
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
     }
-    
     RamseteCommand ramseteCommand = new RamseteFollower(trajectory,true);
 
     //RamseteCommand backCommand = new RamseteFollower(revTrajectory,true);
@@ -162,5 +168,7 @@ public class Drive {
     // Run path following command, then stop at the end.
     return result;
   }
+
+
 
 }
