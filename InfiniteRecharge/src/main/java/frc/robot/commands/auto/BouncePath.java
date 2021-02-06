@@ -14,12 +14,12 @@ public class BouncePath extends SequentialCommandGroup {
   /** Creates a new BouncePath. */
   public BouncePath() {
     String path1 = "paths/Bounce1.wpilib.json";
-    String path2 = "paths/Bounce2.wpilib.json";
-    String path3 = "paths/Bounce3.wpilib.json";
-    String path4 = "paths/Bounce4.wpilib.json";
+    String path2 = "paths/Bounce2NR.wpilib.json";
+    String path3 = "paths/Bounce3NR.wpilib.json";
+    String path4 = "paths/Bounce4NR.wpilib.json";
     addCommands(new ParallelDeadlineGroup(
         new SequentialCommandGroup(
-            Drive.getAutonomousCommand(path1),
+            Drive.getAutonomousCommand(path1, true),
             Drive.getAutonomousCommand(path2),
             Drive.getAutonomousCommand(path3),
             Drive.getAutonomousCommand(path4)

@@ -150,7 +150,7 @@ public class Drive {
     return getAutonomousCommand(path,false);
   }
 
-  public static Command getAutonomousCommand(String path,boolean reverse) {
+  public static Command getAutonomousCommand(String path,boolean reset) {
     // Create a voltage constraint to ensure we don't accelerate too fast
     String trajectoryJSON = path;
     Trajectory trajectory = new Trajectory();
@@ -160,9 +160,8 @@ public class Drive {
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
     }
-    RamseteCommand ramseteCommand = new RamseteFollower(trajectory,true);
+    RamseteCommand ramseteCommand = new RamseteFollower(trajectory,reset);
 
-    //RamseteCommand backCommand = new RamseteFollower(revTrajectory,true);
     Command result = ramseteCommand;
     
     // Run path following command, then stop at the end.

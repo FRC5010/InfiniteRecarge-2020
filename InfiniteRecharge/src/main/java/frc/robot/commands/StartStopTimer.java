@@ -19,12 +19,13 @@ static long startTime = 0;
 static long currTime = 0;
 
   /** Creates a new StartStopTimer. */
-  public StartStopTimer() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  static {
     ShuffleboardLayout layout = Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
     .getLayout("Timer", BuiltInLayouts.kList).withPosition(6, 0).withSize(1, 1);
-
-  layout.addNumber("Time", StartStopTimer::getTime).withPosition(0, 1);
+    layout.addNumber("Time", StartStopTimer::getTime).withPosition(0, 1);
+  }
+  public StartStopTimer() {
+    // Use addRequirements() here to declare subsystem dependencies.
 
   }
 

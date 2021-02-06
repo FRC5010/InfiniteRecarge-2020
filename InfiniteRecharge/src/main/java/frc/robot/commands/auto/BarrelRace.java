@@ -20,6 +20,6 @@ public class BarrelRace extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     
     String path = "paths/BarrelRaceFewerPoints.wpilib.json";
-    addCommands(new ParallelDeadlineGroup(Drive.getAutonomousCommand(path), new StartStopTimer()));
+    addCommands(new ParallelDeadlineGroup(Drive.getAutonomousCommand(path, true), new StartStopTimer()));
   }
 }

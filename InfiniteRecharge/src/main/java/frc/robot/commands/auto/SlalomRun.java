@@ -18,7 +18,7 @@ public class SlalomRun extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     String path = "paths/SlalomFewerPoints.wpilib.json";
-    addCommands(new ParallelDeadlineGroup(Drive.getAutonomousCommand(path), new StartStopTimer()));
+    addCommands(new ParallelDeadlineGroup(Drive.getAutonomousCommand(path, true), new StartStopTimer()));
     //addCommands(new ParallelDeadlineGroup(Drive.getAutonomousCommand(path), new StartStopTimer()));
   }
 }
