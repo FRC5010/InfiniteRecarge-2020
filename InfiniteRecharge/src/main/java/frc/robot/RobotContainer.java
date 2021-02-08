@@ -78,8 +78,8 @@ public class RobotContainer {
     driveMechanism = new Drive(driver,shooterVision , intakeVision, intake.intakeMain, shaftMechanism.getSubsystem());
     
     if(singleDriverMode == false){
-      //spinControl = new SpinControl(driver, operator, shaftMechanism.getSubsystem());
-      //climb = new TelescopClimb(driver, operator);
+      spinControl = new SpinControl(driver, operator, shaftMechanism.getSubsystem());
+      climb = new TelescopClimb(driver, operator);
     }
     robotPose = Drive.robotPose;
     driveTrain = driveMechanism.driveTrain;

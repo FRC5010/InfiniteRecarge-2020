@@ -97,7 +97,6 @@ public class Drive {
 
 
   public void init(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSubsystem, ShaftSubsystem shaftSubsystem) {
-    if (RobotBase.isReal()) {
       this.driver = driver;
         // Neos HAVE to be in brushless
       lDrive1 = new CANSparkMax(1, MotorType.kBrushless);
@@ -130,7 +129,6 @@ public class Drive {
       // lEncoder.setVelocityConversionFactor(Constants.distancePerPulse);
       // rEncoder.setVelocityConversionFactor(-Constants.distancePerPulse);
 
-    }
 
     robotPose = new Pose(lEncoder, rEncoder);
     shooterCam = shooterVision;
