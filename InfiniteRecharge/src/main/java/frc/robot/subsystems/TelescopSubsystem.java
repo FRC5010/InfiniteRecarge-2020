@@ -120,8 +120,8 @@ public class TelescopSubsystem extends SubsystemBase {
     }
   }
 public void armOverride(){
- // System.out.println("override Active");
-  arm1.set(operator.getRawAxis(1));
+  System.out.println("override Active" + operator.getRawAxis(1) + " " + operator.getRawAxis(5));
+  arm1.set(-operator.getRawAxis(1));
   arm2.set(operator.getRawAxis(5));
   
 }
@@ -132,6 +132,7 @@ public void armOverride(){
   }
 
   public void spinWinchMotors() {
+    System.out.println(driver.getRawAxis(ControlConstants.winch1Axis));
     double speed = TelescopConstants.winchSpeed * Math.abs(driver.getRawAxis(ControlConstants.winch1Axis));
     winch1.set(speed);
     winch2.set(speed);

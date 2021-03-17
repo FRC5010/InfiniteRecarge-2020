@@ -66,6 +66,7 @@ public class TelescopClimb {
         armMotor1.setInverted(false);
         armMotor2.setInverted(true);
 
+        winchMotor1.setInverted(true);
         winchMotor2.setInverted(true);
         
         armBtn = new JoystickButton(operator, ControlConstants.startClimb );
