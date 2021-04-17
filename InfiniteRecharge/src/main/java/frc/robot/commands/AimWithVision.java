@@ -55,7 +55,7 @@ public class AimWithVision extends CommandBase {
     this.targetAngle = targetAngle;
     this.driveSpeed = driveSpeed;
     this.p = 0.025;
-    this.d = 2000;
+    this.d = 0.1;
     addRequirements(drive);
     addRequirements(vision);
   }
@@ -111,7 +111,7 @@ public class AimWithVision extends CommandBase {
       // If vision target not acquired and we've exceeded the acquisition timeout, don't return
       // Because, that could mean we're shooting in the wrong direction!
       if (!vision.isValidTarget() && currentTime - timeTargetFound > 500) {
-        vision.flashLight();
+        //vision.flashLight();
         return false;
       } else {
         return Math.abs(error) < angleTolerance;

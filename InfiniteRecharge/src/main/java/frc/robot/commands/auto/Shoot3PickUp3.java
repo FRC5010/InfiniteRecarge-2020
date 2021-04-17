@@ -20,6 +20,7 @@ import frc.robot.commands.LowerShaft;
 import frc.robot.commands.RaiseBarrel;
 import frc.robot.commands.RamseteFollower;
 import frc.robot.commands.SpinShooter;
+import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.DriveConstants;
 import frc.robot.subsystems.DriveTrainMain;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -34,43 +35,24 @@ public class Shoot3PickUp3 extends SequentialCommandGroup {
   /**
    * Creates a new Shoot3PickUp3.
    */
-  public Shoot3PickUp3(ShaftSubsystem shaftClimber, ShooterMain shooterMain,IntakeSubsystem intake, DriveTrainMain driveTrain,
+
+  public Shoot3PickUp3(DriveTrainMain driveTrain,
   VisionSystem visionSubsystem) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
 
     super(
-      new RaiseBarrel(shaftClimber),
       new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0)
      ,
       new ParallelRaceGroup(
-        new LoadShaftCommand(shaftClimber, 3, shooterMain, 7), 
-        new SpinShooter(shooterMain, visionSubsystem)
-      ),
-
-      new ParallelCommandGroup(
-        new LowerIntake(intake), 
-        new LowerShaft(shaftClimber)
-      ),
-
-      new ParallelRaceGroup(
-        new RamseteFollower(DriveConstants.moveToTrenchPickUp3, false),
-        new BarrelDefault(shaftClimber),
-        new IntakeBalls(intake,.9)
+        Drive.getAutonomousCommand("paths/Trench1.wpilib.json", true)
       ),
 
       new ParallelDeadlineGroup(
-        new RamseteFollower(DriveConstants.moveForward,false),
-        new RaiseBarrel(shaftClimber)
+        Drive.getAutonomousCommand("paths/Trench2.wpilib.json", false)
       ),
       
-      new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0),
-
-      new ParallelDeadlineGroup(
-          new LoadShaftCommand(shaftClimber,3,shooterMain,10), 
-          new SpinShooter(shooterMain, visionSubsystem), 
-          new IntakeBalls(intake, .5) 
-      )
+      new AimWithVision(driveTrain, visionSubsystem, 0.0, 0.0)
     );
   }
 } 

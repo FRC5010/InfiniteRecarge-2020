@@ -68,14 +68,39 @@ public class Drive {
   public JoystickButton intakeDriveButton;
   public JoystickButton autoNavButton;
 
+  public Drive(Joystick driver, VisionSystem shooterVision) {
+    this.driver = driver;
+        // Neos HAVE to be in brushless
+      lDrive1 = new CANSparkMax(3, MotorType.kBrushless);
+      lDrive2 = new CANSparkMax(4, MotorType.kBrushless);
+
+      rDrive1 = new CANSparkMax(1, MotorType.kBrushless);
+      rDrive2 = new CANSparkMax(2, MotorType.kBrushless);
+      lDrive1.setInverted(DriveConstants.leftReversed);
+      lDrive2.follow(lDrive1, false);
+      rDrive1.setInverted(true);
+      rDrive2.follow(rDrive1, false);
+      rDrive2.setInverted(false);
+      lEncoder = lDrive1.getEncoder();
+      rEncoder = rDrive1.getEncoder();
+
+      setCurrentLimits(ControlConstants.driveTrainCurrentLimit);
+
+
+    robotPose = new Pose(lEncoder, rEncoder);
+    shooterCam = shooterVision;
+    driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver, robotPose);
+    configureButtonBindings();
+  }
+
   public Drive(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSystem, ShaftSubsystem shaftSubsystem) {
     init(driver, shooterVision, intakeVision, intakeSystem, shaftSubsystem);
     configureButtonBindings();
   }
 
   private void configureButtonBindings() {
-    intakeAimButton = new JoystickButton(driver, ControlConstants.intakeAimButton);
-    intakeAimButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver, 0));
+    //intakeAimButton = new JoystickButton(driver, ControlConstants.intakeAimButton);
+    //intakeAimButton.whileHeld(new AimWithVision(driveTrain, intakeCam, driver, 0));
     shooterAimButton = new JoystickButton(driver, ControlConstants.shooterAimButton);
     shooterAimButton.whileHeld(new AimWithVision(driveTrain, shooterCam, driver, 0));
     turnToAngleButton = new POVButton(driver, ControlConstants.turnToAngleButton);
@@ -99,16 +124,15 @@ public class Drive {
   public void init(Joystick driver, VisionSystem shooterVision, VisionSystem intakeVision, IntakeSubsystem intakeSubsystem, ShaftSubsystem shaftSubsystem) {
       this.driver = driver;
         // Neos HAVE to be in brushless
-      lDrive1 = new CANSparkMax(1, MotorType.kBrushless);
-      lDrive2 = new CANSparkMax(2, MotorType.kBrushless);
+      lDrive1 = new CANSparkMax(3, MotorType.kBrushless);
+      lDrive2 = new CANSparkMax(4, MotorType.kBrushless);
 
-      rDrive1 = new CANSparkMax(3, MotorType.kBrushless);
-      rDrive2 = new CANSparkMax(4, MotorType.kBrushless);
-      lDrive1.setInverted(DriveConstants.leftReversed);
+      rDrive1 = new CANSparkMax(1, MotorType.kBrushless);
+      rDrive2 = new CANSparkMax(2, MotorType.kBrushless);
+      lDrive1.setInverted(false);
       lDrive2.follow(lDrive1, false);
       rDrive1.setInverted(true);
       rDrive2.follow(rDrive1, false);
-      rDrive2.setInverted(false);
 
       // front two motors
       //lDrive1.disable();
@@ -133,9 +157,6 @@ public class Drive {
     robotPose = new Pose(lEncoder, rEncoder);
     shooterCam = shooterVision;
     driveTrain = new DriveTrainMain(lDrive1, rDrive1, driver, robotPose);
-    intakeCam = intakeVision;
-    intakeSystem = intakeSubsystem;
-    this.shaftSubsystem = shaftSubsystem;
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

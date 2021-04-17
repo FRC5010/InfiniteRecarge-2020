@@ -10,7 +10,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.auto.BarrelRace;
 import frc.robot.commands.auto.BouncePath;
+import frc.robot.commands.auto.LeftShoot3RP;
 import frc.robot.commands.auto.Shoot3PickUp3;
+import frc.robot.commands.auto.Shoot3RpShoot2;
 import frc.robot.commands.auto.SlalomRun;
 import frc.robot.mechanisms.Drive;
 import frc.robot.mechanisms.IntakeMech;
@@ -69,24 +71,25 @@ public class RobotContainer {
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay);
     Shuffleboard.getTab(ControlConstants.SBTabDiagnostics);
     // vision system
-    shooterVision = new VisionLimeLight("limelight", 20.25, 27.48, 90, ControlConstants.shooterVisionColumn);
-    intakeVision = new VisionLimeLightH("limelight-intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
+    shooterVision = new VisionLimeLight("limelight-shooter", 20.25, 27.48, 90, ControlConstants.shooterVisionColumn);
+    //intakeVision = new VisionLimeLightH("limelight-intake", 20, 0, 3.5, ControlConstants.intakeVisionColumn);
 
-    shooter = new Shoot(operator, driver,shooterVision );
-    intake = new IntakeMech(operator);
-    shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
-    driveMechanism = new Drive(driver,shooterVision , intakeVision, intake.intakeMain, shaftMechanism.getSubsystem());
+    //shooter = new Shoot(operator, driver,shooterVision );
+    //intake = new IntakeMech(operator);
+    //shaftMechanism = new ShaftMechanism(driver, operator, intake.intakeMain, shooter.shooterMain, shooterVision);
+    driveMechanism = new Drive(driver,shooterVision);
     
-    if(singleDriverMode == false){
-      spinControl = new SpinControl(driver, operator, shaftMechanism.getSubsystem());
-      climb = new TelescopClimb(driver, operator);
-    }
+    // if(singleDriverMode == false){
+    //   spinControl = new SpinControl(driver, operator, shaftMechanism.getSubsystem());
+    //   climb = new TelescopClimb(driver, operator);
+    // }
+
     robotPose = Drive.robotPose;
     driveTrain = driveMechanism.driveTrain;
 
-    command.setDefaultOption("Barrel", new BarrelRace());
-    command.addOption("Slalom",new SlalomRun());
-    command.addOption("Bounce",new BouncePath());
+    command.setDefaultOption("Shoot3PR",new Shoot3RpShoot2(driveTrain,shooterVision));
+    command.addOption("Shoot3TrenchRun", new Shoot3PickUp3(driveTrain, shooterVision));
+    command.addOption("LeftShoot3PR",new LeftShoot3RP(driveTrain,shooterVision));
     Shuffleboard.getTab(ControlConstants.SBTabDriverDisplay)
       .getLayout("Auto", BuiltInLayouts.kList).withPosition(ControlConstants.autoColumn, 0).withSize(3, 1)
       .add("Choose an Auto Mode", command).withWidget(BuiltInWidgets.kSplitButtonChooser);
